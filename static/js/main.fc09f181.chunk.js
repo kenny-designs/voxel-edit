@@ -1,2 +1,0 @@
-(this["webpackJsonpvoxel-edit"]=this["webpackJsonpvoxel-edit"]||[]).push([[0],{9:function(e,t,n){"use strict";n.r(t);var c=n(1),o=n.n(c),r=n(3),i=n.n(r),s=n(0),d=function(){return Object(s.jsx)("h1",{children:"Hello World!"})};i.a.render(Object(s.jsx)(o.a.StrictMode,{children:Object(s.jsx)(d,{})}),document.getElementById("root"))}},[[9,1,2]]]);
-//# sourceMappingURL=main.fc09f181.chunk.js.map
