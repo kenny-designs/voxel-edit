@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.js": "/voxel-edit/static/js/main.fc09f181.chunk.js",
+    "main.js.map": "/voxel-edit/static/js/main.fc09f181.chunk.js.map",
+    "runtime-main.js": "/voxel-edit/static/js/runtime-main.6a32b0c9.js",
+    "runtime-main.js.map": "/voxel-edit/static/js/runtime-main.6a32b0c9.js.map",
+    "static/js/2.53e54de3.chunk.js": "/voxel-edit/static/js/2.53e54de3.chunk.js",
+    "static/js/2.53e54de3.chunk.js.map": "/voxel-edit/static/js/2.53e54de3.chunk.js.map",
+    "index.html": "/voxel-edit/index.html",
+    "static/js/2.53e54de3.chunk.js.LICENSE.txt": "/voxel-edit/static/js/2.53e54de3.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.6a32b0c9.js",
+    "static/js/2.53e54de3.chunk.js",
+    "static/js/main.fc09f181.chunk.js"
+  ]
+}
