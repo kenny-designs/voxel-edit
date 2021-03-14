@@ -1,3 +1,43 @@
+# Voxel Edit
+
+## Installation Guide
+
+To run the program locally, first install **Node.js** from [this](https://nodejs.org/en/download/) link.
+
+From there, clone the voxel-eit repo to your computer, open your terminal, and then cd into the project. For my Windows 10 computer, I would open Powershell then enter the following:
+
+```
+cd C:\Users\myUsername\Documents\Projects\voxel-edit
+```
+
+Once inside the voxel-edit directory, you need to install all of the dependencies for the project with **npm**. npm should have been automatically installed with Node.js.
+
+To install all needed dependencies for the project, run the following command while in the root directory of the project:
+
+```
+cd ./your/project/location/voxel-edit
+npm install
+```
+
+Once everything has finished installing, we can now run the application! To do this, there are several scripts made available with the courtesy of [create-react-app](https://create-react-app.dev/) which is the template that this project is based on.
+
+To start a local server to run the program, type this command while in the root directory of the project:
+
+```
+cd ./your/project/location/voxel-edit
+npm start
+```
+
+Now the project is up and running! In case your web browser doesn't automatically open, the project should be running at the following address:
+
+```
+http://localhost:3000/
+```
+
+After connecting to the site, it may take a moment for everything to load for the first time. Please be patient and pay close attention to the console in case any errors do arise.
+
+Congratulations! Everything should now be up and running!
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
