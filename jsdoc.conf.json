@@ -10,7 +10,7 @@
   },
   "plugins": ["plugins/markdown"],
   "opts": {
-    "destination": "build/docs",
+    "destination": "docs",
     "recurse": true,
     "readme": "README.md"
   }
