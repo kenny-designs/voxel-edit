@@ -1,4 +1,5 @@
 import React from "react";
+import Viewport from "./Viewport";
 
 /**
  * Handles switching between both desktop and mobile versions of the
@@ -8,7 +9,7 @@ import React from "react";
  */
 class GUIController extends React.Component {
   render() {
-    return <h2>GUIController!</h2>;
+    return <Viewport onCanvasCreation={this.props.onCanvasCreation} />;
   }
 }
 
