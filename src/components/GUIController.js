@@ -1,5 +1,7 @@
 import React from "react";
 import Viewport from "./Viewport";
+import "./GUIController.css";
+import { Grid } from "semantic-ui-react";
 
 /**
  * Handles switching between both desktop and mobile versions of the
@@ -9,7 +11,22 @@ import Viewport from "./Viewport";
  */
 class GUIController extends React.Component {
   render() {
-    return <Viewport onCanvasCreation={this.props.onCanvasCreation} />;
+    return (
+      <Grid celled className={"desktopGrid"}>
+        <Grid.Row>
+          <Grid.Column width={3}>
+            <h1>Col1</h1>
+          </Grid.Column>
+          <Grid.Column width={11} style={{ padding: "0" }}>
+            <Viewport onCanvasCreation={this.props.onCanvasCreation} />
+          </Grid.Column>
+          <Grid.Column width={2}>
+            <h1>Col2</h1>
+          </Grid.Column>
+        </Grid.Row>
+      </Grid>
+    );
+    //return <Viewport onCanvasCreation={this.props.onCanvasCreation} />;
   }
 }
 

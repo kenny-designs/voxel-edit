@@ -1,0 +1,5 @@
+/** Style the main grid for the desktop */
+.ui.celled.grid.desktopGrid {
+  margin: 0;
+  height: 100vh;
+}

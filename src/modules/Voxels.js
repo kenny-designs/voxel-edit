@@ -684,11 +684,8 @@ function Voxels(canvas) {
   function resizeRendererToDisplaySize(renderer) {
     const canvas = renderer.domElement;
 
-    // Fullscreen instead
-    //const width = canvas.clientWidth;
-    //const height = canvas.clientHeight;
-    const width = window.innerWidth;
-    const height = window.innerHeight;
+    const width = canvas.clientWidth;
+    const height = canvas.clientHeight;
 
     const needResize = canvas.width !== width || canvas.height !== height;
     if (needResize) {
@@ -708,11 +705,7 @@ function Voxels(canvas) {
     renderRequested = undefined;
 
     if (resizeRendererToDisplaySize(renderer)) {
-      // Using window instead
-      //const canvas = renderer.domElement;
-      //camera.aspect = canvas.clientWidth / canvas.clientHeight;
-      camera.aspect = window.innerWidth / window.innerHeight;
-
+      camera.aspect = canvas.clientWidth / canvas.clientHeight;
       camera.updateProjectionMatrix();
     }
 
