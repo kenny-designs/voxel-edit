@@ -70,14 +70,8 @@ class VoxelEditor {
     // Initialize the camera
     this.createCamera();
 
-    // Create the orbit controls
-    this.controls = new OrbitControls(this.camera, this.canvas);
-    this.controls.target.set(
-      this.cellSize / 2,
-      this.cellSize / 3,
-      this.cellSize / 2
-    );
-    this.controls.update();
+    // Initialize orbit controls
+    this.createOrbitControls();
 
     // Create the scene
     this.scene = new THREE.Scene();
@@ -210,6 +204,24 @@ class VoxelEditor {
       this.cellSize * 0.8,
       -this.cellSize * 0.3
     );
+  }
+
+  /**
+   * Helper function to create the orbit controls.
+   */
+  createOrbitControls() {
+    // Create the orbit controls
+    this.controls = new OrbitControls(this.camera, this.canvas);
+
+    // TODO: Orbit controls starts by targeting arbitrary position. Consider alternative
+    this.controls.target.set(
+      this.cellSize / 2,
+      this.cellSize / 3,
+      this.cellSize / 2
+    );
+
+    // Controls must be updated before they can be used
+    this.controls.update();
   }
 
   /**
