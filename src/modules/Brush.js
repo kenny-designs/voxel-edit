@@ -2,7 +2,7 @@
  * Brush object used to determine how to paint voxels on the scene.
  */
 class Brush {
-  constructor(brush) {
+  constructor(brush = "add") {
     this.setCurrentBrush(brush);
   }
 
