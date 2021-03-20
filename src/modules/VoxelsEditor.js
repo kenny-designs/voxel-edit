@@ -5,6 +5,18 @@ import Brush from "./Brush";
 import textureAtlas from "../images/flourish-cc-by-nc-sa.png";
 
 /**
+ * Helper function to return a random integer between the min and max value
+ * in a range of [min, max).
+ * TODO: This can be removed soon
+ * @param {number} min
+ * @param {number} max
+ * @returns
+ */
+function randInt(min, max) {
+  return Math.floor(Math.random() * (max - min) + min);
+}
+
+/**
  * Class used to interface with the scene and handles the main render loop.
  */
 class VoxelEditor {
@@ -296,23 +308,12 @@ class VoxelEditor {
               startX + x,
               startY + y,
               startZ + z,
-              v ? v : this.randInt(1, 17)
+              v ? v : randInt(1, 17)
             );
           }
         }
       }
     }
-  }
-
-  /**
-   * Helper function to return a random integer between the min and max value
-   * in a range of [min, max).
-   * @param {number} min
-   * @param {number} max
-   * @returns
-   */
-  randInt(min, max) {
-    return Math.floor(Math.random() * (max - min) + min);
   }
 
   /**
