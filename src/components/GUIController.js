@@ -1,5 +1,6 @@
 import React from "react";
 import Viewport from "./Viewport";
+import Brush from "./Brush";
 import "./GUIController.css";
 import { Grid, Sidebar, Segment, Menu } from "semantic-ui-react";
 
@@ -62,7 +63,9 @@ class GUIController extends React.Component {
       <Grid celled className={"desktopGrid"}>
         <Grid.Row>
           <Grid.Column width={3}>
-            <h1>Left Panel</h1>
+            <Menu vertical fluid inverted>
+              <Brush onBrushChange={this.props.onBrushChange} />
+            </Menu>
           </Grid.Column>
 
           <Grid.Column width={11} style={{ padding: "0" }}>
@@ -96,9 +99,7 @@ class GUIController extends React.Component {
           </Sidebar>
 
           <Sidebar as={Menu} inverted direction="bottom" visible width="thin">
-            <Menu.Item as="a">Add</Menu.Item>
-            <Menu.Item as="a">Remove</Menu.Item>
-            <Menu.Item as="a">Paint</Menu.Item>
+            <Brush onBrushChange={this.props.onBrushChange} />
           </Sidebar>
 
           <Viewport onCanvasCreation={this.props.onCanvasCreation} />
