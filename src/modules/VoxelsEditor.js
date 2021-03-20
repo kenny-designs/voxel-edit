@@ -17,6 +17,46 @@ function randInt(min, max) {
 }
 
 /**
+ * Has the cell at the given coordinates form a sine wave out of its voxels.
+ * @param {VoxelWorld} world - The world to spawn the sine wave in
+ * @param {number} cellX
+ * @param {number} cellY
+ * @param {number} cellZ
+ * @param {number} cellSize - Dimensions of the cell
+ * @param {number} v - The type of voxel to spawn. 0 for random
+ */
+function createSineWave(world, cellX, cellY, cellZ, cellSize, v = 0) {
+  const startX = cellX * cellSize;
+  const startY = cellY * cellSize;
+  const startZ = cellZ * cellSize;
+
+  // Create a sine wave with our voxels
+  for (let y = 0; y < cellSize; ++y) {
+    for (let z = 0; z < cellSize; ++z) {
+      for (let x = 0; x < cellSize; ++x) {
+        // Calculate the maximum height at the x and z position for a voxel to be placed
+        const height =
+          (Math.sin((x / cellSize) * Math.PI * 2) +
+            Math.sin((z / cellSize) * Math.PI * 3)) *
+            (cellSize / 6) +
+          cellSize / 2;
+
+        // Set voxel if y is below the height
+        if (y < height) {
+          // Set voxel to random texture
+          world.setVoxel(
+            startX + x,
+            startY + y,
+            startZ + z,
+            v ? v : randInt(1, 17)
+          );
+        }
+      }
+    }
+  }
+}
+
+/**
  * Class used to interface with the scene and handles the main render loop.
  */
 class VoxelEditor {
@@ -97,11 +137,11 @@ class VoxelEditor {
     ];
 
     // Generate various sine waves
-    this.createSineWave(0, 0, 0); // Center
-    this.createSineWave(1, 0, 0, 2); // Right
-    this.createSineWave(-1, 0, 0, 3); // Left
-    this.createSineWave(0, 0, -1, 4); // Forward
-    this.createSineWave(0, 0, 1, 5); // Backward
+    createSineWave(this.world, 0, 0, 0, this.cellSize); // Center
+    createSineWave(this.world, 1, 0, 0, this.cellSize, 2); // Right
+    createSineWave(this.world, -1, 0, 0, this.cellSize, 3); // Left
+    createSineWave(this.world, 0, 0, -1, this.cellSize, 4); // Forward
+    createSineWave(this.world, 0, 0, 1, this.cellSize, 5); // Backward
 
     // Update geometry so that it get rendered
     // Remember, cells adjacent to the voxel coordinate will also update
@@ -273,45 +313,6 @@ class VoxelEditor {
 
         // Update the cell's geometry
         this.updateCellGeometry(ox, oy, oz);
-      }
-    }
-  }
-
-  /**
-   * Has the cell at the given coordinates form a sine wave out of its voxels.
-   * @param {number} cellX
-   * @param {number} cellY
-   * @param {number} cellZ
-   * @param {number} v - The type of voxel to spawn. 0 for random
-   */
-  createSineWave(cellX, cellY, cellZ, v = 0) {
-    const { cellSize } = this;
-    const startX = cellX * cellSize;
-    const startY = cellY * cellSize;
-    const startZ = cellZ * cellSize;
-
-    // Create a sine wave with our voxels
-    for (let y = 0; y < cellSize; ++y) {
-      for (let z = 0; z < cellSize; ++z) {
-        for (let x = 0; x < cellSize; ++x) {
-          // Calculate the maximum height at the x and z position for a voxel to be placed
-          const height =
-            (Math.sin((x / cellSize) * Math.PI * 2) +
-              Math.sin((z / cellSize) * Math.PI * 3)) *
-              (cellSize / 6) +
-            cellSize / 2;
-
-          // Set voxel if y is below the height
-          if (y < height) {
-            // Set voxel to random texture
-            this.world.setVoxel(
-              startX + x,
-              startY + y,
-              startZ + z,
-              v ? v : randInt(1, 17)
-            );
-          }
-        }
       }
     }
   }
