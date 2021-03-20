@@ -1,34 +1,10 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-import VoxelWorld from "./VoxelWorld.js";
+import VoxelWorld from "./VoxelWorld";
+import Brush from "./Brush";
 import textureAtlas from "../images/flourish-cc-by-nc-sa.png";
 
-// TODO: Refactor code to decouple main render loop.
-// Taking a lazy approach so as to get the Brush working first
-//
-// Enum of brush options
-const brushOptions = {
-  add: "add",
-  remove: "remove",
-  paint: "paint",
-};
-
-// Set add brush as default
-let currentBrush = brushOptions.add;
-
-/**
- * Sets the current brush to one of the available brush options.
- * @param {string} brushName
- */
-function setCurrentBrush(brushName) {
-  // Get the brush to set
-  const brush = brushOptions[brushName];
-
-  // If that brush exists, set it as current
-  if (brush) {
-    currentBrush = brush;
-  }
-}
+const currentBrush = new Brush();
 
 /**
  * Helper function used to create the VoxelWorld.
@@ -365,7 +341,8 @@ function Voxels(canvas) {
     // If raycast was successful, place a voxel with the information returned
     if (intersection) {
       // Set voxelId depending on brush option. 0 removes voxels
-      const voxelId = brush === brushOptions.remove ? 0 : currentVoxel;
+      const voxelId =
+        brush.currentBrush === Brush.brushOptions.remove ? 0 : currentVoxel;
 
       // the intersection point is on the face. That means
       // the math imprecision could put us on either side of the face.
@@ -374,7 +351,8 @@ function Voxels(canvas) {
       const pos = intersection.position.map((v, ndx) => {
         return (
           v +
-          intersection.normal[ndx] * (brush === brushOptions.add ? 0.5 : -0.5)
+          intersection.normal[ndx] *
+            (brush.currentBrush === Brush.brushOptions.add ? 0.5 : -0.5)
         );
       });
 
@@ -469,4 +447,8 @@ function Voxels(canvas) {
   window.addEventListener("resize", requestRenderIfNotRequested);
 }
 
-export { Voxels, setCurrentBrush };
+function SetBrush(brushName) {
+  currentBrush.setCurrentBrush(brushName);
+}
+
+export { Voxels, SetBrush };

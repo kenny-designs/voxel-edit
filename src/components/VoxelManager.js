@@ -1,6 +1,6 @@
 import React from "react";
 import GUIController from "./GUIController";
-import { Voxels, setCurrentBrush } from "../modules/Voxels";
+import { Voxels, SetBrush } from "../modules/Voxels";
 
 /**
  * The main driving component for the application. Sets up the rest of
@@ -22,7 +22,7 @@ class VoxelManager extends React.Component {
     return (
       <GUIController
         onCanvasCreation={this.createVoxelWorld}
-        onBrushChange={setCurrentBrush}
+        onBrushChange={SetBrush}
       />
     );
   }
