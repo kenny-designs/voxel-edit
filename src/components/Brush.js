@@ -14,6 +14,11 @@ class Brush extends React.Component {
     };
   }
 
+  componentDidMount() {
+    // Send the initial brush name to parent component
+    this.props.onBrushChange(this.state.activeBrush);
+  }
+
   /**
    * Handler for each brush option. Upon click, updates the currently
    * selected brush.
@@ -21,7 +26,11 @@ class Brush extends React.Component {
    * @param {data} props - Prop data from the Menu.Item
    */
   handleBrushClick = (e, { name }) => {
+    // Update state with current brush.
     this.setState({ activeBrush: name });
+
+    // Send active brush name to parent component
+    this.props.onBrushChange(name);
   };
 
   render() {

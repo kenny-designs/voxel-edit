@@ -64,7 +64,7 @@ class GUIController extends React.Component {
         <Grid.Row>
           <Grid.Column width={3}>
             <Menu vertical fluid inverted>
-              <Brush />
+              <Brush onBrushChange={this.props.onBrushChange} />
             </Menu>
           </Grid.Column>
 
@@ -99,7 +99,7 @@ class GUIController extends React.Component {
           </Sidebar>
 
           <Sidebar as={Menu} inverted direction="bottom" visible width="thin">
-            <Brush />
+            <Brush onBrushChange={this.props.onBrushChange} />
           </Sidebar>
 
           <Viewport onCanvasCreation={this.props.onCanvasCreation} />
