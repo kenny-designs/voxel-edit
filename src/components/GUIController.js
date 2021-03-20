@@ -10,6 +10,33 @@ import { Grid, Sidebar, Segment, Menu } from "semantic-ui-react";
  * @extends React.Component
  */
 class GUIController extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isMobile: false,
+    };
+  }
+
+  /**
+   * Handler for screen resize events that updates whether or not the application
+   * should currently be using the mobile or desktop GUI.
+   */
+  updateMobileState = () => {
+    // If width below 768, use mobile GUI
+    const isMobile = window.innerWidth < 768;
+    this.setState({ isMobile });
+  };
+
+  componentDidMount() {
+    // Perform initial check for mobile device
+    this.updateMobileState();
+    window.addEventListener("resize", this.updateMobileState);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.updateMobileState);
+  }
+
   /**
    * Creates the JSX for the desktop version of the viewport.
    * @returns {JSX}
@@ -56,8 +83,11 @@ class GUIController extends React.Component {
    */
   createMobileGUI() {
     return (
-      <div style={{ height: "100vh" }}>
-        <Sidebar.Pushable as={Segment}>
+      <div style={{ height: window.innerHeight }}>
+        <Sidebar.Pushable
+          as={Segment}
+          style={{ border: "none", borderRadius: "0" }}
+        >
           <Sidebar as={Menu} inverted direction="top" visible width="very thin">
             <Menu.Item as="a">Color Palette</Menu.Item>
             <Menu.Item as="a">Edit</Menu.Item>
@@ -79,8 +109,9 @@ class GUIController extends React.Component {
 
   render() {
     // TODO: Change from arbitrary number
-    const isMobile = window.innerWidth < 768;
-    return isMobile ? this.createMobileGUI() : this.createDesktopGUI();
+    return this.state.isMobile
+      ? this.createMobileGUI()
+      : this.createDesktopGUI();
   }
 }
 
