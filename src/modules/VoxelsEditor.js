@@ -23,7 +23,7 @@ function randInt(min, max) {
  * @param {number} cellY
  * @param {number} cellZ
  * @param {number} cellSize - Dimensions of the cell
- * @param {number} v - The type of voxel to spawn. 0 for random
+ * @param {number} [v=0] - The type of voxel to spawn. 0 for random
  */
 function createSineWave(world, cellX, cellY, cellZ, cellSize, v = 0) {
   const startX = cellX * cellSize;
@@ -67,17 +67,8 @@ class VoxelEditor {
     // Length, width, and height of each cell in the VoxelWorld
     this.cellSize = 32;
 
-    // Create the camera
-    const fov = 75;
-    const aspect = 2; // the canvas default
-    const near = 0.1;
-    const far = 1000;
-    this.camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-    this.camera.position.set(
-      -this.cellSize * 0.3,
-      this.cellSize * 0.8,
-      -this.cellSize * 0.3
-    );
+    // Initialize the camera
+    this.createCamera();
 
     // Create the orbit controls
     this.controls = new OrbitControls(this.camera, this.canvas);
@@ -203,6 +194,25 @@ class VoxelEditor {
   }
 
   /**
+   * Helper function used to create the camera and set it to a default position.
+   * @param {number} [fov=75] - field of view
+   * @param {number} [aspect=2] - Aspect. Canvas default is 2
+   * @param {number} [near=0.1]
+   * @param {number} [far=1000]
+   */
+  createCamera(fov = 75, aspect = 2, near = 0.1, far = 1000) {
+    // Create a new perspective camera
+    this.camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
+
+    // TODO: This is an arbitrary starting position. Consider an alternative
+    this.camera.position.set(
+      -this.cellSize * 0.3,
+      this.cellSize * 0.8,
+      -this.cellSize * 0.3
+    );
+  }
+
+  /**
    * Adds a directional light to the scene at the given x, y, and z position.
    * Remember, the default position of the directional light's target is (0, 0, 0).
    * @param {number} x
@@ -218,10 +228,10 @@ class VoxelEditor {
   }
 
   /**
-   *
-   * @param {*} x
-   * @param {*} y
-   * @param {*} z
+   * TODO: I feel as though this might be better placed in the VoxelWorld class
+   * @param {number} x
+   * @param {number} y
+   * @param {number} z
    */
   updateCellGeometry(x, y, z) {
     // Find the cell corresponding to the voxel at the x, y, and z coordinates
@@ -379,6 +389,7 @@ class VoxelEditor {
 
   /**
    * Adds, removes, or paints a voxel based on the given brush.
+   * TODO: This function is likely better placed in the VoxelWorld class
    * @param {Event} event
    */
   placeVoxel(event) {
