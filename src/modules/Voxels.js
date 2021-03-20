@@ -431,6 +431,33 @@ VoxelWorld.faces = [
   },
 ];
 
+// TODO: Refactor code to decouple main render loop.
+// Taking a lazy approach so as to get the Brush working first
+//
+// Enum of brush options
+const brushOptions = {
+  add: "add",
+  remove: "remove",
+  paint: "paint",
+};
+
+// Set add brush as default
+let currentBrush = brushOptions.add;
+
+/**
+ * Sets the current brush to one of the available brush options.
+ * @param {string} brushName
+ */
+function setCurrentBrush(brushName) {
+  // Get the brush to set
+  const brush = brushOptions[brushName];
+
+  // If that brush exists, set it as current
+  if (brush) {
+    currentBrush = brush;
+  }
+}
+
 /**
  * Helper function used to create the VoxelWorld.
  */
@@ -744,10 +771,11 @@ function Voxels(canvas) {
   }
 
   /**
-   *
+   * Adds, removes, or paints a voxel based on the given brush.
    * @param {Event} event
+   * @param {brushOptions} brush - The type of brush to paint with
    */
-  function placeVoxel(event) {
+  function placeVoxel(event, brush) {
     // Find position of mouse click relative to canvas
     const pos = getCanvasRelativePosition(event);
     const x = (pos.x / canvas.width) * 2 - 1;
@@ -764,15 +792,18 @@ function Voxels(canvas) {
 
     // If raycast was successful, place a voxel with the information returned
     if (intersection) {
-      // If shiftkey was held, remove voxel. Otherwise, add currentVoxel
-      const voxelId = event.shiftKey ? 0 : currentVoxel;
+      // Set voxelId depending on brush option. 0 removes voxels
+      const voxelId = brush === brushOptions.remove ? 0 : currentVoxel;
 
       // the intersection point is on the face. That means
       // the math imprecision could put us on either side of the face.
-      // so go half a normal into the voxel if removing (currentVoxel = 0)
-      // our out of the voxel if adding (currentVoxel  > 0)
+      // so go half a normal into the voxel if removing/painting
+      // or half a normal out if adding
       const pos = intersection.position.map((v, ndx) => {
-        return v + intersection.normal[ndx] * (voxelId > 0 ? 0.5 : -0.5);
+        return (
+          v +
+          intersection.normal[ndx] * (brush === brushOptions.add ? 0.5 : -0.5)
+        );
       });
 
       // Set voxel at the pos position with new voxelID
@@ -822,7 +853,8 @@ function Voxels(canvas) {
   function placeVoxelIfNoMovement(event) {
     // Mouse hardly moved, user likely intended to place a voxel
     if (mouse.moveX < 5 && mouse.moveY < 5) {
-      placeVoxel(event);
+      // TODO: Remove global variable currentBrush
+      placeVoxel(event, currentBrush);
     }
 
     // Stop recording movement and checks to place voxel
@@ -865,4 +897,4 @@ function Voxels(canvas) {
   window.addEventListener("resize", requestRenderIfNotRequested);
 }
 
-export default Voxels;
+export { Voxels, setCurrentBrush };
