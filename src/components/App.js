@@ -1,8 +1,8 @@
 import "./App.css";
-import Viewport from "./Viewport";
+import VoxelManager from "./VoxelManager";
 
 const App = () => {
-  return <Viewport />;
+  return <VoxelManager />;
 };
 
 export default App;

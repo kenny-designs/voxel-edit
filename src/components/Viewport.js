@@ -1,6 +1,5 @@
 import React from "react";
 import "./Viewport.css";
-import Voxels from "../modules/Voxels";
 
 /**
  * Handles the 3D viewport and surrounding GUI for the application.
@@ -17,8 +16,8 @@ class Viewport extends React.Component {
   }
 
   componentDidMount() {
-    // Render voxels
-    Voxels(this.canvasRef.current);
+    // Canvas is ready to be drawn on
+    this.props.onCanvasCreation(this.canvasRef);
   }
 
   render() {
