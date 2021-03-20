@@ -57,6 +57,21 @@ function createSineWave(world, cellX, cellY, cellZ, cellSize, v = 0) {
 }
 
 /**
+ * TODO: Temporary function for creating the texture atlas. Will be removed
+ * during the creation of the ColorPalette code.
+ * @param {*} render
+ * @return texture
+ */
+function createTextureAtlas(render) {
+  // Load texture atlas
+  const loader = new THREE.TextureLoader();
+  const texture = loader.load(textureAtlas, render);
+  texture.magFilter = THREE.NearestFilter;
+  texture.minFilter = THREE.NearestFilter;
+  return texture;
+}
+
+/**
  * Class used to interface with the scene and handles the main render loop.
  */
 class VoxelEditor {
@@ -75,20 +90,19 @@ class VoxelEditor {
 
     // Create the scene
     this.scene = new THREE.Scene();
-    this.scene.background = new THREE.Color("lightblue");
 
-    // Load texture atlas
-    const tileSize = 16;
-    const tileTextureWidth = 256;
-    const tileTextureHeight = 64;
-    const loader = new THREE.TextureLoader();
-    const texture = loader.load(textureAtlas, this.render);
-    texture.magFilter = THREE.NearestFilter;
-    texture.minFilter = THREE.NearestFilter;
+    // Setting background color to the same one Blender uses
+    this.scene.background = new THREE.Color("#3C3C3C");
 
     // Add two directional lights to the scene
     this.addLight(-1, 2, 4);
     this.addLight(1, -1, -2);
+
+    // TODO: Remove these variables soon. Not needed for ColorPalette
+    const tileSize = 16;
+    const tileTextureWidth = 256;
+    const tileTextureHeight = 64;
+    const texture = createTextureAtlas(this.render);
 
     // Create a new VoxelWorld that will manage our voxels
     this.world = new VoxelWorld({
