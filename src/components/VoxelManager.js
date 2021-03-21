@@ -46,10 +46,21 @@ class VoxelManager extends React.Component {
    */
   onGetColorData = () => {
     // Return empty array if voxelEditor not ready
-    if (!this.voxelEditor) return [];
+    // TODO: Redo this.
+    if (!this.voxelEditor)
+      return {
+        colors: [],
+        selectedColorIndex: 0,
+        currentColor: { r: 127.5, g: 127.5, b: 127.5 }, // default to a grey color
+      };
 
-    // Return colors from the world's color palette
-    return this.voxelEditor.world.colorPalette.getColorsArray();
+    const { colorPalette } = this.voxelEditor.world;
+    const { r, g, b } = colorPalette.getSelectedColor().getRGB255();
+    return {
+      colors: colorPalette.getColorsArray(),
+      selectedColorIndex: colorPalette.getSelectedColorIndex(),
+      currentColor: { r, g, b },
+    };
   };
 
   /**
