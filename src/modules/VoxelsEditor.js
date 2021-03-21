@@ -59,7 +59,7 @@ function createSineWave(world, cellX, cellY, cellZ, cellSize, v = 0) {
 */
 
 /**
- * Has the cell at the given coordinates form a sine wave out of its voxels.
+ * Has the cell at the given coordinates form a flat ground out of its voxels.
  * @param {VoxelWorld} world - The world to spawn flat ground in
  * @param {number} cellX
  * @param {number} cellY
@@ -72,10 +72,10 @@ function createFlatGround(world, cellX, cellY, cellZ, cellSize, v = 0) {
   const startY = cellY * cellSize;
   const startZ = cellZ * cellSize;
 
-  // Create a sine wave with our voxels
+  // Create flat ground with our voxels
   for (let z = 0; z < cellSize; ++z) {
     for (let x = 0; x < cellSize; ++x) {
-      // Set voxel to random texture
+      // Set voxel to random texture or v if given
       world.setVoxel(startX + x, startY, startZ + z, v ? v : randInt(1, 17));
     }
   }
