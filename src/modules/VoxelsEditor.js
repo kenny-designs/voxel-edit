@@ -104,36 +104,22 @@ class VoxelEditor {
     const tileTextureHeight = 64;
     const texture = createTextureAtlas(this.render);
 
-    // Create a new VoxelWorld that will manage our voxels
-    this.world = new VoxelWorld({
-      cellSize: this.cellSize,
-      tileSize,
-      tileTextureWidth,
-      tileTextureHeight,
-    });
-
     // Create material for the voxel model
-    this.material = new THREE.MeshLambertMaterial({
+    const material = new THREE.MeshLambertMaterial({
       map: texture,
       side: THREE.DoubleSide,
       alphaTest: 0.1,
       transparent: true,
     });
 
-    // Used in the updateCellGeometry() function
-    // Tracks the meshes for each cell
-    this.cellIdToMesh = {};
-
-    // Used in updateVoxelGeometry() function
-    this.neighborOffsets = [
-      [0, 0, 0], // self
-      [-1, 0, 0], // left
-      [1, 0, 0], // right
-      [0, -1, 0], // down
-      [0, 1, 0], // up
-      [0, 0, -1], // back
-      [0, 0, 1], // front
-    ];
+    // Create a new VoxelWorld that will manage our voxels
+    this.world = new VoxelWorld({
+      cellSize: this.cellSize,
+      tileSize,
+      tileTextureWidth,
+      tileTextureHeight,
+      material,
+    });
 
     // Generate various sine waves
     createSineWave(this.world, 0, 0, 0, this.cellSize); // Center
@@ -144,14 +130,16 @@ class VoxelEditor {
 
     // Update geometry so that it get rendered
     // Remember, cells adjacent to the voxel coordinate will also update
-    this.updateVoxelGeometry(0, 0, 0);
-    this.updateVoxelGeometry(this.cellSize - 1, 0, this.cellSize - 1);
+    this.world.updateVoxelGeometry(this.scene, 0, 0, 0);
+    this.world.updateVoxelGeometry(
+      this.scene,
+      this.cellSize - 1,
+      0,
+      this.cellSize - 1
+    );
 
     // Used with requestRenderIfNotRequested() function
     this.renderRequested = false;
-
-    // TODO: Add back if needed
-    //this.render();
 
     // The current voxel to add when clicking. 0 represent nothing so it effectively removes voxels.
     this.currentVoxel = 1; // add pumpkins
@@ -198,6 +186,7 @@ class VoxelEditor {
     // Listen for window resizing events
     window.addEventListener("resize", this.requestRenderIfNotRequested);
 
+    // Create new brush
     this.brush = new Brush();
   }
 
@@ -251,106 +240,6 @@ class VoxelEditor {
     const light = new THREE.DirectionalLight(color, intensity);
     light.position.set(x, y, z);
     this.scene.add(light);
-  }
-
-  /**
-   * TODO: I feel as though this might be better placed in the VoxelWorld class
-   * @param {number} x
-   * @param {number} y
-   * @param {number} z
-   */
-  updateCellGeometry(x, y, z) {
-    // Find the cell corresponding to the voxel at the x, y, and z coordinates
-    const cellX = Math.floor(x / this.cellSize);
-    const cellY = Math.floor(y / this.cellSize);
-    const cellZ = Math.floor(z / this.cellSize);
-    const cellId = this.world.computeCellId(x, y, z);
-
-    // Get the mesh corresponding to the given cellId
-    let mesh = this.cellIdToMesh[cellId];
-    // Get the geometry of the mesh. If no mesh exists, create new geometry
-    const geometry = mesh ? mesh.geometry : new THREE.BufferGeometry();
-
-    // Retrieve data for making the geometry for a given cell
-    const {
-      positions,
-      normals,
-      uvs,
-      indices,
-    } = this.world.generateGeometryDataForCell(cellX, cellY, cellZ);
-
-    // Set position (vertex) data of cell
-    const positionNumComponents = 3;
-    geometry.setAttribute(
-      "position",
-      new THREE.BufferAttribute(
-        new Float32Array(positions),
-        positionNumComponents
-      )
-    );
-
-    // Set normal data for cell
-    const normalNumComponents = 3;
-    geometry.setAttribute(
-      "normal",
-      new THREE.BufferAttribute(new Float32Array(normals), normalNumComponents)
-    );
-
-    // Set uv data for cell
-    const uvNumComponents = 2;
-    geometry.setAttribute(
-      "uv",
-      new THREE.BufferAttribute(new Float32Array(uvs), uvNumComponents)
-    );
-
-    // Set index data for cell
-    geometry.setIndex(indices);
-
-    // Comput bounding sphere of the geometry
-    geometry.computeBoundingSphere();
-
-    // If the mesh has not yet been created, create it!
-    if (!mesh) {
-      mesh = new THREE.Mesh(geometry, this.material);
-      mesh.name = cellId;
-      this.cellIdToMesh[cellId] = mesh;
-      this.scene.add(mesh);
-      mesh.position.set(
-        cellX * this.cellSize,
-        cellY * this.cellSize,
-        cellZ * this.cellSize
-      );
-    }
-  }
-
-  /**
-   * Updates the voxel of a cell at the given x, y, and z coordinates. Also,
-   * updates any cells that the voxel is adjacent to.
-   * @param {number} x
-   * @param {number} y
-   * @param {number} z
-   */
-  updateVoxelGeometry(x, y, z) {
-    const updatedCellIds = {};
-
-    // Check the cell and all surrounding cells when updating voxel geometry
-    for (const offset of this.neighborOffsets) {
-      // Get the coordinates of the current cell to update
-      const ox = x + offset[0];
-      const oy = y + offset[1];
-      const oz = z + offset[2];
-
-      // Get the id of the cell we wish to update
-      const cellId = this.world.computeCellId(ox, oy, oz);
-
-      // If cell yet not updated, update it!
-      if (!updatedCellIds[cellId]) {
-        updatedCellIds[cellId] = true;
-
-        // Update the cell's geometry
-        this.updateCellGeometry(ox, oy, oz);
-      }
-    }
   }
 
   /**
@@ -457,7 +346,7 @@ class VoxelEditor {
       this.world.setVoxel(...pos, voxelId);
 
       // Update the cell associated with the position of the new voxel
-      this.updateVoxelGeometry(...pos);
+      this.world.updateVoxelGeometry(this.scene, ...pos);
 
       // Update render frame
       this.requestRenderIfNotRequested();

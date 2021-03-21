@@ -1,4 +1,4 @@
-import { MathUtils } from "three";
+import * as THREE from "three";
 
 /**
  * Manages voxel data.
@@ -21,15 +21,32 @@ class VoxelWorld {
    * @param {number} options.tileSize - The size of each tile from a texture atlas
    * @param {number} options.tileTextureWidth - The width of the texture atlas
    * @param {number} options.tileTextureHeight - The height of the texture atlas
+   * @param {*} options.material - The material that the VoxelWorld should use for its meshes
    */
   constructor(options) {
     this.cellSize = options.cellSize;
     this.tileSize = options.tileSize;
     this.tileTextureWidth = options.tileTextureWidth;
     this.tileTextureHeight = options.tileTextureHeight;
+    this.material = options.material;
     const { cellSize } = this;
     this.cellSliceSize = cellSize * cellSize;
     this.cells = {};
+
+    // Used in the updateCellGeometry() function
+    // Tracks the meshes for each cell
+    this.cellIdToMesh = {};
+
+    // Used in updateVoxelGeometry() function
+    this.neighborOffsets = [
+      [0, 0, 0], // self
+      [-1, 0, 0], // left
+      [1, 0, 0], // right
+      [0, -1, 0], // down
+      [0, 1, 0], // up
+      [0, 0, -1], // back
+      [0, 0, 1], // front
+    ];
   }
 
   /**
@@ -46,9 +63,9 @@ class VoxelWorld {
     // Note, the "| 0" actually TRUNCATES the value! Not quite the same as flooring
     // https://stackoverflow.com/questions/7487977/using-bitwise-or-0-to-floor-a-number
     // Also, euclideanModulo(n, m) is the equivalent of (( n % m ) + m ) % m
-    const voxelX = MathUtils.euclideanModulo(x, cellSize) | 0;
-    const voxelY = MathUtils.euclideanModulo(y, cellSize) | 0;
-    const voxelZ = MathUtils.euclideanModulo(z, cellSize) | 0;
+    const voxelX = THREE.MathUtils.euclideanModulo(x, cellSize) | 0;
+    const voxelY = THREE.MathUtils.euclideanModulo(y, cellSize) | 0;
+    const voxelZ = THREE.MathUtils.euclideanModulo(z, cellSize) | 0;
 
     // Return index voxel is located at
     return voxelY * cellSliceSize + voxelZ * cellSize + voxelX;
@@ -351,6 +368,107 @@ class VoxelWorld {
 
     // Nothing was found, return null
     return null;
+  }
+
+  /**
+   * Updates the voxel of a cell at the given x, y, and z coordinates. Also,
+   * updates any cells that the voxel is adjacent to.
+   * @param scene - The scene to add the final mesh to
+   * @param {number} x
+   * @param {number} y
+   * @param {number} z
+   */
+  updateVoxelGeometry(scene, x, y, z) {
+    const updatedCellIds = {};
+
+    // Check the cell and all surrounding cells when updating voxel geometry
+    for (const offset of this.neighborOffsets) {
+      // Get the coordinates of the current cell to update
+      const ox = x + offset[0];
+      const oy = y + offset[1];
+      const oz = z + offset[2];
+
+      // Get the id of the cell we wish to update
+      const cellId = this.computeCellId(ox, oy, oz);
+
+      // If cell yet not updated, update it!
+      if (!updatedCellIds[cellId]) {
+        updatedCellIds[cellId] = true;
+
+        // Update the cell's geometry
+        this.updateCellGeometry(scene, ox, oy, oz);
+      }
+    }
+  }
+
+  /**
+   * Updates the geometry of the cell with the given coordinates within
+   * the scene.
+   * @param scene - The scene to add the final mesh to
+   * @param {number} x
+   * @param {number} y
+   * @param {number} z
+   */
+  updateCellGeometry(scene, x, y, z) {
+    const { cellSize } = this;
+
+    // Find the cell corresponding to the voxel at the x, y, and z coordinates
+    const cellX = Math.floor(x / cellSize);
+    const cellY = Math.floor(y / cellSize);
+    const cellZ = Math.floor(z / cellSize);
+    const cellId = this.computeCellId(x, y, z);
+
+    // Get the mesh corresponding to the given cellId
+    let mesh = this.cellIdToMesh[cellId];
+    // Get the geometry of the mesh. If no mesh exists, create new geometry
+    const geometry = mesh ? mesh.geometry : new THREE.BufferGeometry();
+
+    // Retrieve data for making the geometry for a given cell
+    const {
+      positions,
+      normals,
+      uvs,
+      indices,
+    } = this.generateGeometryDataForCell(cellX, cellY, cellZ);
+
+    // Set position (vertex) data of cell
+    const positionNumComponents = 3;
+    geometry.setAttribute(
+      "position",
+      new THREE.BufferAttribute(
+        new Float32Array(positions),
+        positionNumComponents
+      )
+    );
+
+    // Set normal data for cell
+    const normalNumComponents = 3;
+    geometry.setAttribute(
+      "normal",
+      new THREE.BufferAttribute(new Float32Array(normals), normalNumComponents)
+    );
+
+    // Set uv data for cell
+    const uvNumComponents = 2;
+    geometry.setAttribute(
+      "uv",
+      new THREE.BufferAttribute(new Float32Array(uvs), uvNumComponents)
+    );
+
+    // Set index data for cell
+    geometry.setIndex(indices);
+
+    // Comput bounding sphere of the geometry
+    geometry.computeBoundingSphere();
+
+    // If the mesh has not yet been created, create it!
+    if (!mesh) {
+      mesh = new THREE.Mesh(geometry, this.material);
+      mesh.name = cellId;
+      this.cellIdToMesh[cellId] = mesh;
+      scene.add(mesh);
+      mesh.position.set(cellX * cellSize, cellY * cellSize, cellZ * cellSize);
+    }
   }
 }
 
