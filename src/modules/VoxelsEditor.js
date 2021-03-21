@@ -2,6 +2,7 @@ import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import VoxelWorld from "./VoxelWorld";
 import Brush from "./Brush";
+import ColorPalette from "./ColorPalette";
 import textureAtlas from "../images/flourish-cc-by-nc-sa.png";
 
 /**
@@ -139,6 +140,9 @@ class VoxelEditor {
       vertexColors: true,
     });
 
+    // Create color palette
+    const colorPalette = new ColorPalette();
+
     // Create a new VoxelWorld that will manage our voxels
     this.world = new VoxelWorld({
       cellSize: this.cellSize,
@@ -146,6 +150,7 @@ class VoxelEditor {
       tileTextureWidth,
       tileTextureHeight,
       material,
+      colorPalette,
     });
 
     // Create a floor to the world
@@ -154,9 +159,6 @@ class VoxelEditor {
 
     // Used with requestRenderIfNotRequested() function
     this.renderRequested = false;
-
-    // The current voxel to add when clicking. 0 represent nothing so it effectively removes voxels.
-    this.currentVoxel = 1; // add pumpkins
 
     // Mouse object representing the position of mouse clicks.
     this.mouse = {
@@ -341,7 +343,7 @@ class VoxelEditor {
       const voxelId =
         this.brush.currentBrush === Brush.brushOptions.remove
           ? 0
-          : this.currentVoxel;
+          : this.world.colorPalette.getSelectedColorIndex();
 
       // the intersection point is on the face. That means
       // the math imprecision could put us on either side of the face.

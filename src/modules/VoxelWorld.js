@@ -22,6 +22,7 @@ class VoxelWorld {
    * @param {number} options.tileTextureWidth - The width of the texture atlas
    * @param {number} options.tileTextureHeight - The height of the texture atlas
    * @param {*} options.material - The material that the VoxelWorld should use for its meshes
+   * @param {ColorPalette} options.colorPalette- The current color palette that the world is using
    */
   constructor(options) {
     this.cellSize = options.cellSize;
@@ -29,8 +30,15 @@ class VoxelWorld {
     this.tileTextureWidth = options.tileTextureWidth;
     this.tileTextureHeight = options.tileTextureHeight;
     this.material = options.material;
+    this.colorPalette = options.colorPalette;
     this.cellSliceSize = this.cellSize * this.cellSize;
     this.cells = {};
+
+    // temp for testing
+    /*
+    this.colorPalette.setColorAtIndex(0);
+    this.colorPalette.selectedColor = 0;
+    */
 
     // Used in the updateCellGeometry() function
     // Tracks the meshes for each cell
@@ -245,9 +253,9 @@ class VoxelWorld {
                     1 - ((uvRow + 1 - uv[1]) * tileSize) / tileTextureHeight
                   );
 
-                  // TODO: Need to add color based on color palette
                   // Add color
-                  colors.push(0, 1, 0);
+                  const color = this.colorPalette.getColorAtIndex(voxel);
+                  colors.push(color.r, color.g, color.b);
                 }
 
                 // Add indices used to draw the face

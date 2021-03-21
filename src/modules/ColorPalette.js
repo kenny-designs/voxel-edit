@@ -5,6 +5,9 @@
 class ColorPalette {
   constructor() {
     this.initializeColorArray();
+
+    // The currently selected color
+    this.selectedColor = 0;
   }
 
   /**
@@ -45,6 +48,18 @@ class ColorPalette {
     // If index out of range, return
     if (index < 0 || index >= this.colors.length) return null;
     return this.colors[index];
+  }
+
+  /**
+   * Returns the currently selected color
+   * @returns {Color}
+   */
+  getSelectedColor() {
+    return this.colors[this.selectedColor];
+  }
+
+  getSelectedColorIndex() {
+    return this.selectedColor + 1;
   }
 
   /**
