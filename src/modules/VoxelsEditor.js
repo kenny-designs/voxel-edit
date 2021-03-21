@@ -154,8 +154,12 @@ class VoxelEditor {
     });
 
     // Create a floor to the world
-    createFlatGround(this.world, 0, 0, 0, this.cellSize, 8); // Center
+    createFlatGround(this.world, 0, 0, 0, this.cellSize, 1); // Center
     this.world.updateVoxelGeometry(this.scene, 0, 0, 0);
+
+    // Add red to the color palette then make it active
+    this.world.colorPalette.setColorAtIndex(3, 1, 0, 0);
+    this.world.colorPalette.selectedColor = 3;
 
     // Used with requestRenderIfNotRequested() function
     this.renderRequested = false;
@@ -343,7 +347,7 @@ class VoxelEditor {
       const voxelId =
         this.brush.currentBrush === Brush.brushOptions.remove
           ? 0
-          : this.world.colorPalette.getSelectedColorIndex();
+          : this.world.colorPalette.getSelectedColorIndex() + 1;
 
       // the intersection point is on the face. That means
       // the math imprecision could put us on either side of the face.

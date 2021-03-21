@@ -246,6 +246,7 @@ class VoxelWorld {
                   positions.push(pos[0] + x, pos[1] + y, pos[2] + z);
                   normals.push(...dir);
 
+                  // TODO: uv's no longer being used. Might be added in the future though
                   // Calculates where to grab texture from the texture atlas
                   // uvVoxel corresponds to the column and uvRow the row to get the texture
                   uvs.push(
@@ -253,8 +254,8 @@ class VoxelWorld {
                     1 - ((uvRow + 1 - uv[1]) * tileSize) / tileTextureHeight
                   );
 
-                  // Add color
-                  const color = this.colorPalette.getColorAtIndex(voxel);
+                  // Add color. Subtract 1 for empty voxels do not correspond with palette array
+                  const color = this.colorPalette.getColorAtIndex(voxel - 1);
                   colors.push(color.r, color.g, color.b);
                 }
 

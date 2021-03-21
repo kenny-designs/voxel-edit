@@ -19,7 +19,9 @@ class ColorPalette {
     this.colors = new Array(128);
 
     // Set all colors to a grey color by default
-    this.colors.fill(new Color(0.5, 0.5, 0.5));
+    for (let i = 0; i < this.colors.length; ++i) {
+      this.colors[i] = new Color(0.5, 0.5, 0.5);
+    }
   }
 
   /**
@@ -51,23 +53,19 @@ class ColorPalette {
   }
 
   /**
-   * Returns the currently selected color
+   * Returns the currently selected color.
    * @returns {Color}
    */
   getSelectedColor() {
     return this.colors[this.selectedColor];
   }
 
-  getSelectedColorIndex() {
-    return this.selectedColor + 1;
-  }
-
   /**
-   * Returns the color array.
-   * @returns {Array.Color} The color array
+   * Returns the index of the selected color.
+   * @returns {number}
    */
-  getColorArray() {
-    return this.colors;
+  getSelectedColorIndex() {
+    return this.selectedColor;
   }
 }
 
