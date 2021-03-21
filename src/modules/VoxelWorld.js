@@ -245,6 +245,7 @@ class VoxelWorld {
                     1 - ((uvRow + 1 - uv[1]) * tileSize) / tileTextureHeight
                   );
 
+                  // TODO: Need to add color based on color palette
                   // Add color
                   colors.push(0, 1, 0);
                 }
