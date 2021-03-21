@@ -10,6 +10,9 @@ import { ChromePicker } from "react-color";
 const ColorCell = (props) => {
   return (
     <div
+      onClick={() => {
+        props.onColorCellClick(props.id, props.color);
+      }}
       className={`color-cell ${props.isActive ? "active" : ""}`}
       style={{
         backgroundColor: props.color,
@@ -36,18 +39,30 @@ class ColorPalette extends React.Component {
 
   /**
    * Handles color picker change.
-   * @param {*} param0
+   * @param {*} hex
    */
   handleChange = ({ hex }) => {
     this.setState({ currentHexColor: hex });
   };
 
+  /**
+   * Updates the currently selected color cell to the given id
+   * @param {number} id
+   * @param {string} color - Color of the cell
+   */
+  onColorCellClick = (id, color) => {
+    this.setState({ selectedColor: id, currentHexColor: color });
+  };
+
   render() {
+    // Create buttons
     let buttons = [];
     for (let i = 0; i < 128; ++i) {
       buttons.push(
         <ColorCell
           key={i}
+          id={i}
+          onColorCellClick={this.onColorCellClick}
           color="#fff000"
           isActive={i === this.state.selectedColor}
         />
