@@ -1,0 +1,25 @@
+.chrome-picker {
+  width: auto !important;
+}
+
+.color-cell-container {
+  overflow: auto;
+  height: 30vh;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 5px;
+}
+
+.color-cell {
+  width: 20px;
+  height: 20px;
+  margin: 5px;
+  border-style: solid;
+  border-radius: 2px;
+}
+
+.color-cell.active {
+  border-color: red;
+  border-width: 3px;
+}
