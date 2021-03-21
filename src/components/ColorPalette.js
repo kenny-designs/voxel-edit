@@ -14,7 +14,7 @@ const ColorCell = (props) => {
   return (
     <div
       onClick={() => {
-        props.onColorCellClick(id, color);
+        props.onColorCellClick(id, { r, g, b });
       }}
       className={`color-cell ${isActive ? "active" : ""}`}
       style={{
@@ -35,17 +35,20 @@ class ColorPalette extends React.Component {
     super(props);
 
     this.state = {
-      currentHexColor: "#000000",
+      currentColor: { r: 0, g: 0, b: 0 },
       selectedColor: 0,
     };
   }
 
   /**
    * Handles color picker change.
-   * @param {*} hex
+   * @param {*} rgb
    */
-  handleChange = ({ hex }) => {
-    this.setState({ currentHexColor: hex });
+  handlePickerChange = ({ rgb }) => {
+    // Tell the VoxelWorld that a new color was selected
+    this.props.onSelectedColorChange(this.state.selectedColor, rgb);
+
+    this.setState({ currentColor: rgb });
   };
 
   /**
@@ -54,7 +57,7 @@ class ColorPalette extends React.Component {
    * @param {string} color - Color of the cell
    */
   onColorCellClick = (id, color) => {
-    this.setState({ selectedColor: id, currentHexColor: color });
+    this.setState({ selectedColor: id, currentColor: color });
   };
 
   render() {
@@ -77,9 +80,9 @@ class ColorPalette extends React.Component {
       <div>
         <div className="color-cell-container">{buttons}</div>
         <ChromePicker
-          color={this.state.currentHexColor}
+          color={this.state.currentColor}
           disableAlpha={true}
-          onChange={this.handleChange}
+          onChangeComplete={this.handlePickerChange}
         />
       </div>
     );

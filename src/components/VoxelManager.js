@@ -52,12 +52,29 @@ class VoxelManager extends React.Component {
     return this.voxelEditor.world.colorPalette.getColorsArray();
   };
 
+  /**
+   * Called whenever a new color is selected.
+   */
+  onSelectedColorChange = (index, color) => {
+    if (!this.voxelEditor) return;
+
+    // Get the color and convert from 0-255 to 0-1 range
+    let { r, g, b } = color;
+    r /= 255;
+    g /= 255;
+    b /= 255;
+
+    // Update the color
+    this.voxelEditor.world.colorPalette.setColorAtIndex(index, r, g, b);
+  };
+
   render() {
     return (
       <GUIController
         onCanvasCreation={this.createVoxelWorld}
         onBrushChange={this.setCurrentBrush}
         onGetColorData={this.onGetColorData}
+        onSelectedColorChange={this.onSelectedColorChange}
       />
     );
   }
