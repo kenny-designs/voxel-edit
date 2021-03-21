@@ -70,6 +70,7 @@ class GUIController extends React.Component {
             <ColorPalette
               onGetColorData={this.props.onGetColorData}
               onSelectedColorChange={this.props.onSelectedColorChange}
+              onNewSelectedColor={this.props.onNewSelectedColor}
             />
           </Grid.Column>
 

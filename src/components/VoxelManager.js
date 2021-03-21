@@ -54,6 +54,8 @@ class VoxelManager extends React.Component {
 
   /**
    * Called whenever a new color is selected.
+   * @param {number} index - Index of the changed color
+   * @param {Object} color
    */
   onSelectedColorChange = (index, color) => {
     if (!this.voxelEditor) return;
@@ -68,6 +70,17 @@ class VoxelManager extends React.Component {
     this.voxelEditor.world.colorPalette.setColorAtIndex(index, r, g, b);
   };
 
+  /**
+   * Tells the VoxelEditor what color of voxel the user is placing/painting now.
+   * @param {number} index
+   */
+  onNewSelectedColor = (index) => {
+    if (!this.voxelEditor) return;
+
+    // Update the currently selected color for adding/painting
+    this.voxelEditor.world.colorPalette.setSelectedColor(index);
+  };
+
   render() {
     return (
       <GUIController
@@ -75,6 +88,7 @@ class VoxelManager extends React.Component {
         onBrushChange={this.setCurrentBrush}
         onGetColorData={this.onGetColorData}
         onSelectedColorChange={this.onSelectedColorChange}
+        onNewSelectedColor={this.onNewSelectedColor}
       />
     );
   }

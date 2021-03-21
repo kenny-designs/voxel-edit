@@ -45,7 +45,7 @@ class ColorPalette extends React.Component {
    * @param {*} rgb
    */
   handlePickerChange = ({ rgb }) => {
-    // Tell the VoxelWorld that a new color was selected
+    // Tell the parent that there was a change in color
     this.props.onSelectedColorChange(this.state.selectedColor, rgb);
 
     this.setState({ currentColor: rgb });
@@ -57,6 +57,9 @@ class ColorPalette extends React.Component {
    * @param {string} color - Color of the cell
    */
   onColorCellClick = (id, color) => {
+    // Tell the parent that there is a new selected color/cell
+    this.props.onNewSelectedColor(id);
+
     this.setState({ selectedColor: id, currentColor: color });
   };
 

@@ -65,6 +65,16 @@ class ColorPalette {
   }
 
   /**
+   * Changes the currently selected color to another within the colors array.
+   * @param {number} index
+   */
+  setSelectedColor(index) {
+    // If index out of range, return
+    if (index < 0 || index >= this.colors.length) return null;
+    this.selectedColor = index;
+  }
+
+  /**
    * Returns the index of the selected color.
    * @returns {number}
    */
