@@ -160,11 +160,6 @@ class VoxelEditor {
     if (!world) {
       // Create a floor to the world
       createFlatGround(this.world, 0, 0, 0, this.cellSize, 1); // Center
-
-      // TODO: Remove after ColorPalette component is added!
-      // Add red to the color palette then make it active
-      this.world.colorPalette.setColorAtIndex(3, 1, 0, 0);
-      this.world.colorPalette.selectedColor = 3;
     }
 
     // Update geometry of the entire world

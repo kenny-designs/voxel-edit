@@ -3,7 +3,7 @@ import Viewport from "./Viewport";
 import Brush from "./Brush";
 import ColorPalette from "./ColorPalette";
 import "./GUIController.css";
-import { Grid, Sidebar, Segment, Menu } from "semantic-ui-react";
+import { Modal, Button, Grid, Sidebar, Segment, Menu } from "semantic-ui-react";
 
 /**
  * Handles switching between both desktop and mobile versions of the
@@ -16,6 +16,7 @@ class GUIController extends React.Component {
     super(props);
     this.state = {
       isMobile: false,
+      isColorModalOpen: false,
     };
   }
 
@@ -98,11 +99,43 @@ class GUIController extends React.Component {
           style={{ border: "none", borderRadius: "0" }}
         >
           <Sidebar as={Menu} inverted direction="top" visible width="very thin">
-            <Menu.Item as="a">Color Palette</Menu.Item>
+            <Menu.Item
+              as="a"
+              onClick={() => this.setState({ isColorModalOpen: true })}
+            >
+              Color Palette
+            </Menu.Item>
             <Menu.Item as="a">Edit</Menu.Item>
             <Menu.Item as="a">Camera</Menu.Item>
             <Menu.Item as="a">Project</Menu.Item>
           </Sidebar>
+
+          {/* Color Selection Modal */}
+          <Modal
+            open={this.state.isColorModalOpen}
+            onClose={() => this.setState({ isColorModalOpen: false })}
+            onOpen={() => this.setState({ isColorModalOpen: true })}
+          >
+            <Modal.Header>Color Palette</Modal.Header>
+            <Modal.Content scrolling>
+              <Modal.Description>
+                <ColorPalette
+                  onGetColorData={this.props.onGetColorData}
+                  onSelectedColorChange={this.props.onSelectedColorChange}
+                  onNewSelectedColor={this.props.onNewSelectedColor}
+                />
+              </Modal.Description>
+            </Modal.Content>
+
+            <Modal.Actions>
+              <Button
+                onClick={() => this.setState({ isColorModalOpen: false })}
+                primary
+              >
+                Close
+              </Button>
+            </Modal.Actions>
+          </Modal>
 
           <Sidebar as={Menu} inverted direction="bottom" visible width="thin">
             <Brush onBrushChange={this.props.onBrushChange} />
