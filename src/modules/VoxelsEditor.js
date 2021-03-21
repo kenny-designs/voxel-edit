@@ -25,6 +25,7 @@ function randInt(min, max) {
  * @param {number} cellSize - Dimensions of the cell
  * @param {number} [v=0] - The type of voxel to spawn. 0 for random
  */
+/*
 function createSineWave(world, cellX, cellY, cellZ, cellSize, v = 0) {
   const startX = cellX * cellSize;
   const startY = cellY * cellSize;
@@ -52,6 +53,30 @@ function createSineWave(world, cellX, cellY, cellZ, cellSize, v = 0) {
           );
         }
       }
+    }
+  }
+}
+*/
+
+/**
+ * Has the cell at the given coordinates form a sine wave out of its voxels.
+ * @param {VoxelWorld} world - The world to spawn flat ground in
+ * @param {number} cellX
+ * @param {number} cellY
+ * @param {number} cellZ
+ * @param {number} cellSize - Dimensions of the cell
+ * @param {number} [v=0] - The type of voxel to spawn. 0 for random
+ */
+function createFlatGround(world, cellX, cellY, cellZ, cellSize, v = 0) {
+  const startX = cellX * cellSize;
+  const startY = cellY * cellSize;
+  const startZ = cellZ * cellSize;
+
+  // Create a sine wave with our voxels
+  for (let z = 0; z < cellSize; ++z) {
+    for (let x = 0; x < cellSize; ++x) {
+      // Set voxel to random texture
+      world.setVoxel(startX + x, startY, startZ + z, v ? v : randInt(1, 17));
     }
   }
 }
@@ -121,22 +146,9 @@ class VoxelEditor {
       material,
     });
 
-    // Generate various sine waves
-    createSineWave(this.world, 0, 0, 0, this.cellSize); // Center
-    createSineWave(this.world, 1, 0, 0, this.cellSize, 2); // Right
-    createSineWave(this.world, -1, 0, 0, this.cellSize, 3); // Left
-    createSineWave(this.world, 0, 0, -1, this.cellSize, 4); // Forward
-    createSineWave(this.world, 0, 0, 1, this.cellSize, 5); // Backward
-
-    // Update geometry so that it get rendered
-    // Remember, cells adjacent to the voxel coordinate will also update
+    // Create a floor to the world
+    createFlatGround(this.world, 0, 0, 0, this.cellSize, 8); // Center
     this.world.updateVoxelGeometry(this.scene, 0, 0, 0);
-    this.world.updateVoxelGeometry(
-      this.scene,
-      this.cellSize - 1,
-      0,
-      this.cellSize - 1
-    );
 
     // Used with requestRenderIfNotRequested() function
     this.renderRequested = false;
@@ -203,9 +215,9 @@ class VoxelEditor {
 
     // TODO: This is an arbitrary starting position. Consider an alternative
     this.camera.position.set(
-      -this.cellSize * 0.3,
-      this.cellSize * 0.8,
-      -this.cellSize * 0.3
+      -this.cellSize * 0.2,
+      this.cellSize * 0.3,
+      -this.cellSize * 0.2
     );
   }
 
@@ -216,12 +228,8 @@ class VoxelEditor {
     // Create the orbit controls
     this.controls = new OrbitControls(this.camera, this.canvas);
 
-    // TODO: Orbit controls starts by targeting arbitrary position. Consider alternative
-    this.controls.target.set(
-      this.cellSize / 2,
-      this.cellSize / 3,
-      this.cellSize / 2
-    );
+    // Orbit controls starts by targeting center of scene
+    this.controls.target.set(this.cellSize / 2, 0, this.cellSize / 2);
 
     // Controls must be updated before they can be used
     this.controls.update();
@@ -303,8 +311,8 @@ class VoxelEditor {
   }
 
   /**
-   * Adds, removes, or paints a voxel based on the given brush.
-   * TODO: This function is likely better placed in the VoxelWorld class
+   * Handler for adding, removing, or painting a voxel based on the given brush
+   * and where the user clicked.
    * @param {Event} event
    */
   placeVoxel(event) {

@@ -29,8 +29,7 @@ class VoxelWorld {
     this.tileTextureWidth = options.tileTextureWidth;
     this.tileTextureHeight = options.tileTextureHeight;
     this.material = options.material;
-    const { cellSize } = this;
-    this.cellSliceSize = cellSize * cellSize;
+    this.cellSliceSize = this.cellSize * this.cellSize;
     this.cells = {};
 
     // Used in the updateCellGeometry() function
