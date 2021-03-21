@@ -40,11 +40,24 @@ class VoxelManager extends React.Component {
     }
   };
 
+  /**
+   * Returns color palette data from the VoxelWorld.
+   * @returns {Array.Color}
+   */
+  onGetColorData = () => {
+    // Return empty array if voxelEditor not ready
+    if (!this.voxelEditor) return [];
+
+    // Return colors from the world's color palette
+    return this.voxelEditor.world.colorPalette.getColorsArray();
+  };
+
   render() {
     return (
       <GUIController
         onCanvasCreation={this.createVoxelWorld}
         onBrushChange={this.setCurrentBrush}
+        onGetColorData={this.onGetColorData}
       />
     );
   }

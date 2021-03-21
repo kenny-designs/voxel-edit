@@ -71,16 +71,33 @@ class ColorPalette {
   getSelectedColorIndex() {
     return this.selectedColor;
   }
+
+  /**
+   * Returns the array of colors currently in the palette.
+   * @returns {Array.Color}
+   */
+  getColorsArray() {
+    return this.colors;
+  }
 }
 
 /**
- * Class that represents a single rgb color.
+ * Class that represents a single rgb color with each component being from
+ * 0 to 1.
  */
 class Color {
   constructor(r, g, b) {
     this.r = r;
     this.g = g;
     this.b = b;
+  }
+
+  /**
+   * Returns a 0-255 value representation of the color.
+   * @returns {Object}
+   */
+  getRGB255() {
+    return { r: this.r * 255, g: this.g * 255, b: this.b * 255 };
   }
 }
 

@@ -8,14 +8,17 @@ import { ChromePicker } from "react-color";
  * @returns {JSX}
  */
 const ColorCell = (props) => {
+  const { color, id, isActive } = props;
+  const { r, g, b } = color.getRGB255();
+
   return (
     <div
       onClick={() => {
-        props.onColorCellClick(props.id, props.color);
+        props.onColorCellClick(id, color);
       }}
-      className={`color-cell ${props.isActive ? "active" : ""}`}
+      className={`color-cell ${isActive ? "active" : ""}`}
       style={{
-        backgroundColor: props.color,
+        backgroundColor: `rgb(${r}, ${g}, ${b})`,
       }}
     ></div>
   );
@@ -55,19 +58,20 @@ class ColorPalette extends React.Component {
   };
 
   render() {
-    // Create buttons
+    // Create buttons for each color
     let buttons = [];
-    for (let i = 0; i < 128; ++i) {
+    const colors = this.props.onGetColorData();
+    colors.forEach((color, index) => {
       buttons.push(
         <ColorCell
-          key={i}
-          id={i}
+          key={index}
+          id={index}
           onColorCellClick={this.onColorCellClick}
-          color="#fff000"
-          isActive={i === this.state.selectedColor}
+          color={color}
+          isActive={index === this.state.selectedColor}
         />
       );
-    }
+    });
 
     return (
       <div>
