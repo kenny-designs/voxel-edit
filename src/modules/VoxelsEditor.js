@@ -2,6 +2,7 @@ import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import VoxelWorld from "./VoxelWorld";
 import Brush from "./Brush";
+import ColorPalette from "./ColorPalette";
 import textureAtlas from "../images/flourish-cc-by-nc-sa.png";
 
 /**
@@ -100,8 +101,8 @@ function createTextureAtlas(render) {
  * Class used to interface with the scene and handles the main render loop.
  */
 class VoxelEditor {
-  constructor(canvas) {
-    this.canvas = canvas;
+  constructor(options) {
+    this.canvas = options.canvas;
     this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas });
 
     // Length, width, and height of each cell in the VoxelWorld
@@ -127,15 +128,22 @@ class VoxelEditor {
     const tileSize = 16;
     const tileTextureWidth = 256;
     const tileTextureHeight = 64;
-    const texture = createTextureAtlas(this.render);
+    //const texture = createTextureAtlas(this.render);
 
     // Create material for the voxel model
     const material = new THREE.MeshLambertMaterial({
-      map: texture,
+      // TODO: add texture back if using textures
+      //map: texture,
       side: THREE.DoubleSide,
       alphaTest: 0.1,
       transparent: true,
+      vertexColors: true,
     });
+
+    // Load from previous world or set defaults
+    const { world } = options;
+    const colorPalette = world ? world.colorPalette : new ColorPalette();
+    const cells = world ? world.cells : {};
 
     // Create a new VoxelWorld that will manage our voxels
     this.world = new VoxelWorld({
@@ -144,17 +152,21 @@ class VoxelEditor {
       tileTextureWidth,
       tileTextureHeight,
       material,
+      colorPalette,
+      cells,
     });
 
-    // Create a floor to the world
-    createFlatGround(this.world, 0, 0, 0, this.cellSize, 8); // Center
-    this.world.updateVoxelGeometry(this.scene, 0, 0, 0);
+    // If there is no pre-existing world, create flat ground by default
+    if (!world) {
+      // Create a floor to the world
+      createFlatGround(this.world, 0, 0, 0, this.cellSize, 1); // Center
+    }
+
+    // Update geometry of the entire world
+    this.world.updateWorldGeometry(this.scene);
 
     // Used with requestRenderIfNotRequested() function
     this.renderRequested = false;
-
-    // The current voxel to add when clicking. 0 represent nothing so it effectively removes voxels.
-    this.currentVoxel = 1; // add pumpkins
 
     // Mouse object representing the position of mouse clicks.
     this.mouse = {
@@ -200,6 +212,9 @@ class VoxelEditor {
 
     // Create new brush
     this.brush = new Brush();
+
+    // Start render loop
+    this.render();
   }
 
   /**
@@ -336,7 +351,7 @@ class VoxelEditor {
       const voxelId =
         this.brush.currentBrush === Brush.brushOptions.remove
           ? 0
-          : this.currentVoxel;
+          : this.world.colorPalette.getSelectedColorIndex() + 1;
 
       // the intersection point is on the face. That means
       // the math imprecision could put us on either side of the face.
@@ -399,6 +414,33 @@ class VoxelEditor {
     // Stop recording movement and checks to place voxel
     window.removeEventListener("pointermove", this.recordMovement);
     window.removeEventListener("pointerup", this.placeVoxelIfNoMovement);
+  };
+
+  /**
+   * Called whenever a new color is selected.
+   * @param {number} index - Index of the changed color
+   * @param {r} r - Red color from 0-1
+   * @param {g} g - Green color from 0-1
+   * @param {b} b - Blue color from 0-1
+   */
+  onSelectedColorChange = (index, r, g, b) => {
+    // Update the color
+    this.world.colorPalette.setColorAtIndex(index, r, g, b);
+
+    // Updated the world with new color
+    this.world.updateWorldGeometry(this.scene);
+
+    // Update render frame
+    this.requestRenderIfNotRequested();
+  };
+
+  /**
+   * Updates which voxel the user is placing/painting now from the palette.
+   * @param {number} index
+   */
+  onNewSelectedColor = (index) => {
+    // Update the currently selected color for adding/painting
+    this.world.colorPalette.setSelectedColor(index);
   };
 }
 

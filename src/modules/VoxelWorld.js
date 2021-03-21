@@ -22,6 +22,7 @@ class VoxelWorld {
    * @param {number} options.tileTextureWidth - The width of the texture atlas
    * @param {number} options.tileTextureHeight - The height of the texture atlas
    * @param {*} options.material - The material that the VoxelWorld should use for its meshes
+   * @param {ColorPalette} options.colorPalette- The current color palette that the world is using
    */
   constructor(options) {
     this.cellSize = options.cellSize;
@@ -29,8 +30,9 @@ class VoxelWorld {
     this.tileTextureWidth = options.tileTextureWidth;
     this.tileTextureHeight = options.tileTextureHeight;
     this.material = options.material;
+    this.colorPalette = options.colorPalette;
     this.cellSliceSize = this.cellSize * this.cellSize;
-    this.cells = {};
+    this.cells = options.cells;
 
     // Used in the updateCellGeometry() function
     // Tracks the meshes for each cell
@@ -194,6 +196,7 @@ class VoxelWorld {
     const normals = [];
     const uvs = [];
     const indices = [];
+    const colors = [];
 
     // Calculate origin point of the cell i.e. (0, 0, 0)
     const startX = cellX * cellSize;
@@ -237,12 +240,17 @@ class VoxelWorld {
                   positions.push(pos[0] + x, pos[1] + y, pos[2] + z);
                   normals.push(...dir);
 
+                  // TODO: uv's no longer being used. Might be added in the future though
                   // Calculates where to grab texture from the texture atlas
                   // uvVoxel corresponds to the column and uvRow the row to get the texture
                   uvs.push(
                     ((uvVoxel + uv[0]) * tileSize) / tileTextureWidth,
                     1 - ((uvRow + 1 - uv[1]) * tileSize) / tileTextureHeight
                   );
+
+                  // Add color. Subtract 1 for empty voxels do not correspond with palette array
+                  const color = this.colorPalette.getColorAtIndex(voxel - 1);
+                  colors.push(color.r, color.g, color.b);
                 }
 
                 // Add indices used to draw the face
@@ -260,6 +268,7 @@ class VoxelWorld {
       normals,
       uvs,
       indices,
+      colors,
     };
   }
 
@@ -426,8 +435,9 @@ class VoxelWorld {
     const {
       positions,
       normals,
-      uvs,
+      //uvs,
       indices,
+      colors,
     } = this.generateGeometryDataForCell(cellX, cellY, cellZ);
 
     // Set position (vertex) data of cell
@@ -447,11 +457,20 @@ class VoxelWorld {
       new THREE.BufferAttribute(new Float32Array(normals), normalNumComponents)
     );
 
+    // TODO: Add back if supporting textures
     // Set uv data for cell
+    /*
     const uvNumComponents = 2;
     geometry.setAttribute(
       "uv",
       new THREE.BufferAttribute(new Float32Array(uvs), uvNumComponents)
+    );
+    */
+
+    const rgbNumComponents = 3;
+    geometry.setAttribute(
+      "color",
+      new THREE.BufferAttribute(new Float32Array(colors), rgbNumComponents)
     );
 
     // Set index data for cell
@@ -468,6 +487,36 @@ class VoxelWorld {
       scene.add(mesh);
       mesh.position.set(cellX * cellSize, cellY * cellSize, cellZ * cellSize);
     }
+  }
+
+  /**
+   * Updates every single cell within the world. Useful for when loading in
+   * a brand new world.
+   * @param {*} scene
+   */
+  updateWorldGeometry(scene) {
+    // Get an array of every cell's key
+    const cellKeys = Object.keys(this.cells);
+
+    // Regex used to extract cell position
+    let regex = /^(-?\d+),(-?\d+),(-?\d+)$/;
+
+    // Update every cell
+    cellKeys.forEach((cellKey) => {
+      // Extract the x, y, and z position of the cell
+      let match = cellKey.match(regex);
+      const x = parseInt(match[1], 10);
+      const y = parseInt(match[2], 10);
+      const z = parseInt(match[3], 10);
+
+      // Update that cell
+      this.updateCellGeometry(
+        scene,
+        x * this.cellSize,
+        y * this.cellSize,
+        z * this.cellSize
+      );
+    });
   }
 }
 
