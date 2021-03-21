@@ -1,6 +1,7 @@
 import React from "react";
 import Viewport from "./Viewport";
 import Brush from "./Brush";
+import ColorPalette from "./ColorPalette";
 import "./GUIController.css";
 import { Grid, Sidebar, Segment, Menu } from "semantic-ui-react";
 
@@ -66,6 +67,7 @@ class GUIController extends React.Component {
             <Menu vertical fluid inverted>
               <Brush onBrushChange={this.props.onBrushChange} />
             </Menu>
+            <ColorPalette />
           </Grid.Column>
 
           <Grid.Column width={11} style={{ padding: "0" }}>
