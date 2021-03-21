@@ -1,6 +1,6 @@
 import React from "react";
 import GUIController from "./GUIController";
-import { Voxels, setCurrentBrush } from "../modules/Voxels";
+import VoxelEditor from "../modules/VoxelsEditor";
 
 /**
  * The main driving component for the application. Sets up the rest of
@@ -8,21 +8,38 @@ import { Voxels, setCurrentBrush } from "../modules/Voxels";
  * @extends React.Component
  */
 class VoxelManager extends React.Component {
+  constructor(props) {
+    super(props);
+
+    // The VoxelEditor itself that handles the 3D scene
+    this.voxelEditor = null;
+  }
+
   /**
    * Takes the given canvas Ref and renders the voxel world.
    * @param {Ref} canvasRef
    */
-  createVoxelWorld(canvasRef) {
+  createVoxelWorld = (canvasRef) => {
     if (canvasRef) {
-      Voxels(canvasRef.current);
+      this.voxelEditor = new VoxelEditor(canvasRef.current);
     }
-  }
+  };
+
+  /**
+   * Changes the brush currently being used.
+   * @param {string} brushName - name of the brush to set
+   */
+  setCurrentBrush = (brushName) => {
+    if (this.voxelEditor) {
+      this.voxelEditor.brush.setCurrentBrush(brushName);
+    }
+  };
 
   render() {
     return (
       <GUIController
         onCanvasCreation={this.createVoxelWorld}
-        onBrushChange={setCurrentBrush}
+        onBrushChange={this.setCurrentBrush}
       />
     );
   }
