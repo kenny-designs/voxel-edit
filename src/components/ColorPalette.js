@@ -1,5 +1,22 @@
 import React from "react";
+import "./ColorPalette.css";
 import { ChromePicker } from "react-color";
+
+/**
+ * Represents each individual color on the color palette.
+ * @param {*} props
+ * @returns {JSX}
+ */
+const ColorCell = (props) => {
+  return (
+    <div
+      className={`color-cell ${props.isActive ? "active" : ""}`}
+      style={{
+        backgroundColor: props.color,
+      }}
+    ></div>
+  );
+};
 
 /**
  * Allows the user to select what colors they wish to paint with,
@@ -13,6 +30,7 @@ class ColorPalette extends React.Component {
 
     this.state = {
       currentHexColor: "#000000",
+      selectedColor: 0,
     };
   }
 
@@ -25,15 +43,26 @@ class ColorPalette extends React.Component {
   };
 
   render() {
+    let buttons = [];
+    for (let i = 0; i < 128; ++i) {
+      buttons.push(
+        <ColorCell
+          key={i}
+          color="#fff000"
+          isActive={i === this.state.selectedColor}
+        />
+      );
+    }
+
     return (
-      <React.Fragment>
-        <h1>ColorPalette</h1>
+      <div>
+        <div className="color-cell-container">{buttons}</div>
         <ChromePicker
           color={this.state.currentHexColor}
           disableAlpha={true}
           onChange={this.handleChange}
         />
-      </React.Fragment>
+      </div>
     );
   }
 }
