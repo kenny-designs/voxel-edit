@@ -420,6 +420,33 @@ class VoxelEditor {
     window.removeEventListener("pointermove", this.recordMovement);
     window.removeEventListener("pointerup", this.placeVoxelIfNoMovement);
   };
+
+  /**
+   * Called whenever a new color is selected.
+   * @param {number} index - Index of the changed color
+   * @param {r} r - Red color from 0-1
+   * @param {g} g - Green color from 0-1
+   * @param {b} b - Blue color from 0-1
+   */
+  onSelectedColorChange = (index, r, g, b) => {
+    // Update the color
+    this.world.colorPalette.setColorAtIndex(index, r, g, b);
+
+    // Updated the world with new color
+    this.world.updateWorldGeometry(this.scene);
+
+    // Update render frame
+    this.requestRenderIfNotRequested();
+  };
+
+  /**
+   * Updates which voxel the user is placing/painting now from the palette.
+   * @param {number} index
+   */
+  onNewSelectedColor = (index) => {
+    // Update the currently selected color for adding/painting
+    this.world.colorPalette.setSelectedColor(index);
+  };
 }
 
 export default VoxelEditor;

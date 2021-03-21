@@ -58,16 +58,12 @@ class VoxelManager extends React.Component {
    * @param {Object} color
    */
   onSelectedColorChange = (index, color) => {
-    if (!this.voxelEditor) return;
+    if (this.voxelEditor) {
+      const { r, g, b } = color;
 
-    // Get the color and convert from 0-255 to 0-1 range
-    let { r, g, b } = color;
-    r /= 255;
-    g /= 255;
-    b /= 255;
-
-    // Update the color
-    this.voxelEditor.world.colorPalette.setColorAtIndex(index, r, g, b);
+      // Adjust the color to be on a 0-1 range
+      this.voxelEditor.onSelectedColorChange(index, r / 255, g / 255, b / 255);
+    }
   };
 
   /**
@@ -75,10 +71,9 @@ class VoxelManager extends React.Component {
    * @param {number} index
    */
   onNewSelectedColor = (index) => {
-    if (!this.voxelEditor) return;
-
-    // Update the currently selected color for adding/painting
-    this.voxelEditor.world.colorPalette.setSelectedColor(index);
+    if (this.voxelEditor) {
+      this.voxelEditor.onNewSelectedColor(index);
+    }
   };
 
   render() {
