@@ -127,14 +127,16 @@ class VoxelEditor {
     const tileSize = 16;
     const tileTextureWidth = 256;
     const tileTextureHeight = 64;
-    const texture = createTextureAtlas(this.render);
+    //const texture = createTextureAtlas(this.render);
 
     // Create material for the voxel model
     const material = new THREE.MeshLambertMaterial({
-      map: texture,
+      // TODO: add texture back if using textures
+      //map: texture,
       side: THREE.DoubleSide,
       alphaTest: 0.1,
       transparent: true,
+      vertexColors: true,
     });
 
     // Create a new VoxelWorld that will manage our voxels
@@ -200,6 +202,9 @@ class VoxelEditor {
 
     // Create new brush
     this.brush = new Brush();
+
+    // Start render loop
+    this.render();
   }
 
   /**

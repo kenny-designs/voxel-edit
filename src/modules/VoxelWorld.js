@@ -194,6 +194,7 @@ class VoxelWorld {
     const normals = [];
     const uvs = [];
     const indices = [];
+    const colors = [];
 
     // Calculate origin point of the cell i.e. (0, 0, 0)
     const startX = cellX * cellSize;
@@ -243,6 +244,9 @@ class VoxelWorld {
                     ((uvVoxel + uv[0]) * tileSize) / tileTextureWidth,
                     1 - ((uvRow + 1 - uv[1]) * tileSize) / tileTextureHeight
                   );
+
+                  // Add color
+                  colors.push(0, 1, 0);
                 }
 
                 // Add indices used to draw the face
@@ -260,6 +264,7 @@ class VoxelWorld {
       normals,
       uvs,
       indices,
+      colors,
     };
   }
 
@@ -426,8 +431,9 @@ class VoxelWorld {
     const {
       positions,
       normals,
-      uvs,
+      //uvs,
       indices,
+      colors,
     } = this.generateGeometryDataForCell(cellX, cellY, cellZ);
 
     // Set position (vertex) data of cell
@@ -447,11 +453,20 @@ class VoxelWorld {
       new THREE.BufferAttribute(new Float32Array(normals), normalNumComponents)
     );
 
+    // TODO: Add back if supporting textures
     // Set uv data for cell
+    /*
     const uvNumComponents = 2;
     geometry.setAttribute(
       "uv",
       new THREE.BufferAttribute(new Float32Array(uvs), uvNumComponents)
+    );
+    */
+
+    const rgbNumComponents = 3;
+    geometry.setAttribute(
+      "color",
+      new THREE.BufferAttribute(new Float32Array(colors), rgbNumComponents)
     );
 
     // Set index data for cell
