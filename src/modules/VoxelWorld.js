@@ -32,13 +32,7 @@ class VoxelWorld {
     this.material = options.material;
     this.colorPalette = options.colorPalette;
     this.cellSliceSize = this.cellSize * this.cellSize;
-    this.cells = {};
-
-    // temp for testing
-    /*
-    this.colorPalette.setColorAtIndex(0);
-    this.colorPalette.selectedColor = 0;
-    */
+    this.cells = options.cells;
 
     // Used in the updateCellGeometry() function
     // Tracks the meshes for each cell
@@ -493,6 +487,36 @@ class VoxelWorld {
       scene.add(mesh);
       mesh.position.set(cellX * cellSize, cellY * cellSize, cellZ * cellSize);
     }
+  }
+
+  /**
+   * Updates every single cell within the world. Useful for when loading in
+   * a brand new world.
+   * @param {*} scene
+   */
+  updateWorldGeometry(scene) {
+    // Get an array of every cell's key
+    const cellKeys = Object.keys(this.cells);
+
+    // Regex used to extract cell position
+    let regex = /^(-?\d+),(-?\d+),(-?\d+)$/;
+
+    // Update every cell
+    cellKeys.forEach((cellKey) => {
+      // Extract the x, y, and z position of the cell
+      let match = cellKey.match(regex);
+      const x = parseInt(match[1], 10);
+      const y = parseInt(match[2], 10);
+      const z = parseInt(match[3], 10);
+
+      // Update that cell
+      this.updateCellGeometry(
+        scene,
+        x * this.cellSize,
+        y * this.cellSize,
+        z * this.cellSize
+      );
+    });
   }
 }
 

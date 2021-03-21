@@ -101,8 +101,8 @@ function createTextureAtlas(render) {
  * Class used to interface with the scene and handles the main render loop.
  */
 class VoxelEditor {
-  constructor(canvas) {
-    this.canvas = canvas;
+  constructor(options) {
+    this.canvas = options.canvas;
     this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas });
 
     // Length, width, and height of each cell in the VoxelWorld
@@ -140,8 +140,10 @@ class VoxelEditor {
       vertexColors: true,
     });
 
-    // Create color palette
-    const colorPalette = new ColorPalette();
+    // Load from previous world or set defaults
+    const { world } = options;
+    const colorPalette = world ? world.colorPalette : new ColorPalette();
+    const cells = world ? world.cells : {};
 
     // Create a new VoxelWorld that will manage our voxels
     this.world = new VoxelWorld({
@@ -151,15 +153,22 @@ class VoxelEditor {
       tileTextureHeight,
       material,
       colorPalette,
+      cells,
     });
 
-    // Create a floor to the world
-    createFlatGround(this.world, 0, 0, 0, this.cellSize, 1); // Center
-    this.world.updateVoxelGeometry(this.scene, 0, 0, 0);
+    // If there is no pre-existing world, create flat ground by default
+    if (!world) {
+      // Create a floor to the world
+      createFlatGround(this.world, 0, 0, 0, this.cellSize, 1); // Center
 
-    // Add red to the color palette then make it active
-    this.world.colorPalette.setColorAtIndex(3, 1, 0, 0);
-    this.world.colorPalette.selectedColor = 3;
+      // TODO: Remove after ColorPalette component is added!
+      // Add red to the color palette then make it active
+      this.world.colorPalette.setColorAtIndex(3, 1, 0, 0);
+      this.world.colorPalette.selectedColor = 3;
+    }
+
+    // Update geometry of the entire world
+    this.world.updateWorldGeometry(this.scene);
 
     // Used with requestRenderIfNotRequested() function
     this.renderRequested = false;

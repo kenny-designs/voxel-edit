@@ -20,8 +20,13 @@ class VoxelManager extends React.Component {
    * @param {Ref} canvasRef
    */
   createVoxelWorld = (canvasRef) => {
-    if (canvasRef) {
-      this.voxelEditor = new VoxelEditor(canvasRef.current);
+    if (!canvasRef) return;
+
+    if (!this.voxelEditor) {
+      this.voxelEditor = new VoxelEditor({ canvas: canvasRef.current });
+    } else {
+      const world = this.voxelEditor.world;
+      this.voxelEditor = new VoxelEditor({ canvas: canvasRef.current, world });
     }
   };
 

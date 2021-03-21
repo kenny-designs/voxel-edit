@@ -3,8 +3,12 @@
  * Used to track each color of the voxels within the scene.
  */
 class ColorPalette {
-  constructor() {
-    this.initializeColorArray();
+  constructor(colors = null, selectedColor = 0) {
+    if (colors) {
+      this.colors = colors;
+    } else {
+      this.initializeColorArray();
+    }
 
     // The currently selected color
     this.selectedColor = 0;
