@@ -69,7 +69,10 @@ class GUIController extends React.Component {
         <Grid.Row>
           <Grid.Column width={3}>
             <Menu vertical fluid inverted>
-              <Brush onBrushChange={this.props.onBrushChange} />
+              <Menu.Item header>Brush</Menu.Item>
+              <Menu.Menu>
+                <Brush onBrushChange={this.props.onBrushChange} />
+              </Menu.Menu>
             </Menu>
             <ColorPalette
               onGetColorData={this.props.onGetColorData}

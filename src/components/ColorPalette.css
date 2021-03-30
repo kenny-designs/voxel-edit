@@ -8,18 +8,20 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  padding: 5px;
   margin-bottom: 5px;
 }
 
 .color-cell {
-  width: 20px;
-  height: 20px;
-  margin: 5px;
+  width: 2em;
+  height: 2em;
+  margin: 2px;
   border-style: solid;
   border-radius: 2px;
 }
 
 .color-cell.active {
-  border-color: red;
-  border-width: 3px;
+  outline-color: white;
+  outline-width: 3px;
+  outline-style: outset;
 }
