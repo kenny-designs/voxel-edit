@@ -43,21 +43,21 @@ class Brush extends React.Component {
           active={activeBrush === "add"}
           onClick={this.handleBrushClick}
         >
-          Add
+          Add Voxel
         </Menu.Item>
         <Menu.Item
           name="remove"
           active={activeBrush === "remove"}
           onClick={this.handleBrushClick}
         >
-          Remove
+          Remove Voxel
         </Menu.Item>
         <Menu.Item
           name="paint"
           active={activeBrush === "paint"}
           onClick={this.handleBrushClick}
         >
-          Paint
+          Paint Voxel
         </Menu.Item>
       </React.Fragment>
     );
