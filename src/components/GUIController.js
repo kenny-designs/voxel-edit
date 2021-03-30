@@ -46,7 +46,10 @@ class GUIController extends React.Component {
    */
   createDesktopViewport() {
     return (
-      <Sidebar.Pushable as={Segment}>
+      <Sidebar.Pushable
+        as={Segment}
+        style={{ border: "none", borderRadius: "0" }}
+      >
         <Sidebar as={Menu} inverted direction="top" visible width="very thin">
           <Menu.Item as="a">Undo</Menu.Item>
           <Menu.Item as="a">Redo</Menu.Item>
