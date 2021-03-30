@@ -1,4 +1,5 @@
 import "semantic-ui-css/semantic.min.css";
+import "./ColorVariables.css";
 
 import React from "react";
 import ReactDOM from "react-dom";
