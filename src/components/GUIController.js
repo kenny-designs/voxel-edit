@@ -116,30 +116,38 @@ class GUIController extends React.Component {
     const { brushSettings } = this.state.desktop;
 
     return (
-      <Accordion as={Menu} inverted vertical fluid exclusive={false}>
-        <Menu.Item header>
-          Brush Settings
-          <Icon name="paint brush" />
-        </Menu.Item>
-        <Menu.Item>
-          <Accordion.Title
-            active={brushSettings.activeAccordionIndices.includes(0)}
-            content="Voxel Actions"
-            index={0}
-            onClick={(e, titleProps) => {
-              this.handleAccordionIndicesChange(
-                titleProps.index,
-                "brushSettings"
-              );
-            }}
-          />
-          <Accordion.Content
-            active={brushSettings.activeAccordionIndices.includes(0)}
-          >
-            <Brush onBrushChange={this.props.onBrushChange} />
-          </Accordion.Content>
-        </Menu.Item>
-      </Accordion>
+      <Segment.Group>
+        <Segment inverted>
+          <Header as="h4" inverted>
+            <Icon name="paint brush" />
+            <Header.Content>
+              Brush Settings
+              <Header.Subheader>Add, remove, or paint voxels</Header.Subheader>
+            </Header.Content>
+          </Header>
+
+          <Accordion inverted fluid exclusive={false}>
+            <Accordion.Title
+              active={brushSettings.activeAccordionIndices.includes(0)}
+              content="Brush Action"
+              index={0}
+              onClick={(e, titleProps) => {
+                this.handleAccordionIndicesChange(
+                  titleProps.index,
+                  "brushSettings"
+                );
+              }}
+            />
+            <Accordion.Content
+              active={brushSettings.activeAccordionIndices.includes(0)}
+            >
+              <Menu inverted vertical fluid>
+                <Brush onBrushChange={this.props.onBrushChange} />
+              </Menu>
+            </Accordion.Content>
+          </Accordion>
+        </Segment>
+      </Segment.Group>
     );
   };
 
