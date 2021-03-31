@@ -11,6 +11,8 @@ import {
   Segment,
   Menu,
   Accordion,
+  Header,
+  Container,
 } from "semantic-ui-react";
 
 /**
@@ -112,7 +114,7 @@ class GUIController extends React.Component {
     return (
       <Grid celled className={"desktopGrid"}>
         <Grid.Row>
-          <Grid.Column width={3}>
+          <Grid.Column width={3} style={{ height: "100vh", overflowY: "auto" }}>
             <Accordion as={Menu} inverted vertical fluid exclusive={false}>
               <Menu.Item header>Brush Settings</Menu.Item>
               <Menu.Item>
@@ -128,11 +130,18 @@ class GUIController extends React.Component {
               </Menu.Item>
             </Accordion>
 
-            <ColorPalette
-              onGetColorData={this.props.onGetColorData}
-              onSelectedColorChange={this.props.onSelectedColorChange}
-              onNewSelectedColor={this.props.onNewSelectedColor}
-            />
+            <Segment.Group>
+              <Segment inverted>
+                <Header as="h3">Color Palette</Header>
+              </Segment>
+              <Segment inverted>
+                <ColorPalette
+                  onGetColorData={this.props.onGetColorData}
+                  onSelectedColorChange={this.props.onSelectedColorChange}
+                  onNewSelectedColor={this.props.onNewSelectedColor}
+                />
+              </Segment>
+            </Segment.Group>
           </Grid.Column>
 
           <Grid.Column width={11} style={{ padding: "0" }}>
