@@ -12,7 +12,6 @@ import {
   Menu,
   Accordion,
   Header,
-  Container,
 } from "semantic-ui-react";
 
 /**
@@ -29,6 +28,9 @@ class GUIController extends React.Component {
       isColorModalOpen: false,
       desktop: {
         brushSettings: {
+          activeIndices: [0],
+        },
+        colorPalette: {
           activeIndices: [0],
         },
       },
@@ -67,8 +69,40 @@ class GUIController extends React.Component {
 
     this.setState({
       desktop: {
+        ...this.state.desktop,
         brushSettings: {
           ...this.state.desktop.brushSettings,
+          activeIndices: newActiveIndices,
+        },
+      },
+    });
+  };
+
+  /**
+   * Handler for when an accordion on the brush settings is clicked.
+   * @param {*} e
+   * @param {*} titleProps
+   */
+  handleColorAccordionClick = (e, titleProps) => {
+    const { index } = titleProps;
+    const { activeIndices } = this.state.desktop.colorPalette;
+
+    // Make a copy of the array to avoid mutating the original
+    const newActiveIndices = [...activeIndices];
+
+    // If index is present, remove it. Otherwise, add to indices
+    const pos = newActiveIndices.indexOf(index);
+    if (pos !== -1) {
+      newActiveIndices.splice(pos, 1);
+    } else {
+      newActiveIndices.push(index);
+    }
+
+    this.setState({
+      desktop: {
+        ...this.state.desktop,
+        colorPalette: {
+          ...this.state.desktop.colorPalette,
           activeIndices: newActiveIndices,
         },
       },
@@ -109,7 +143,7 @@ class GUIController extends React.Component {
    * @returns {JSX}
    */
   createDesktopGUI() {
-    const { activeIndices } = this.state.desktop.brushSettings;
+    const { brushSettings, colorPalette } = this.state.desktop;
 
     return (
       <Grid celled className={"desktopGrid"}>
@@ -119,12 +153,14 @@ class GUIController extends React.Component {
               <Menu.Item header>Brush Settings</Menu.Item>
               <Menu.Item>
                 <Accordion.Title
-                  active={activeIndices.includes(0)}
+                  active={brushSettings.activeIndices.includes(0)}
                   content="Voxel"
                   index={0}
                   onClick={this.handleBrushAccordionClick}
                 />
-                <Accordion.Content active={activeIndices.includes(0)}>
+                <Accordion.Content
+                  active={brushSettings.activeIndices.includes(0)}
+                >
                   <Brush onBrushChange={this.props.onBrushChange} />
                 </Accordion.Content>
               </Menu.Item>
@@ -133,13 +169,23 @@ class GUIController extends React.Component {
             <Segment.Group>
               <Segment inverted>
                 <Header as="h3">Color Palette</Header>
-              </Segment>
-              <Segment inverted>
-                <ColorPalette
-                  onGetColorData={this.props.onGetColorData}
-                  onSelectedColorChange={this.props.onSelectedColorChange}
-                  onNewSelectedColor={this.props.onNewSelectedColor}
-                />
+                <Accordion inverted fluid exclusive={false}>
+                  <Accordion.Title
+                    active={colorPalette.activeIndices.includes(0)}
+                    content="Colors"
+                    index={0}
+                    onClick={this.handleColorAccordionClick}
+                  />
+                  <Accordion.Content
+                    active={colorPalette.activeIndices.includes(0)}
+                  >
+                    <ColorPalette
+                      onGetColorData={this.props.onGetColorData}
+                      onSelectedColorChange={this.props.onSelectedColorChange}
+                      onNewSelectedColor={this.props.onNewSelectedColor}
+                    />
+                  </Accordion.Content>
+                </Accordion>
               </Segment>
             </Segment.Group>
           </Grid.Column>
