@@ -12,6 +12,7 @@ import {
   Menu,
   Accordion,
   Header,
+  Icon,
 } from "semantic-ui-react";
 
 /**
@@ -146,15 +147,25 @@ class GUIController extends React.Component {
     const { brushSettings, colorPalette } = this.state.desktop;
 
     return (
-      <Grid celled className={"desktopGrid"}>
+      <Grid className={"desktopGrid"}>
         <Grid.Row>
-          <Grid.Column width={3} style={{ height: "100vh", overflowY: "auto" }}>
+          <Grid.Column
+            width={3}
+            style={{
+              height: "100vh",
+              overflowY: "auto",
+              marginTop: "1em",
+            }}
+          >
             <Accordion as={Menu} inverted vertical fluid exclusive={false}>
-              <Menu.Item header>Brush Settings</Menu.Item>
+              <Menu.Item header>
+                Brush Settings
+                <Icon name="paint brush" />
+              </Menu.Item>
               <Menu.Item>
                 <Accordion.Title
                   active={brushSettings.activeIndices.includes(0)}
-                  content="Voxel"
+                  content="Voxel Actions"
                   index={0}
                   onClick={this.handleBrushAccordionClick}
                 />
@@ -168,11 +179,19 @@ class GUIController extends React.Component {
 
             <Segment.Group>
               <Segment inverted>
-                <Header as="h3">Color Palette</Header>
+                <Header as="h4" inverted>
+                  <Icon name="tint" />
+                  <Header.Content>
+                    Color Palette
+                    <Header.Subheader>
+                      Select a color to paint with
+                    </Header.Subheader>
+                  </Header.Content>
+                </Header>
                 <Accordion inverted fluid exclusive={false}>
                   <Accordion.Title
                     active={colorPalette.activeIndices.includes(0)}
-                    content="Colors"
+                    content="Color Selection"
                     index={0}
                     onClick={this.handleColorAccordionClick}
                   />
