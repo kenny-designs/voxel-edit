@@ -3,7 +3,17 @@ import Viewport from "./Viewport";
 import Brush from "./Brush";
 import ColorPalette from "./ColorPalette";
 import "./GUIController.css";
-import { Modal, Button, Grid, Sidebar, Segment, Menu } from "semantic-ui-react";
+import {
+  Modal,
+  Button,
+  Grid,
+  Sidebar,
+  Segment,
+  Menu,
+  Accordion,
+  Header,
+  Icon,
+} from "semantic-ui-react";
 
 /**
  * Handles switching between both desktop and mobile versions of the
@@ -16,7 +26,17 @@ class GUIController extends React.Component {
     super(props);
     this.state = {
       isMobile: false,
-      isColorModalOpen: false,
+      mobile: {
+        isColorModalOpen: false,
+      },
+      desktop: {
+        brushSettings: {
+          activeAccordionIndices: [0],
+        },
+        colorPalette: {
+          activeAccordionIndices: [0],
+        },
+      },
     };
   }
 
@@ -28,6 +48,35 @@ class GUIController extends React.Component {
     // If width below 768, use mobile GUI
     const isMobile = window.innerWidth < 768;
     this.setState({ isMobile });
+  };
+
+  /**
+   * Toggles the accordion at the given index for the given state with a
+   * activeAccordionIndices property.
+   * @param {number} index - Index of accordion to toggle
+   * @param {string} componentName - The state.desktop property with a activeAccordionIndices property
+   */
+  handleAccordionIndicesChange = (index, componentName) => {
+    // Make a copy of the desktop state object
+    const desktop = { ...this.state.desktop };
+
+    // Get the active indices for that component
+    const { activeAccordionIndices } = desktop[componentName];
+
+    // Get the position of the accordion index
+    const pos = activeAccordionIndices.indexOf(index);
+
+    // Position was found, remove the index for the user is closing the accordion
+    if (pos !== -1) {
+      activeAccordionIndices.splice(pos, 1);
+    }
+    // Position not found, add the index
+    else {
+      activeAccordionIndices.push(index);
+    }
+
+    // Update the state of the active indices for the given component
+    this.setState({ desktop });
   };
 
   componentDidMount() {
@@ -46,10 +95,13 @@ class GUIController extends React.Component {
    */
   createDesktopViewport() {
     return (
-      <Sidebar.Pushable as={Segment}>
+      <Sidebar.Pushable
+        as={Segment}
+        style={{ border: "none", borderRadius: "0" }}
+      >
         <Sidebar as={Menu} inverted direction="top" visible width="very thin">
-          <Menu.Item as="a">Undo</Menu.Item>
-          <Menu.Item as="a">Redo</Menu.Item>
+          <Menu.Item as="a">Button 1</Menu.Item>
+          <Menu.Item as="a">Button 2</Menu.Item>
         </Sidebar>
         <Viewport onCanvasCreation={this.props.onCanvasCreation} />
       </Sidebar.Pushable>
@@ -57,22 +109,110 @@ class GUIController extends React.Component {
   }
 
   /**
+   * Creates the JSX for the desktop version of the brush.
+   * @returns {JSX}
+   */
+  createDesktopBrush = () => {
+    const { brushSettings } = this.state.desktop;
+
+    return (
+      <Segment.Group>
+        <Segment inverted>
+          <Header as="h4" inverted>
+            <Icon name="paint brush" />
+            <Header.Content>
+              Brush Settings
+              <Header.Subheader>Add, remove, or paint voxels</Header.Subheader>
+            </Header.Content>
+          </Header>
+
+          <Accordion inverted fluid exclusive={false}>
+            <Accordion.Title
+              active={brushSettings.activeAccordionIndices.includes(0)}
+              content="Brush Action"
+              index={0}
+              onClick={(e, titleProps) => {
+                this.handleAccordionIndicesChange(
+                  titleProps.index,
+                  "brushSettings"
+                );
+              }}
+            />
+            <Accordion.Content
+              active={brushSettings.activeAccordionIndices.includes(0)}
+            >
+              <Menu inverted vertical fluid>
+                <Brush onBrushChange={this.props.onBrushChange} />
+              </Menu>
+            </Accordion.Content>
+          </Accordion>
+        </Segment>
+      </Segment.Group>
+    );
+  };
+
+  /**
+   * Creates the JSX for the desktop version of the color palette.
+   * @returns {JSX}
+   */
+  createDesktopColorPalette = () => {
+    const { colorPalette } = this.state.desktop;
+
+    return (
+      <Segment.Group>
+        <Segment inverted>
+          <Header as="h4" inverted>
+            <Icon name="tint" />
+            <Header.Content>
+              Color Palette
+              <Header.Subheader>Select a color to paint with</Header.Subheader>
+            </Header.Content>
+          </Header>
+          <Accordion inverted fluid exclusive={false}>
+            <Accordion.Title
+              active={colorPalette.activeAccordionIndices.includes(0)}
+              content="Color Selection"
+              index={0}
+              onClick={(e, titleProps) => {
+                this.handleAccordionIndicesChange(
+                  titleProps.index,
+                  "colorPalette"
+                );
+              }}
+            />
+            <Accordion.Content
+              active={colorPalette.activeAccordionIndices.includes(0)}
+            >
+              <ColorPalette
+                onGetColorData={this.props.onGetColorData}
+                onSelectedColorChange={this.props.onSelectedColorChange}
+                onNewSelectedColor={this.props.onNewSelectedColor}
+              />
+            </Accordion.Content>
+          </Accordion>
+        </Segment>
+      </Segment.Group>
+    );
+  };
+
+  /**
    * Create the desktop version of the UI.
    * @returns {JSX}
    */
   createDesktopGUI() {
     return (
-      <Grid celled className={"desktopGrid"}>
+      <Grid className={"desktopGrid"}>
         <Grid.Row>
-          <Grid.Column width={3}>
-            <Menu vertical fluid inverted>
-              <Brush onBrushChange={this.props.onBrushChange} />
-            </Menu>
-            <ColorPalette
-              onGetColorData={this.props.onGetColorData}
-              onSelectedColorChange={this.props.onSelectedColorChange}
-              onNewSelectedColor={this.props.onNewSelectedColor}
-            />
+          <Grid.Column
+            width={3}
+            style={{
+              height: "100vh",
+              overflowY: "auto",
+              marginTop: "1em",
+            }}
+          >
+            {this.createDesktopBrush()}
+            {this.createDesktopColorPalette()}
           </Grid.Column>
 
           <Grid.Column width={11} style={{ padding: "0" }}>
@@ -101,7 +241,9 @@ class GUIController extends React.Component {
           <Sidebar as={Menu} inverted direction="top" visible width="very thin">
             <Menu.Item
               as="a"
-              onClick={() => this.setState({ isColorModalOpen: true })}
+              onClick={() =>
+                this.setState({ mobile: { isColorModalOpen: true } })
+              }
             >
               Color Palette
             </Menu.Item>
@@ -112,9 +254,11 @@ class GUIController extends React.Component {
 
           {/* Color Selection Modal */}
           <Modal
-            open={this.state.isColorModalOpen}
-            onClose={() => this.setState({ isColorModalOpen: false })}
-            onOpen={() => this.setState({ isColorModalOpen: true })}
+            open={this.state.mobile.isColorModalOpen}
+            onClose={() =>
+              this.setState({ mobile: { isColorModalOpen: false } })
+            }
+            onOpen={() => this.setState({ mobile: { isColorModalOpen: true } })}
           >
             <Modal.Header>Color Palette</Modal.Header>
             <Modal.Content scrolling>
@@ -129,7 +273,9 @@ class GUIController extends React.Component {
 
             <Modal.Actions>
               <Button
-                onClick={() => this.setState({ isColorModalOpen: false })}
+                onClick={() =>
+                  this.setState({ mobile: { isColorModalOpen: false } })
+                }
                 primary
               >
                 Close
@@ -148,7 +294,6 @@ class GUIController extends React.Component {
   }
 
   render() {
-    // TODO: Change from arbitrary number
     return this.state.isMobile
       ? this.createMobileGUI()
       : this.createDesktopGUI();
