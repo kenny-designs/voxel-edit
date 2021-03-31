@@ -29,10 +29,10 @@ class GUIController extends React.Component {
       isColorModalOpen: false,
       desktop: {
         brushSettings: {
-          activeIndices: [0],
+          activeAccordionIndices: [0],
         },
         colorPalette: {
-          activeIndices: [0],
+          activeAccordionIndices: [0],
         },
       },
     };
@@ -49,65 +49,34 @@ class GUIController extends React.Component {
   };
 
   /**
-   * Handler for when an accordion on the brush settings is clicked.
+   * Handles opening/closing accordions on the desktop GUI.
    * @param {*} e
    * @param {*} titleProps
    */
-  handleBrushAccordionClick = (e, titleProps) => {
-    const { index } = titleProps;
-    const { activeIndices } = this.state.desktop.brushSettings;
+  handleAccordionIndicesChange = (e, titleProps) => {
+    // Get the index of the accordion and the name of the component it belongs to
+    const { index, componentname } = titleProps;
 
-    // Make a copy of the array to avoid mutating the original
-    const newActiveIndices = [...activeIndices];
+    // Make a copy of the desktop state object
+    const desktop = { ...this.state.desktop };
 
-    // If index is present, remove it. Otherwise, add to indices
-    const pos = newActiveIndices.indexOf(index);
+    // Get the active indices for that component
+    const { activeAccordionIndices } = desktop[componentname];
+
+    // Get the position of the accordion index
+    const pos = activeAccordionIndices.indexOf(index);
+
+    // Position was found, remove the index for the user is closing the accordion
     if (pos !== -1) {
-      newActiveIndices.splice(pos, 1);
-    } else {
-      newActiveIndices.push(index);
+      activeAccordionIndices.splice(pos, 1);
+    }
+    // Position not found, add the index
+    else {
+      activeAccordionIndices.push(index);
     }
 
-    this.setState({
-      desktop: {
-        ...this.state.desktop,
-        brushSettings: {
-          ...this.state.desktop.brushSettings,
-          activeIndices: newActiveIndices,
-        },
-      },
-    });
-  };
-
-  /**
-   * Handler for when an accordion on the brush settings is clicked.
-   * @param {*} e
-   * @param {*} titleProps
-   */
-  handleColorAccordionClick = (e, titleProps) => {
-    const { index } = titleProps;
-    const { activeIndices } = this.state.desktop.colorPalette;
-
-    // Make a copy of the array to avoid mutating the original
-    const newActiveIndices = [...activeIndices];
-
-    // If index is present, remove it. Otherwise, add to indices
-    const pos = newActiveIndices.indexOf(index);
-    if (pos !== -1) {
-      newActiveIndices.splice(pos, 1);
-    } else {
-      newActiveIndices.push(index);
-    }
-
-    this.setState({
-      desktop: {
-        ...this.state.desktop,
-        colorPalette: {
-          ...this.state.desktop.colorPalette,
-          activeIndices: newActiveIndices,
-        },
-      },
-    });
+    // Update the state of the active indices for the given component
+    this.setState({ desktop });
   };
 
   componentDidMount() {
@@ -164,13 +133,14 @@ class GUIController extends React.Component {
               </Menu.Item>
               <Menu.Item>
                 <Accordion.Title
-                  active={brushSettings.activeIndices.includes(0)}
+                  active={brushSettings.activeAccordionIndices.includes(0)}
                   content="Voxel Actions"
                   index={0}
-                  onClick={this.handleBrushAccordionClick}
+                  componentname="brushSettings"
+                  onClick={this.handleAccordionIndicesChange}
                 />
                 <Accordion.Content
-                  active={brushSettings.activeIndices.includes(0)}
+                  active={brushSettings.activeAccordionIndices.includes(0)}
                 >
                   <Brush onBrushChange={this.props.onBrushChange} />
                 </Accordion.Content>
@@ -190,13 +160,14 @@ class GUIController extends React.Component {
                 </Header>
                 <Accordion inverted fluid exclusive={false}>
                   <Accordion.Title
-                    active={colorPalette.activeIndices.includes(0)}
+                    active={colorPalette.activeAccordionIndices.includes(0)}
                     content="Color Selection"
                     index={0}
-                    onClick={this.handleColorAccordionClick}
+                    componentname="colorPalette"
+                    onClick={this.handleAccordionIndicesChange}
                   />
                   <Accordion.Content
-                    active={colorPalette.activeIndices.includes(0)}
+                    active={colorPalette.activeAccordionIndices.includes(0)}
                   >
                     <ColorPalette
                       onGetColorData={this.props.onGetColorData}
