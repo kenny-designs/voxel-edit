@@ -19,6 +19,7 @@
   border-radius: 2px;
   border-color: black;
   border-style: solid;
+  cursor: pointer;
 }
 
 .color-cell.active {
