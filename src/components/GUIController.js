@@ -26,7 +26,9 @@ class GUIController extends React.Component {
     super(props);
     this.state = {
       isMobile: false,
-      isColorModalOpen: false,
+      mobile: {
+        isColorModalOpen: false,
+      },
       desktop: {
         brushSettings: {
           activeAccordionIndices: [0],
@@ -231,7 +233,9 @@ class GUIController extends React.Component {
           <Sidebar as={Menu} inverted direction="top" visible width="very thin">
             <Menu.Item
               as="a"
-              onClick={() => this.setState({ isColorModalOpen: true })}
+              onClick={() =>
+                this.setState({ mobile: { isColorModalOpen: true } })
+              }
             >
               Color Palette
             </Menu.Item>
@@ -242,9 +246,11 @@ class GUIController extends React.Component {
 
           {/* Color Selection Modal */}
           <Modal
-            open={this.state.isColorModalOpen}
-            onClose={() => this.setState({ isColorModalOpen: false })}
-            onOpen={() => this.setState({ isColorModalOpen: true })}
+            open={this.state.mobile.isColorModalOpen}
+            onClose={() =>
+              this.setState({ mobile: { isColorModalOpen: false } })
+            }
+            onOpen={() => this.setState({ mobile: { isColorModalOpen: true } })}
           >
             <Modal.Header>Color Palette</Modal.Header>
             <Modal.Content scrolling>
@@ -259,7 +265,9 @@ class GUIController extends React.Component {
 
             <Modal.Actions>
               <Button
-                onClick={() => this.setState({ isColorModalOpen: false })}
+                onClick={() =>
+                  this.setState({ mobile: { isColorModalOpen: false } })
+                }
                 primary
               >
                 Close
