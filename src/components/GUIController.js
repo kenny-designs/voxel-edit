@@ -107,12 +107,89 @@ class GUIController extends React.Component {
   }
 
   /**
+   * Creates the JSX for the desktop version of the brush.
+   * @returns {JSX}
+   */
+  createDesktopBrush = () => {
+    const { brushSettings } = this.state.desktop;
+
+    return (
+      <Accordion as={Menu} inverted vertical fluid exclusive={false}>
+        <Menu.Item header>
+          Brush Settings
+          <Icon name="paint brush" />
+        </Menu.Item>
+        <Menu.Item>
+          <Accordion.Title
+            active={brushSettings.activeAccordionIndices.includes(0)}
+            content="Voxel Actions"
+            index={0}
+            onClick={(e, titleProps) => {
+              this.handleAccordionIndicesChange(
+                titleProps.index,
+                "brushSettings"
+              );
+            }}
+          />
+          <Accordion.Content
+            active={brushSettings.activeAccordionIndices.includes(0)}
+          >
+            <Brush onBrushChange={this.props.onBrushChange} />
+          </Accordion.Content>
+        </Menu.Item>
+      </Accordion>
+    );
+  };
+
+  /**
+   * Creates the JSX for the desktop version of the color palette.
+   * @returns {JSX}
+   */
+  createDesktopColorPalette = () => {
+    const { colorPalette } = this.state.desktop;
+
+    return (
+      <Segment.Group>
+        <Segment inverted>
+          <Header as="h4" inverted>
+            <Icon name="tint" />
+            <Header.Content>
+              Color Palette
+              <Header.Subheader>Select a color to paint with</Header.Subheader>
+            </Header.Content>
+          </Header>
+          <Accordion inverted fluid exclusive={false}>
+            <Accordion.Title
+              active={colorPalette.activeAccordionIndices.includes(0)}
+              content="Color Selection"
+              index={0}
+              onClick={(e, titleProps) => {
+                this.handleAccordionIndicesChange(
+                  titleProps.index,
+                  "colorPalette"
+                );
+              }}
+            />
+            <Accordion.Content
+              active={colorPalette.activeAccordionIndices.includes(0)}
+            >
+              <ColorPalette
+                onGetColorData={this.props.onGetColorData}
+                onSelectedColorChange={this.props.onSelectedColorChange}
+                onNewSelectedColor={this.props.onNewSelectedColor}
+              />
+            </Accordion.Content>
+          </Accordion>
+        </Segment>
+      </Segment.Group>
+    );
+  };
+
+  /**
    * Create the desktop version of the UI.
    * @returns {JSX}
    */
   createDesktopGUI() {
-    const { brushSettings, colorPalette } = this.state.desktop;
-
     return (
       <Grid className={"desktopGrid"}>
         <Grid.Row>
@@ -124,66 +201,8 @@ class GUIController extends React.Component {
               marginTop: "1em",
             }}
           >
-            <Accordion as={Menu} inverted vertical fluid exclusive={false}>
-              <Menu.Item header>
-                Brush Settings
-                <Icon name="paint brush" />
-              </Menu.Item>
-              <Menu.Item>
-                <Accordion.Title
-                  active={brushSettings.activeAccordionIndices.includes(0)}
-                  content="Voxel Actions"
-                  index={0}
-                  onClick={(e, titleProps) => {
-                    this.handleAccordionIndicesChange(
-                      titleProps.index,
-                      "brushSettings"
-                    );
-                  }}
-                />
-                <Accordion.Content
-                  active={brushSettings.activeAccordionIndices.includes(0)}
-                >
-                  <Brush onBrushChange={this.props.onBrushChange} />
-                </Accordion.Content>
-              </Menu.Item>
-            </Accordion>
-
-            <Segment.Group>
-              <Segment inverted>
-                <Header as="h4" inverted>
-                  <Icon name="tint" />
-                  <Header.Content>
-                    Color Palette
-                    <Header.Subheader>
-                      Select a color to paint with
-                    </Header.Subheader>
-                  </Header.Content>
-                </Header>
-                <Accordion inverted fluid exclusive={false}>
-                  <Accordion.Title
-                    active={colorPalette.activeAccordionIndices.includes(0)}
-                    content="Color Selection"
-                    index={0}
-                    onClick={(e, titleProps) => {
-                      this.handleAccordionIndicesChange(
-                        titleProps.index,
-                        "colorPalette"
-                      );
-                    }}
-                  />
-                  <Accordion.Content
-                    active={colorPalette.activeAccordionIndices.includes(0)}
-                  >
-                    <ColorPalette
-                      onGetColorData={this.props.onGetColorData}
-                      onSelectedColorChange={this.props.onSelectedColorChange}
-                      onNewSelectedColor={this.props.onNewSelectedColor}
-                    />
-                  </Accordion.Content>
-                </Accordion>
-              </Segment>
-            </Segment.Group>
+            {this.createDesktopBrush()}
+            {this.createDesktopColorPalette()}
           </Grid.Column>
 
           <Grid.Column width={11} style={{ padding: "0" }}>
@@ -259,7 +278,6 @@ class GUIController extends React.Component {
   }
 
   render() {
-    // TODO: Change from arbitrary number
     return this.state.isMobile
       ? this.createMobileGUI()
       : this.createDesktopGUI();
