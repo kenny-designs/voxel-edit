@@ -131,8 +131,8 @@ class GUIController extends React.Component {
         style={{ border: "none", borderRadius: "0" }}
       >
         <Sidebar as={Menu} inverted direction="top" visible width="very thin">
-          <Menu.Item as="a">Undo</Menu.Item>
-          <Menu.Item as="a">Redo</Menu.Item>
+          <Menu.Item as="a">Button 1</Menu.Item>
+          <Menu.Item as="a">Button 2</Menu.Item>
         </Sidebar>
         <Viewport onCanvasCreation={this.props.onCanvasCreation} />
       </Sidebar.Pushable>
