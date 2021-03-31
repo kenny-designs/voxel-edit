@@ -49,19 +49,17 @@ class GUIController extends React.Component {
   };
 
   /**
-   * Handles opening/closing accordions on the desktop GUI.
-   * @param {*} e
-   * @param {*} titleProps
+   * Toggles the accordion at the given index for the given state with a
+   * activeAccordionIndices property.
+   * @param {number} index - Index of accordion to toggle
+   * @param {string} componentName - The state.desktop property with a activeAccordionIndices property
    */
-  handleAccordionIndicesChange = (e, titleProps) => {
-    // Get the index of the accordion and the name of the component it belongs to
-    const { index, componentname } = titleProps;
-
+  handleAccordionIndicesChange = (index, componentName) => {
     // Make a copy of the desktop state object
     const desktop = { ...this.state.desktop };
 
     // Get the active indices for that component
-    const { activeAccordionIndices } = desktop[componentname];
+    const { activeAccordionIndices } = desktop[componentName];
 
     // Get the position of the accordion index
     const pos = activeAccordionIndices.indexOf(index);
@@ -136,8 +134,12 @@ class GUIController extends React.Component {
                   active={brushSettings.activeAccordionIndices.includes(0)}
                   content="Voxel Actions"
                   index={0}
-                  componentname="brushSettings"
-                  onClick={this.handleAccordionIndicesChange}
+                  onClick={(e, titleProps) => {
+                    this.handleAccordionIndicesChange(
+                      titleProps.index,
+                      "brushSettings"
+                    );
+                  }}
                 />
                 <Accordion.Content
                   active={brushSettings.activeAccordionIndices.includes(0)}
@@ -163,8 +165,12 @@ class GUIController extends React.Component {
                     active={colorPalette.activeAccordionIndices.includes(0)}
                     content="Color Selection"
                     index={0}
-                    componentname="colorPalette"
-                    onClick={this.handleAccordionIndicesChange}
+                    onClick={(e, titleProps) => {
+                      this.handleAccordionIndicesChange(
+                        titleProps.index,
+                        "colorPalette"
+                      );
+                    }}
                   />
                   <Accordion.Content
                     active={colorPalette.activeAccordionIndices.includes(0)}
