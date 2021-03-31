@@ -7,19 +7,22 @@
   height: 30vh;
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: space-around;
   margin-bottom: 5px;
+  padding: 5px;
 }
 
 .color-cell {
-  width: 20px;
-  height: 20px;
-  margin: 5px;
-  border-style: solid;
+  width: 2em;
+  height: 2em;
+  margin: 2px;
   border-radius: 2px;
+  border-color: black;
+  border-style: solid;
 }
 
 .color-cell.active {
-  border-color: red;
-  border-width: 3px;
+  outline-color: white;
+  outline-width: 3px;
+  outline-style: auto;
 }

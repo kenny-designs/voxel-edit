@@ -3,4 +3,5 @@ body {
   margin: 0;
   height: 100%;
   overflow-y: hidden;
+  background-color: var(--main-bg-color);
 }

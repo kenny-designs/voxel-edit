@@ -3,7 +3,7 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import VoxelWorld from "./VoxelWorld";
 import Brush from "./Brush";
 import ColorPalette from "./ColorPalette";
-import textureAtlas from "../images/flourish-cc-by-nc-sa.png";
+//import textureAtlas from "../images/flourish-cc-by-nc-sa.png";
 
 /**
  * Helper function to return a random integer between the min and max value
@@ -88,6 +88,7 @@ function createFlatGround(world, cellX, cellY, cellZ, cellSize, v = 0) {
  * @param {*} render
  * @return texture
  */
+/*
 function createTextureAtlas(render) {
   // Load texture atlas
   const loader = new THREE.TextureLoader();
@@ -96,6 +97,7 @@ function createTextureAtlas(render) {
   texture.minFilter = THREE.NearestFilter;
   return texture;
 }
+*/
 
 /**
  * Class used to interface with the scene and handles the main render loop.
