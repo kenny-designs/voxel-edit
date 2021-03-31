@@ -3,7 +3,15 @@ import Viewport from "./Viewport";
 import Brush from "./Brush";
 import ColorPalette from "./ColorPalette";
 import "./GUIController.css";
-import { Modal, Button, Grid, Sidebar, Segment, Menu } from "semantic-ui-react";
+import {
+  Modal,
+  Button,
+  Grid,
+  Sidebar,
+  Segment,
+  Menu,
+  Accordion,
+} from "semantic-ui-react";
 
 /**
  * Handles switching between both desktop and mobile versions of the
@@ -17,6 +25,11 @@ class GUIController extends React.Component {
     this.state = {
       isMobile: false,
       isColorModalOpen: false,
+      desktop: {
+        brushSettings: {
+          activeIndices: [0],
+        },
+      },
     };
   }
 
@@ -28,6 +41,36 @@ class GUIController extends React.Component {
     // If width below 768, use mobile GUI
     const isMobile = window.innerWidth < 768;
     this.setState({ isMobile });
+  };
+
+  /**
+   * Handler for when an accordion on the brush settings is clicked.
+   * @param {*} e
+   * @param {*} titleProps
+   */
+  handleBrushAccordionClick = (e, titleProps) => {
+    const { index } = titleProps;
+    const { activeIndices } = this.state.desktop.brushSettings;
+
+    // Make a copy of the array to avoid mutating the original
+    const newActiveIndices = [...activeIndices];
+
+    // If index is present, remove it. Otherwise, add to indices
+    const pos = newActiveIndices.indexOf(index);
+    if (pos !== -1) {
+      newActiveIndices.splice(pos, 1);
+    } else {
+      newActiveIndices.push(index);
+    }
+
+    this.setState({
+      desktop: {
+        brushSettings: {
+          ...this.state.desktop.brushSettings,
+          activeIndices: newActiveIndices,
+        },
+      },
+    });
   };
 
   componentDidMount() {
@@ -64,17 +107,27 @@ class GUIController extends React.Component {
    * @returns {JSX}
    */
   createDesktopGUI() {
+    const { activeIndices } = this.state.desktop.brushSettings;
+
     return (
       <Grid celled className={"desktopGrid"}>
         <Grid.Row>
           <Grid.Column width={3}>
-            <Menu vertical fluid inverted>
+            <Accordion as={Menu} inverted vertical fluid exclusive={false}>
               <Menu.Item header>Brush Settings</Menu.Item>
+              <Menu.Item>
+                <Accordion.Title
+                  active={activeIndices.includes(0)}
+                  content="Voxel"
+                  index={0}
+                  onClick={this.handleBrushAccordionClick}
+                />
+                <Accordion.Content active={activeIndices.includes(0)}>
+                  <Brush onBrushChange={this.props.onBrushChange} />
+                </Accordion.Content>
+              </Menu.Item>
+            </Accordion>
 
-              <Menu.Menu>
-                <Brush onBrushChange={this.props.onBrushChange} />
-              </Menu.Menu>
-            </Menu>
             <ColorPalette
               onGetColorData={this.props.onGetColorData}
               onSelectedColorChange={this.props.onSelectedColorChange}
