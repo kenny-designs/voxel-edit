@@ -7,7 +7,7 @@
   height: 30vh;
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-around;
+  justify-content: left;
   margin-bottom: 5px;
   padding: 5px;
 }
@@ -26,4 +26,23 @@
   outline-color: white;
   outline-width: 3px;
   outline-style: auto;
+}
+
+.add-cell-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  border-color: white;
+  border-width: 2px;
+}
+
+.add-cell-btn > i {
+  margin: 0;
+  height: auto;
+}
+
+.add-cell-btn:hover {
+  color: var(--hover-color);
+  border-color: var(--hover-color);
 }

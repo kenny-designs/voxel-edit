@@ -1,6 +1,7 @@
 import React from "react";
 import "./ColorPalette.css";
 import { ChromePicker } from "react-color";
+import { Button, Icon } from "semantic-ui-react";
 
 /**
  * Represents each individual color on the color palette.
@@ -84,7 +85,12 @@ class ColorPalette extends React.Component {
 
     return (
       <div>
-        <div className="color-cell-container">{buttons}</div>
+        <div className="color-cell-container">
+          {buttons}
+          <div className="color-cell add-cell-btn">
+            <Icon name="plus" />
+          </div>
+        </div>
         <ChromePicker
           color={this.state.currentColor}
           disableAlpha={true}
