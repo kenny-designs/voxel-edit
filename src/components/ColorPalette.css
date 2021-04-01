@@ -4,7 +4,9 @@
 
 .color-cell-container {
   overflow: auto;
+  /*
   height: 30vh;
+  */
   display: flex;
   flex-wrap: wrap;
   justify-content: left;

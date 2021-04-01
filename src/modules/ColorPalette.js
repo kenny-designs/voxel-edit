@@ -1,6 +1,10 @@
 /**
  * Internal representation of the ColorPalette React component.
  * Used to track each color of the voxels within the scene.
+ *
+ * @property {Array.<Color>} colors - Array containing all of the colors in the color palette
+ * @property {number} selectedColor - The currently selected color from the colors array
+ * @property {number} maxColors - The maximum number of colors that the colors array can hold
  */
 class ColorPalette {
   constructor(colors = null, selectedColor = 0) {
@@ -12,21 +16,28 @@ class ColorPalette {
 
     // The currently selected color
     this.selectedColor = selectedColor;
+
+    // The VoxelWorld can only hold up to 255 colors
+    this.maxColors = 128;
   }
 
   /**
    * Initializes an array of colors for the color palette.
    */
   initializeColorArray() {
-    // Palette holds 128 colors by default
-    this.colors = new Array(128);
+    this.colors = [new Color(0.5176, 0.7843, 0.0902)];
+  }
 
-    // Initial color is green
-    this.colors[0] = new Color(0.5176, 0.7843, 0.0902);
-
-    // All other colors are red by default
-    for (let i = 1; i < this.colors.length; ++i) {
-      this.colors[i] = new Color(1, 0, 0);
+  /**
+   * Adds a new color to the end of the colors array. Red by default.
+   * @param {number} [r = 1]
+   * @param {number} [g = 0]
+   * @param {number} [b = 0]
+   */
+  addColor(r = 1, g = 0, b = 0) {
+    if (this.colors.length < this.maxColors) {
+      this.colors.push(new Color(r, g, b));
+      this.selectedColor = this.colors.length - 1;
     }
   }
 

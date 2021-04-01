@@ -67,8 +67,16 @@ class ColorPalette extends React.Component {
     this.setState({ selectedColorIndex: id, currentColor: color });
   };
 
-  onAddColorBtnClick = () => {
-    console.log("We clicked it!");
+  /**
+   * Handles when the add cell button is clicked.
+   */
+  onAddCellClick = () => {
+    // Add a new color to the palette
+    this.props.onAddColor();
+
+    // Obtain new color data
+    const { currentColor, selectedColorIndex } = this.props.onGetColorData();
+    this.setState({ currentColor, selectedColorIndex });
   };
 
   /**
@@ -101,7 +109,7 @@ class ColorPalette extends React.Component {
           {this.getColorCells()}
           <div
             className="color-cell add-cell-btn"
-            onClick={this.onAddColorBtnClick}
+            onClick={this.onAddCellClick}
           >
             <Icon name="plus" />
           </div>

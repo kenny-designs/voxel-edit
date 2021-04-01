@@ -187,6 +187,7 @@ class GUIController extends React.Component {
                 onGetColorData={this.props.onGetColorData}
                 onSelectedColorChange={this.props.onSelectedColorChange}
                 onNewSelectedColor={this.props.onNewSelectedColor}
+                onAddColor={this.props.onAddColor}
               />
             </Accordion.Content>
           </Accordion>
@@ -267,6 +268,7 @@ class GUIController extends React.Component {
                   onGetColorData={this.props.onGetColorData}
                   onSelectedColorChange={this.props.onSelectedColorChange}
                   onNewSelectedColor={this.props.onNewSelectedColor}
+                  onAddColor={this.props.onAddColor}
                 />
               </Modal.Description>
             </Modal.Content>

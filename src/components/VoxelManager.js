@@ -87,6 +87,16 @@ class VoxelManager extends React.Component {
     }
   };
 
+  /**
+   * Tell the VoxelEditor that the user added a new color to their color palette
+   */
+  onAddColor = () => {
+    if (!this.voxelEditor) return;
+
+    // Add a new color to the color palette
+    this.voxelEditor.world.colorPalette.addColor();
+  };
+
   render() {
     return (
       <GUIController
@@ -95,6 +105,7 @@ class VoxelManager extends React.Component {
         onGetColorData={this.onGetColorData}
         onSelectedColorChange={this.onSelectedColorChange}
         onNewSelectedColor={this.onNewSelectedColor}
+        onAddColor={this.onAddColor}
       />
     );
   }
