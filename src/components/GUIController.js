@@ -2,7 +2,6 @@ import React from "react";
 import Viewport from "./Viewport";
 import Brush from "./Brush";
 import ColorPalette from "./ColorPalette";
-import "./GUIController.css";
 import {
   Modal,
   Button,
