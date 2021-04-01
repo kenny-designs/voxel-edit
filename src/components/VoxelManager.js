@@ -13,6 +13,9 @@ class VoxelManager extends React.Component {
 
     // The VoxelEditor itself that handles the 3D scene
     this.voxelEditor = null;
+
+    // Create object with callbacks for each component
+    this.callbacks = this.getCallbacksObject();
   }
 
   /**
@@ -46,7 +49,6 @@ class VoxelManager extends React.Component {
    */
   onGetColorData = () => {
     // Return empty array if voxelEditor not ready
-    // TODO: Redo this.
     if (!this.voxelEditor) {
       return {
         colors: [],
@@ -100,17 +102,29 @@ class VoxelManager extends React.Component {
     this.voxelEditor.world.colorPalette.addColor();
   };
 
+  /**
+   * Returns callbacks organized by the component that they are meant for.
+   * @returns {Object}
+   */
+  getCallbacksObject = () => {
+    return {
+      brush: {
+        onBrushChange: this.setCurrentBrush,
+      },
+      colorPalette: {
+        onGetColorData: this.onGetColorData,
+        onSelectedColorChange: this.onSelectedColorChange,
+        onNewSelectedColor: this.onNewSelectedColor,
+        onAddColor: this.onAddColor,
+      },
+      viewport: {
+        onCanvasCreation: this.createVoxelWorld,
+      },
+    };
+  };
+
   render() {
-    return (
-      <GUIController
-        onCanvasCreation={this.createVoxelWorld}
-        onBrushChange={this.setCurrentBrush}
-        onGetColorData={this.onGetColorData}
-        onSelectedColorChange={this.onSelectedColorChange}
-        onNewSelectedColor={this.onNewSelectedColor}
-        onAddColor={this.onAddColor}
-      />
-    );
+    return <GUIController callbacks={this.callbacks} />;
   }
 }
 

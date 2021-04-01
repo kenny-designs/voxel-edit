@@ -40,7 +40,7 @@ class ColorPalette extends React.Component {
       currentColor,
       selectedColorIndex,
       isColorsFull,
-    } = this.props.onGetColorData();
+    } = this.props.callbacks.onGetColorData();
 
     this.state = {
       currentColor,
@@ -58,7 +58,7 @@ class ColorPalette extends React.Component {
       currentColor,
       selectedColorIndex,
       isColorsFull,
-    } = this.props.onGetColorData();
+    } = this.props.callbacks.onGetColorData();
 
     let newState = {};
 
@@ -90,7 +90,10 @@ class ColorPalette extends React.Component {
    */
   handlePickerChange = ({ rgb }) => {
     // Tell the parent that there was a change in color
-    this.props.onSelectedColorChange(this.state.selectedColorIndex, rgb);
+    this.props.callbacks.onSelectedColorChange(
+      this.state.selectedColorIndex,
+      rgb
+    );
 
     this.updateColorData();
   };
@@ -102,7 +105,7 @@ class ColorPalette extends React.Component {
    */
   onColorCellClick = (id, color) => {
     // Tell the parent that there is a new selected color/cell
-    this.props.onNewSelectedColor(id);
+    this.props.callbacks.onNewSelectedColor(id);
 
     this.updateColorData();
   };
@@ -112,7 +115,7 @@ class ColorPalette extends React.Component {
    */
   onAddCellClick = () => {
     // Add a new color to the palette
-    this.props.onAddColor();
+    this.props.callbacks.onAddColor();
 
     this.updateColorData();
   };
@@ -124,7 +127,7 @@ class ColorPalette extends React.Component {
   getColorCells = () => {
     // Create buttons for each color
     let buttons = [];
-    const { colors } = this.props.onGetColorData();
+    const { colors } = this.props.callbacks.onGetColorData();
     colors.forEach((color, index) => {
       buttons.push(
         <ColorCell

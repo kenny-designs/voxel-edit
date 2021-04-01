@@ -103,7 +103,7 @@ class GUIController extends React.Component {
           <Menu.Item as="a">Button 1</Menu.Item>
           <Menu.Item as="a">Button 2</Menu.Item>
         </Sidebar>
-        <Viewport onCanvasCreation={this.props.onCanvasCreation} />
+        <Viewport callbacks={this.props.callbacks.viewport} />
       </Sidebar.Pushable>
     );
   }
@@ -142,7 +142,7 @@ class GUIController extends React.Component {
               active={brushSettings.activeAccordionIndices.includes(0)}
             >
               <Menu inverted vertical fluid>
-                <Brush onBrushChange={this.props.onBrushChange} />
+                <Brush callbacks={this.props.callbacks.brush} />
               </Menu>
             </Accordion.Content>
           </Accordion>
@@ -183,12 +183,7 @@ class GUIController extends React.Component {
             <Accordion.Content
               active={colorPalette.activeAccordionIndices.includes(0)}
             >
-              <ColorPalette
-                onGetColorData={this.props.onGetColorData}
-                onSelectedColorChange={this.props.onSelectedColorChange}
-                onNewSelectedColor={this.props.onNewSelectedColor}
-                onAddColor={this.props.onAddColor}
-              />
+              <ColorPalette callbacks={this.props.callbacks.colorPalette} />
             </Accordion.Content>
           </Accordion>
         </Segment>
@@ -264,12 +259,7 @@ class GUIController extends React.Component {
             <Modal.Header>Color Palette</Modal.Header>
             <Modal.Content scrolling>
               <Modal.Description>
-                <ColorPalette
-                  onGetColorData={this.props.onGetColorData}
-                  onSelectedColorChange={this.props.onSelectedColorChange}
-                  onNewSelectedColor={this.props.onNewSelectedColor}
-                  onAddColor={this.props.onAddColor}
-                />
+                <ColorPalette callbacks={this.props.callbacks.colorPalette} />
               </Modal.Description>
             </Modal.Content>
 
@@ -286,10 +276,10 @@ class GUIController extends React.Component {
           </Modal>
 
           <Sidebar as={Menu} inverted direction="bottom" visible width="thin">
-            <Brush onBrushChange={this.props.onBrushChange} />
+            <Brush callbacks={this.props.callbacks.brush} />
           </Sidebar>
 
-          <Viewport onCanvasCreation={this.props.onCanvasCreation} />
+          <Viewport callbacks={this.props.callbacks.viewport} />
         </Sidebar.Pushable>
       </div>
     );
