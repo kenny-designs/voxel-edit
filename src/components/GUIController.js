@@ -14,7 +14,6 @@ import {
   Header,
   Icon,
   Dropdown,
-  Container,
 } from "semantic-ui-react";
 
 /**
@@ -96,43 +95,7 @@ class GUIController extends React.Component {
    * @returns {JSX}
    */
   createDesktopViewport() {
-    /*
-    return (
-      <Sidebar.Pushable
-        as={Segment}
-        style={{ border: "none", borderRadius: "0" }}
-      >
-        <Sidebar as={Menu} inverted direction="top" visible width="very thin">
-          <Dropdown text="File" pointing className="link item">
-            <Dropdown.Menu>
-              <Dropdown.Item>Save Project</Dropdown.Item>
-              <Dropdown.Item>Load Project</Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
-        </Sidebar>
-
-        <Viewport callbacks={this.props.callbacks.viewport} />
-      </Sidebar.Pushable>
-    );
-    */
-
-    //return <Viewport callbacks={this.props.callbacks.viewport} />;
-
-    return (
-      <React.Fragment>
-        {/*
-        <Menu inverted>
-          <Dropdown text="File" pointing className="link item">
-            <Dropdown.Menu>
-              <Dropdown.Item>Save Project</Dropdown.Item>
-              <Dropdown.Item>Load Project</Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
-        </Menu>
-        */}
-        <Viewport callbacks={this.props.callbacks.viewport} />
-      </React.Fragment>
-    );
+    return <Viewport callbacks={this.props.callbacks.viewport} />;
   }
 
   /**
@@ -225,7 +188,22 @@ class GUIController extends React.Component {
   createDesktopGUI() {
     return (
       <Grid padded style={{ height: "100vh" }}>
-        <Grid.Row style={{ height: "100%" }}>
+        <Grid.Row style={{ paddingTop: "0", paddingBottom: "0" }}>
+          <Grid.Column>
+            <Menu inverted>
+              <Dropdown text="File" pointing className="link item">
+                <Dropdown.Menu>
+                  <Dropdown.Item>Save Project</Dropdown.Item>
+                  <Dropdown.Item>Load Project</Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
+            </Menu>
+          </Grid.Column>
+        </Grid.Row>
+
+        <Grid.Row
+          style={{ height: "90%", paddingTop: "0", paddingBottom: "0" }}
+        >
           <Grid.Column
             width={3}
             style={{
