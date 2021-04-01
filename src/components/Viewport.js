@@ -17,7 +17,7 @@ class Viewport extends React.Component {
 
   componentDidMount() {
     // Canvas is ready to be drawn on
-    this.props.onCanvasCreation(this.canvasRef);
+    this.props.callbacks.onCanvasCreation(this.canvasRef);
   }
 
   render() {
