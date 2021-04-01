@@ -194,7 +194,14 @@ class GUIController extends React.Component {
               <Dropdown text="File" pointing className="link item">
                 <Dropdown.Menu>
                   <Dropdown.Item>Save Project</Dropdown.Item>
-                  <Dropdown.Item>Load Project</Dropdown.Item>
+                  <Dropdown.Item disabled>Load Project</Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
+
+              <Dropdown text="Edit" pointing className="link item">
+                <Dropdown.Menu>
+                  <Dropdown.Item disabled>Undo</Dropdown.Item>
+                  <Dropdown.Item disabled>Redo</Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
             </Menu>
