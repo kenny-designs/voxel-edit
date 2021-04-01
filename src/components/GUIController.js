@@ -13,6 +13,8 @@ import {
   Accordion,
   Header,
   Icon,
+  Dropdown,
+  Container,
 } from "semantic-ui-react";
 
 /**
@@ -94,17 +96,42 @@ class GUIController extends React.Component {
    * @returns {JSX}
    */
   createDesktopViewport() {
+    /*
     return (
       <Sidebar.Pushable
         as={Segment}
         style={{ border: "none", borderRadius: "0" }}
       >
         <Sidebar as={Menu} inverted direction="top" visible width="very thin">
-          <Menu.Item as="a">Button 1</Menu.Item>
-          <Menu.Item as="a">Button 2</Menu.Item>
+          <Dropdown text="File" pointing className="link item">
+            <Dropdown.Menu>
+              <Dropdown.Item>Save Project</Dropdown.Item>
+              <Dropdown.Item>Load Project</Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
         </Sidebar>
+
         <Viewport callbacks={this.props.callbacks.viewport} />
       </Sidebar.Pushable>
+    );
+    */
+
+    //return <Viewport callbacks={this.props.callbacks.viewport} />;
+
+    return (
+      <React.Fragment>
+        {/*
+        <Menu inverted>
+          <Dropdown text="File" pointing className="link item">
+            <Dropdown.Menu>
+              <Dropdown.Item>Save Project</Dropdown.Item>
+              <Dropdown.Item>Load Project</Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
+        </Menu>
+        */}
+        <Viewport callbacks={this.props.callbacks.viewport} />
+      </React.Fragment>
     );
   }
 
@@ -197,25 +224,24 @@ class GUIController extends React.Component {
    */
   createDesktopGUI() {
     return (
-      <Grid className={"desktopGrid"}>
-        <Grid.Row>
+      <Grid padded style={{ height: "100vh" }}>
+        <Grid.Row style={{ height: "100%" }}>
           <Grid.Column
             width={3}
             style={{
-              height: "100vh",
+              height: "100%",
               overflowY: "auto",
-              marginTop: "1em",
             }}
           >
             {this.createDesktopBrush()}
             {this.createDesktopColorPalette()}
           </Grid.Column>
 
-          <Grid.Column width={11} style={{ padding: "0" }}>
+          <Grid.Column width={11} style={{ height: "100%" }}>
             {this.createDesktopViewport()}
           </Grid.Column>
 
-          <Grid.Column width={2}>
+          <Grid.Column width={2} style={{ height: "100%" }}>
             <h1>Right Panel</h1>
           </Grid.Column>
         </Grid.Row>

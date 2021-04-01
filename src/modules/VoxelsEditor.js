@@ -105,7 +105,10 @@ function createTextureAtlas(render) {
 class VoxelEditor {
   constructor(options) {
     this.canvas = options.canvas;
-    this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas });
+    this.renderer = new THREE.WebGLRenderer({
+      canvas: this.canvas,
+      antialias: true,
+    });
 
     // Length, width, and height of each cell in the VoxelWorld
     this.cellSize = 32;

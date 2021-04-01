@@ -1,6 +1,4 @@
 /** Style the main grid for the desktop */
 .ui.grid.desktopGrid {
-  margin-left: 0;
-  margin-right: 0;
   height: 100vh;
 }
