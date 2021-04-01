@@ -11,20 +11,22 @@ class ColorPalette {
     }
 
     // The currently selected color
-    this.selectedColor = 0;
+    this.selectedColor = selectedColor;
   }
 
   /**
-   * Initializes an array of colors for the color palette. Creates
-   * 128 colors that are all grey by default.
+   * Initializes an array of colors for the color palette.
    */
   initializeColorArray() {
     // Palette holds 128 colors by default
     this.colors = new Array(128);
 
-    // Set all colors to a grey color by default
-    for (let i = 0; i < this.colors.length; ++i) {
-      this.colors[i] = new Color(0.5, 0.5, 0.5);
+    // Initial color is green
+    this.colors[0] = new Color(0.5176, 0.7843, 0.0902);
+
+    // All other colors are red by default
+    for (let i = 1; i < this.colors.length; ++i) {
+      this.colors[i] = new Color(1, 0, 0);
     }
   }
 
