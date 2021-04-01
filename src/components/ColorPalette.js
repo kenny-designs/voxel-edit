@@ -71,7 +71,11 @@ class ColorPalette extends React.Component {
     console.log("We clicked it!");
   };
 
-  render() {
+  /**
+   * Creates the JSX for all of the color select buttons.
+   * @returns {JSX}
+   */
+  getColorCells = () => {
     // Create buttons for each color
     let buttons = [];
     const { colors } = this.props.onGetColorData();
@@ -87,10 +91,14 @@ class ColorPalette extends React.Component {
       );
     });
 
+    return buttons;
+  };
+
+  render() {
     return (
       <div>
         <div className="color-cell-container">
-          {buttons}
+          {this.getColorCells()}
           <div
             className="color-cell add-cell-btn"
             onClick={this.onAddColorBtnClick}
