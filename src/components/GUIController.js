@@ -2,6 +2,7 @@ import React from "react";
 import Viewport from "./Viewport";
 import Brush from "./Brush";
 import File from "./File";
+import Edit from "./Edit";
 import ColorPalette from "./ColorPalette";
 import {
   Modal,
@@ -13,7 +14,6 @@ import {
   Accordion,
   Header,
   Icon,
-  Dropdown,
 } from "semantic-ui-react";
 
 /**
@@ -192,13 +192,7 @@ class GUIController extends React.Component {
           <Grid.Column>
             <Menu inverted>
               <File />
-
-              <Dropdown text="Edit" pointing className="link item">
-                <Dropdown.Menu>
-                  <Dropdown.Item disabled>Undo</Dropdown.Item>
-                  <Dropdown.Item disabled>Redo</Dropdown.Item>
-                </Dropdown.Menu>
-              </Dropdown>
+              <Edit />
             </Menu>
           </Grid.Column>
         </Grid.Row>
@@ -250,7 +244,7 @@ class GUIController extends React.Component {
               Color Palette
             </Menu.Item>
             <File />
-            <Menu.Item as="a">Edit</Menu.Item>
+            <Edit />
           </Sidebar>
 
           {/* Color Selection Modal */}
