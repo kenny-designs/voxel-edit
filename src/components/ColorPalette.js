@@ -1,7 +1,7 @@
 import React from "react";
 import "./ColorPalette.css";
 import { ChromePicker } from "react-color";
-import { Button, Icon } from "semantic-ui-react";
+import { Icon } from "semantic-ui-react";
 
 /**
  * Represents each individual color on the color palette.
@@ -67,6 +67,10 @@ class ColorPalette extends React.Component {
     this.setState({ selectedColorIndex: id, currentColor: color });
   };
 
+  onAddColorBtnClick = () => {
+    console.log("We clicked it!");
+  };
+
   render() {
     // Create buttons for each color
     let buttons = [];
@@ -87,7 +91,10 @@ class ColorPalette extends React.Component {
       <div>
         <div className="color-cell-container">
           {buttons}
-          <div className="color-cell add-cell-btn">
+          <div
+            className="color-cell add-cell-btn"
+            onClick={this.onAddColorBtnClick}
+          >
             <Icon name="plus" />
           </div>
         </div>
