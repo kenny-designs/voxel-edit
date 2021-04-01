@@ -47,12 +47,14 @@ class VoxelManager extends React.Component {
   onGetColorData = () => {
     // Return empty array if voxelEditor not ready
     // TODO: Redo this.
-    if (!this.voxelEditor)
+    if (!this.voxelEditor) {
       return {
         colors: [],
         selectedColorIndex: 0,
         currentColor: { r: 127.5, g: 127.5, b: 127.5 }, // default to a grey color
+        isColorsFull: true,
       };
+    }
 
     const { colorPalette } = this.voxelEditor.world;
     const { r, g, b } = colorPalette.getSelectedColor().getRGB255();
@@ -60,6 +62,7 @@ class VoxelManager extends React.Component {
       colors: colorPalette.getColorsArray(),
       selectedColorIndex: colorPalette.getSelectedColorIndex(),
       currentColor: { r, g, b },
+      isColorsFull: colorPalette.isColorsFull(),
     };
   };
 
@@ -87,6 +90,16 @@ class VoxelManager extends React.Component {
     }
   };
 
+  /**
+   * Tell the VoxelEditor that the user added a new color to their color palette
+   */
+  onAddColor = () => {
+    if (!this.voxelEditor) return;
+
+    // Add a new color to the color palette
+    this.voxelEditor.world.colorPalette.addColor();
+  };
+
   render() {
     return (
       <GUIController
@@ -95,6 +108,7 @@ class VoxelManager extends React.Component {
         onGetColorData={this.onGetColorData}
         onSelectedColorChange={this.onSelectedColorChange}
         onNewSelectedColor={this.onNewSelectedColor}
+        onAddColor={this.onAddColor}
       />
     );
   }

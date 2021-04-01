@@ -1,6 +1,7 @@
 import React from "react";
 import "./ColorPalette.css";
 import { ChromePicker } from "react-color";
+import { Icon } from "semantic-ui-react";
 
 /**
  * Represents each individual color on the color palette.
@@ -35,12 +36,52 @@ class ColorPalette extends React.Component {
     super(props);
 
     // Get data from parent component
-    const { currentColor, selectedColorIndex } = this.props.onGetColorData();
+    const {
+      currentColor,
+      selectedColorIndex,
+      isColorsFull,
+    } = this.props.onGetColorData();
 
     this.state = {
       currentColor,
       selectedColorIndex,
+      isColorsFull,
     };
+  }
+
+  /**
+   * Checks for changes in color data from the onGetColorData() prop. If
+   * there are any, updates the state.
+   */
+  updateColorData = () => {
+    const {
+      currentColor,
+      selectedColorIndex,
+      isColorsFull,
+    } = this.props.onGetColorData();
+
+    let newState = {};
+
+    if (this.state.isColorsFull !== isColorsFull) {
+      newState.isColorsFull = isColorsFull;
+    }
+
+    if (this.state.selectedColorIndex !== selectedColorIndex) {
+      newState.selectedColorIndex = selectedColorIndex;
+    }
+
+    const { r, g, b } = this.state.currentColor;
+    if (r !== currentColor.r || g !== currentColor.g || b !== currentColor.b) {
+      newState.currentColor = currentColor;
+    }
+
+    if (Object.keys(newState).length !== 0) {
+      this.setState(newState);
+    }
+  };
+
+  componentDidUpdate() {
+    this.updateColorData();
   }
 
   /**
@@ -51,7 +92,7 @@ class ColorPalette extends React.Component {
     // Tell the parent that there was a change in color
     this.props.onSelectedColorChange(this.state.selectedColorIndex, rgb);
 
-    this.setState({ currentColor: rgb });
+    this.updateColorData();
   };
 
   /**
@@ -63,10 +104,24 @@ class ColorPalette extends React.Component {
     // Tell the parent that there is a new selected color/cell
     this.props.onNewSelectedColor(id);
 
-    this.setState({ selectedColorIndex: id, currentColor: color });
+    this.updateColorData();
   };
 
-  render() {
+  /**
+   * Handles when the add cell button is clicked.
+   */
+  onAddCellClick = () => {
+    // Add a new color to the palette
+    this.props.onAddColor();
+
+    this.updateColorData();
+  };
+
+  /**
+   * Creates the JSX for all of the color select buttons.
+   * @returns {JSX}
+   */
+  getColorCells = () => {
     // Create buttons for each color
     let buttons = [];
     const { colors } = this.props.onGetColorData();
@@ -82,13 +137,35 @@ class ColorPalette extends React.Component {
       );
     });
 
+    return buttons;
+  };
+
+  /**
+   * Creates the JSX for the add color cell. If the internal ColorPalette's
+   * colors array is full, returns null instead.
+   * @returns {JSX}
+   */
+  getAddColorCell = () => {
+    if (this.state.isColorsFull) return null;
+
+    return (
+      <div className="color-cell add-cell-btn" onClick={this.onAddCellClick}>
+        <Icon name="plus" />
+      </div>
+    );
+  };
+
+  render() {
     return (
       <div>
-        <div className="color-cell-container">{buttons}</div>
+        <div className="color-cell-container">
+          {this.getColorCells()}
+          {this.getAddColorCell()}
+        </div>
         <ChromePicker
           color={this.state.currentColor}
           disableAlpha={true}
-          onChangeComplete={this.handlePickerChange}
+          onChange={this.handlePickerChange}
         />
       </div>
     );
