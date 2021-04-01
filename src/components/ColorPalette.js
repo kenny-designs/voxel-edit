@@ -109,7 +109,7 @@ class ColorPalette extends React.Component {
         <ChromePicker
           color={this.state.currentColor}
           disableAlpha={true}
-          onChangeComplete={this.handlePickerChange}
+          onChange={this.handlePickerChange}
         />
       </div>
     );
