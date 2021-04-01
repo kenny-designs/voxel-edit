@@ -8,11 +8,8 @@
  */
 class ColorPalette {
   constructor(colors = null, selectedColor = 0) {
-    if (colors) {
-      this.colors = colors;
-    } else {
-      this.initializeColorArray();
-    }
+    // Initialize the color array
+    this.colors = colors ? colors : [new Color(0.5176, 0.7843, 0.0902)];
 
     // The currently selected color
     this.selectedColor = selectedColor;
@@ -22,23 +19,24 @@ class ColorPalette {
   }
 
   /**
-   * Initializes an array of colors for the color palette.
-   */
-  initializeColorArray() {
-    this.colors = [new Color(0.5176, 0.7843, 0.0902)];
-  }
-
-  /**
    * Adds a new color to the end of the colors array. Red by default.
    * @param {number} [r = 1]
    * @param {number} [g = 0]
    * @param {number} [b = 0]
    */
   addColor(r = 1, g = 0, b = 0) {
-    if (this.colors.length < this.maxColors) {
+    if (!this.isColorsFull()) {
       this.colors.push(new Color(r, g, b));
       this.selectedColor = this.colors.length - 1;
     }
+  }
+
+  /**
+   * Checks if the colors array is full. True if it is. False otherwise.
+   * @returns {boolean}
+   */
+  isColorsFull() {
+    return this.colors.length >= this.maxColors;
   }
 
   /**
