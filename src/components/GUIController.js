@@ -1,6 +1,7 @@
 import React from "react";
 import Viewport from "./Viewport";
 import Brush from "./Brush";
+import File from "./File";
 import ColorPalette from "./ColorPalette";
 import {
   Modal,
@@ -190,12 +191,7 @@ class GUIController extends React.Component {
         <Grid.Row style={{ paddingTop: "0", paddingBottom: "0" }}>
           <Grid.Column>
             <Menu inverted>
-              <Dropdown text="File" pointing className="link item">
-                <Dropdown.Menu>
-                  <Dropdown.Item>Save Project</Dropdown.Item>
-                  <Dropdown.Item disabled>Load Project</Dropdown.Item>
-                </Dropdown.Menu>
-              </Dropdown>
+              <File />
 
               <Dropdown text="Edit" pointing className="link item">
                 <Dropdown.Menu>
@@ -253,9 +249,8 @@ class GUIController extends React.Component {
             >
               Color Palette
             </Menu.Item>
+            <File />
             <Menu.Item as="a">Edit</Menu.Item>
-            <Menu.Item as="a">Camera</Menu.Item>
-            <Menu.Item as="a">Project</Menu.Item>
           </Sidebar>
 
           {/* Color Selection Modal */}
