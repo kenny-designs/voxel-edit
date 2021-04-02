@@ -125,6 +125,11 @@ class VoxelManager extends React.Component {
 
     // Load the project
     this.voxelEditor.onLoadProjectData(projectData);
+
+    // @TODO: Generally, you should never invoke this method.
+    // Since loading a project leads to a substantial change in the application's
+    // internal state, I am making an exception.
+    this.forceUpdate();
   };
 
   /**
