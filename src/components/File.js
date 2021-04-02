@@ -5,9 +5,23 @@ import FileSaver from "file-saver";
 /**
  * Allows the user to perform file related actions such as save their
  * project or load one.
+ * @TODO File is already a class used within the browser. Rename this! It might
+ * be time to start referring to all components as just SomethingComponent or similar.
  * @extends React.Component
  */
 class File extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.loadFileInput = document.createElement("input");
+    this.loadFileInput.type = "file";
+    this.loadFileInput.accept = ".json";
+    this.loadFileInput.addEventListener("change", this.handleFileSelected);
+
+    this.loadFileReader = new FileReader();
+    this.loadFileReader.addEventListener("load", this.handleFileRead);
+  }
+
   onSaveProject = () => {
     console.log("Saving project...");
 
@@ -33,7 +47,16 @@ class File extends React.Component {
   };
 
   onLoadProject = () => {
-    console.log("Loading project...");
+    this.loadFileInput.click();
+  };
+
+  handleFileSelected = (e) => {
+    this.loadFileReader.readAsText(this.loadFileInput.files[0]);
+  };
+
+  handleFileRead = (e) => {
+    const json = JSON.parse(e.target.result);
+    console.log(json);
   };
 
   render() {
