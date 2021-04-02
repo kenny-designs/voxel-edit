@@ -473,11 +473,19 @@ class VoxelEditor {
    * @param {Object} projectData
    */
   onLoadProjectData = (projectData) => {
-    console.log("Now loading project data...");
-
     const { voxelWorld, colorPalette } = projectData;
+
+    // Load data for the color palette
     this.world.colorPalette.setNewColorsArray(colorPalette.colors);
     this.world.colorPalette.setSelectedColor(colorPalette.selectedColor);
+
+    // Load data for the VoxelWorld
+    this.world.cells = voxelWorld.cells;
+    this.world.cellSize = voxelWorld.cellSize;
+
+    // Update world geometry and rerender
+    this.world.updateWorldGeometry(this.scene);
+    this.requestRenderIfNotRequested();
   };
 }
 
