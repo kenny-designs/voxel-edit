@@ -108,9 +108,11 @@ class VoxelManager extends React.Component {
    * currently open project/scene.
    */
   onGetProjectData = () => {
-    return {
-      data: "empty",
-    };
+    // If voxelEditor isn't ready, return an empty object
+    if (!this.voxelEditor) return {};
+
+    // Return object representing the currently open project
+    return this.voxelEditor.onGetProjectData();
   };
 
   /**

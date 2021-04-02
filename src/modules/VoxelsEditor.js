@@ -447,6 +447,26 @@ class VoxelEditor {
     // Update the currently selected color for adding/painting
     this.world.colorPalette.setSelectedColor(index);
   };
+
+  /**
+   * Gets project data from the currently open project.
+   * @returns {Object} JavaScript object representing the relevant data from the
+   * currently open project/scene.
+   */
+  onGetProjectData = () => {
+    const projectObj = {
+      voxelWorld: {
+        cellSize: this.world.cellSize,
+        cells: this.world.cells,
+      },
+      colorPalette: {
+        colors: this.world.colorPalette.getColorsArray(),
+        selectedColor: this.world.colorPalette.getSelectedColorIndex(),
+      },
+    };
+
+    return projectObj;
+  };
 }
 
 export default VoxelEditor;

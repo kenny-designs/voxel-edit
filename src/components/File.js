@@ -41,9 +41,9 @@ class File extends React.Component {
     });
 
     // Download it
-    //FileSaver.saveAs(blob, "voxel-edit-project.json");
+    FileSaver.saveAs(blob, "voxel-edit-project.json");
 
-    console.log(projectJSON);
+    //console.log(projectJSON);
   };
 
   /**
