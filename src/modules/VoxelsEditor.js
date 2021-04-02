@@ -474,7 +474,10 @@ class VoxelEditor {
    */
   onLoadProjectData = (projectData) => {
     console.log("Now loading project data...");
-    console.log(projectData);
+
+    const { voxelWorld, colorPalette } = projectData;
+    this.world.colorPalette.setNewColorsArray(colorPalette.colors);
+    this.world.colorPalette.setSelectedColor(colorPalette.selectedColor);
   };
 }
 

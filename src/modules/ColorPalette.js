@@ -9,6 +9,7 @@
 class ColorPalette {
   constructor(colors = null, selectedColor = 0) {
     // Initialize the color array
+    // @TODO: This doesn't necessarily work for passed in colors! Rework it
     this.colors = colors ? colors : [new Color(0.5176, 0.7843, 0.0902)];
 
     // The currently selected color
@@ -16,6 +17,14 @@ class ColorPalette {
 
     // The VoxelWorld can only hold up to 255 colors
     this.maxColors = 128;
+  }
+
+  /**
+   * Creates a new color array from the new one.
+   * @param {Array} newColors
+   */
+  setNewColorsArray(newColors) {
+    this.colors = newColors.map(({ r, g, b }) => new Color(r, g, b));
   }
 
   /**
