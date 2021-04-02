@@ -8,7 +8,6 @@ import {
   Modal,
   Button,
   Grid,
-  Sidebar,
   Segment,
   Menu,
   Accordion,
@@ -229,57 +228,51 @@ class GUIController extends React.Component {
    */
   createMobileGUI() {
     return (
-      <div style={{ height: window.innerHeight }}>
-        <Sidebar.Pushable
-          as={Segment}
-          style={{ border: "none", borderRadius: "0" }}
+      <div style={{ height: "100vh" }}>
+        <Menu fixed="top" inverted style={{ overflowX: "auto" }}>
+          <File />
+          <Edit />
+        </Menu>
+
+        <Viewport callbacks={this.props.callbacks.viewport} />
+
+        {/* Color Selection Modal */}
+        <Modal
+          open={this.state.mobile.isColorModalOpen}
+          onClose={() => this.setState({ mobile: { isColorModalOpen: false } })}
+          onOpen={() => this.setState({ mobile: { isColorModalOpen: true } })}
         >
-          <Sidebar as={Menu} inverted direction="top" visible width="very thin">
-            <Menu.Item
-              as="a"
+          <Modal.Header>Color Palette</Modal.Header>
+          <Modal.Content scrolling>
+            <Modal.Description>
+              <ColorPalette callbacks={this.props.callbacks.colorPalette} />
+            </Modal.Description>
+          </Modal.Content>
+
+          <Modal.Actions>
+            <Button
               onClick={() =>
-                this.setState({ mobile: { isColorModalOpen: true } })
+                this.setState({ mobile: { isColorModalOpen: false } })
               }
+              primary
             >
-              Color Palette
-            </Menu.Item>
-            <File />
-            <Edit />
-          </Sidebar>
+              Close
+            </Button>
+          </Modal.Actions>
+        </Modal>
 
-          {/* Color Selection Modal */}
-          <Modal
-            open={this.state.mobile.isColorModalOpen}
-            onClose={() =>
-              this.setState({ mobile: { isColorModalOpen: false } })
+        <Menu fixed="bottom" inverted style={{ overflowX: "auto" }}>
+          <Brush callbacks={this.props.callbacks.brush} />
+
+          <Menu.Item
+            as="a"
+            onClick={() =>
+              this.setState({ mobile: { isColorModalOpen: true } })
             }
-            onOpen={() => this.setState({ mobile: { isColorModalOpen: true } })}
           >
-            <Modal.Header>Color Palette</Modal.Header>
-            <Modal.Content scrolling>
-              <Modal.Description>
-                <ColorPalette callbacks={this.props.callbacks.colorPalette} />
-              </Modal.Description>
-            </Modal.Content>
-
-            <Modal.Actions>
-              <Button
-                onClick={() =>
-                  this.setState({ mobile: { isColorModalOpen: false } })
-                }
-                primary
-              >
-                Close
-              </Button>
-            </Modal.Actions>
-          </Modal>
-
-          <Sidebar as={Menu} inverted direction="bottom" visible width="thin">
-            <Brush callbacks={this.props.callbacks.brush} />
-          </Sidebar>
-
-          <Viewport callbacks={this.props.callbacks.viewport} />
-        </Sidebar.Pushable>
+            Color Palette
+          </Menu.Item>
+        </Menu>
       </div>
     );
   }
