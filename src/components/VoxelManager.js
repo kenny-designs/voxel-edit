@@ -103,6 +103,18 @@ class VoxelManager extends React.Component {
   };
 
   /**
+   * Gets project data from the currently open project.
+   * @returns {Object} JavaScript object representing the relevant data from the
+   * currently open project/scene.
+   */
+  onGetProjectData = () => {
+    console.log("Now saving project...");
+    return {
+      data: "empty",
+    };
+  };
+
+  /**
    * Returns callbacks organized by the component that they are meant for.
    * @returns {Object}
    */
@@ -119,6 +131,9 @@ class VoxelManager extends React.Component {
       },
       viewport: {
         onCanvasCreation: this.createVoxelWorld,
+      },
+      file: {
+        onGetProjectData: this.onGetProjectData,
       },
     };
   };

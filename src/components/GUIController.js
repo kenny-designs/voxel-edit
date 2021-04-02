@@ -191,7 +191,7 @@ class GUIController extends React.Component {
         <Grid.Row style={{ paddingTop: "0", paddingBottom: "0" }}>
           <Grid.Column>
             <Menu inverted>
-              <File />
+              <File callbacks={this.props.callbacks.file} />
               <Edit />
             </Menu>
           </Grid.Column>
@@ -274,7 +274,7 @@ class GUIController extends React.Component {
     return (
       <div style={{ height: window.innerHeight }}>
         <Menu fixed="top" inverted>
-          <File />
+          <File callbacks={this.props.callbacks.file} />
           <Edit />
         </Menu>
 

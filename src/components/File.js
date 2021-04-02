@@ -50,7 +50,9 @@ class File extends React.Component {
     });
 
     // Download it
-    FileSaver.saveAs(blob, "shopping-list.json");
+    //FileSaver.saveAs(blob, "shopping-list.json");
+
+    console.log(this.props.callbacks.onGetProjectData());
   };
 
   /**
