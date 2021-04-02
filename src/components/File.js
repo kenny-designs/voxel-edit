@@ -32,27 +32,18 @@ class File extends React.Component {
    * with the contents of the 3D scene then saves locally to the user's device.
    */
   onSaveProject = () => {
-    // Test object for json:
-    let myObj = {
-      shoppingList: {
-        fruits: ["bananas", "apples", "oranges"],
-        grains: ["whole wheat bread", "spaghetti"],
-        games: ["Yes"],
-      },
-      money: 0,
-    };
+    // Get JSON that represents the project
+    const projectJSON = JSON.stringify(this.props.callbacks.onGetProjectData());
 
-    const myObjJSON = JSON.stringify(myObj);
-
-    // Create the blob to download
-    let blob = new Blob([myObjJSON], {
+    // Create the blob to download project json
+    let blob = new Blob([projectJSON], {
       type: "application/json",
     });
 
     // Download it
-    //FileSaver.saveAs(blob, "shopping-list.json");
+    //FileSaver.saveAs(blob, "voxel-edit-project.json");
 
-    console.log(this.props.callbacks.onGetProjectData());
+    console.log(projectJSON);
   };
 
   /**

@@ -108,7 +108,6 @@ class VoxelManager extends React.Component {
    * currently open project/scene.
    */
   onGetProjectData = () => {
-    console.log("Now saving project...");
     return {
       data: "empty",
     };
