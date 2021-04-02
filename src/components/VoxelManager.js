@@ -116,6 +116,18 @@ class VoxelManager extends React.Component {
   };
 
   /**
+   * Handler used to load a new scene from the given project data.
+   * @param {Object} projectData
+   */
+  onLoadProjectData = (projectData) => {
+    // If voxelEditor isn't ready, do nothing
+    if (!this.voxelEditor) return;
+
+    // Load the project
+    this.voxelEditor.onLoadProjectData(projectData);
+  };
+
+  /**
    * Returns callbacks organized by the component that they are meant for.
    * @returns {Object}
    */
@@ -135,6 +147,7 @@ class VoxelManager extends React.Component {
       },
       file: {
         onGetProjectData: this.onGetProjectData,
+        onLoadProjectData: this.onLoadProjectData,
       },
     };
   };

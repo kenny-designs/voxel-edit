@@ -467,6 +467,15 @@ class VoxelEditor {
 
     return projectObj;
   };
+
+  /**
+   * Loads a project from the given data.
+   * @param {Object} projectData
+   */
+  onLoadProjectData = (projectData) => {
+    console.log("Now loading project data...");
+    console.log(projectData);
+  };
 }
 
 export default VoxelEditor;

@@ -42,8 +42,6 @@ class File extends React.Component {
 
     // Download it
     FileSaver.saveAs(blob, "voxel-edit-project.json");
-
-    //console.log(projectJSON);
   };
 
   /**
@@ -66,8 +64,11 @@ class File extends React.Component {
    * @param {Event} e
    */
   handleFileRead = (e) => {
-    const json = JSON.parse(e.target.result);
-    console.log(json);
+    // Convert JSON file into JavaScript object
+    const projectData = JSON.parse(e.target.result);
+
+    // Load project into the scene
+    this.props.callbacks.onLoadProjectData(projectData);
   };
 
   render() {
