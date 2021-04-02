@@ -11,13 +11,25 @@ class File extends React.Component {
   onSaveProject = () => {
     console.log("Saving project...");
 
+    // Test object for json:
+    let myObj = {
+      shoppingList: {
+        fruits: ["bananas", "apples", "oranges"],
+        grains: ["whole wheat bread", "spaghetti"],
+        games: ["Yes"],
+      },
+      money: 0,
+    };
+
+    const myObjJSON = JSON.stringify(myObj);
+
     // Create the blob to download
-    let blob = new Blob(["Hello, world!"], {
-      type: "text/plain;charset=utf-8",
+    let blob = new Blob([myObjJSON], {
+      type: "application/json",
     });
 
     // Download it
-    FileSaver.saveAs(blob, "hello-world.txt");
+    FileSaver.saveAs(blob, "shopping-list.json");
   };
 
   onLoadProject = () => {
