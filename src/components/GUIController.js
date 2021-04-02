@@ -47,6 +47,7 @@ class GUIController extends React.Component {
   updateMobileState = () => {
     // If width below 768, use mobile GUI
     const isMobile = window.innerWidth < 768;
+
     this.setState({ isMobile });
   };
 
@@ -231,8 +232,16 @@ class GUIController extends React.Component {
     return (
       <Modal
         open={this.state.mobile.isColorModalOpen}
-        onClose={() => this.setState({ mobile: { isColorModalOpen: false } })}
-        onOpen={() => this.setState({ mobile: { isColorModalOpen: true } })}
+        onClose={() =>
+          this.setState({
+            mobile: { isColorModalOpen: false },
+          })
+        }
+        onOpen={() =>
+          this.setState({
+            mobile: { isColorModalOpen: true },
+          })
+        }
       >
         <Modal.Header>Color Palette</Modal.Header>
         <Modal.Content scrolling>
@@ -244,7 +253,9 @@ class GUIController extends React.Component {
         <Modal.Actions>
           <Button
             onClick={() =>
-              this.setState({ mobile: { isColorModalOpen: false } })
+              this.setState({
+                mobile: { isColorModalOpen: false },
+              })
             }
             primary
           >
@@ -261,8 +272,8 @@ class GUIController extends React.Component {
    */
   createMobileGUI() {
     return (
-      <div style={{ height: "100vh" }}>
-        <Menu fixed="top" inverted style={{ overflowX: "auto" }}>
+      <div style={{ height: window.innerHeight }}>
+        <Menu fixed="top" inverted>
           <File />
           <Edit />
         </Menu>
