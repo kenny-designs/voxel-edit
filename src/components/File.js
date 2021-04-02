@@ -7,12 +7,24 @@ import { Dropdown } from "semantic-ui-react";
  * @extends React.Component
  */
 class File extends React.Component {
+  onSaveProject = () => {
+    console.log("Saving project...");
+  };
+
+  onLoadProject = () => {
+    console.log("Loading project...");
+  };
+
   render() {
     return (
       <Dropdown text="File" pointing className="link item">
         <Dropdown.Menu>
-          <Dropdown.Item>Save Project</Dropdown.Item>
-          <Dropdown.Item disabled>Load Project</Dropdown.Item>
+          <Dropdown.Item onClick={this.onSaveProject}>
+            Save Project
+          </Dropdown.Item>
+          <Dropdown.Item onClick={this.onLoadProject}>
+            Load Project
+          </Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
     );
