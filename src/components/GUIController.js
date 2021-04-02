@@ -223,6 +223,39 @@ class GUIController extends React.Component {
   }
 
   /**
+   * Creates JSX for modals on mobile devices.
+   * @TODO Only works for the color palette. Make it more general!
+   * @returns {JSX}
+   */
+  createMobileModal() {
+    return (
+      <Modal
+        open={this.state.mobile.isColorModalOpen}
+        onClose={() => this.setState({ mobile: { isColorModalOpen: false } })}
+        onOpen={() => this.setState({ mobile: { isColorModalOpen: true } })}
+      >
+        <Modal.Header>Color Palette</Modal.Header>
+        <Modal.Content scrolling>
+          <Modal.Description>
+            <ColorPalette callbacks={this.props.callbacks.colorPalette} />
+          </Modal.Description>
+        </Modal.Content>
+
+        <Modal.Actions>
+          <Button
+            onClick={() =>
+              this.setState({ mobile: { isColorModalOpen: false } })
+            }
+            primary
+          >
+            Close
+          </Button>
+        </Modal.Actions>
+      </Modal>
+    );
+  }
+
+  /**
    * Create the mobile version of the UI.
    * @returns {JSX}
    */
@@ -236,30 +269,7 @@ class GUIController extends React.Component {
 
         <Viewport callbacks={this.props.callbacks.viewport} />
 
-        {/* Color Selection Modal */}
-        <Modal
-          open={this.state.mobile.isColorModalOpen}
-          onClose={() => this.setState({ mobile: { isColorModalOpen: false } })}
-          onOpen={() => this.setState({ mobile: { isColorModalOpen: true } })}
-        >
-          <Modal.Header>Color Palette</Modal.Header>
-          <Modal.Content scrolling>
-            <Modal.Description>
-              <ColorPalette callbacks={this.props.callbacks.colorPalette} />
-            </Modal.Description>
-          </Modal.Content>
-
-          <Modal.Actions>
-            <Button
-              onClick={() =>
-                this.setState({ mobile: { isColorModalOpen: false } })
-              }
-              primary
-            >
-              Close
-            </Button>
-          </Modal.Actions>
-        </Modal>
+        {this.createMobileModal()}
 
         <Menu fixed="bottom" inverted style={{ overflowX: "auto" }}>
           <Brush callbacks={this.props.callbacks.brush} />
