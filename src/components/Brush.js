@@ -16,7 +16,7 @@ class Brush extends React.Component {
 
   componentDidMount() {
     // Send the initial brush name to parent component
-    this.props.onBrushChange(this.state.activeBrush);
+    this.props.callbacks.onBrushChange(this.state.activeBrush);
   }
 
   /**
@@ -30,7 +30,7 @@ class Brush extends React.Component {
     this.setState({ activeBrush: name });
 
     // Send active brush name to parent component
-    this.props.onBrushChange(name);
+    this.props.callbacks.onBrushChange(name);
   };
 
   render() {
