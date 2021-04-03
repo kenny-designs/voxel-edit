@@ -1,13 +1,13 @@
 import React from "react";
 import Viewport from "./Viewport";
 import Brush from "./Brush";
+import File from "./File";
+import Edit from "./Edit";
 import ColorPalette from "./ColorPalette";
-import "./GUIController.css";
 import {
   Modal,
   Button,
   Grid,
-  Sidebar,
   Segment,
   Menu,
   Accordion,
@@ -47,6 +47,7 @@ class GUIController extends React.Component {
   updateMobileState = () => {
     // If width below 768, use mobile GUI
     const isMobile = window.innerWidth < 768;
+
     this.setState({ isMobile });
   };
 
@@ -94,18 +95,7 @@ class GUIController extends React.Component {
    * @returns {JSX}
    */
   createDesktopViewport() {
-    return (
-      <Sidebar.Pushable
-        as={Segment}
-        style={{ border: "none", borderRadius: "0" }}
-      >
-        <Sidebar as={Menu} inverted direction="top" visible width="very thin">
-          <Menu.Item as="a">Button 1</Menu.Item>
-          <Menu.Item as="a">Button 2</Menu.Item>
-        </Sidebar>
-        <Viewport callbacks={this.props.callbacks.viewport} />
-      </Sidebar.Pushable>
-    );
+    return <Viewport callbacks={this.props.callbacks.viewport} />;
   }
 
   /**
@@ -197,29 +187,82 @@ class GUIController extends React.Component {
    */
   createDesktopGUI() {
     return (
-      <Grid className={"desktopGrid"}>
-        <Grid.Row>
+      <Grid padded style={{ height: "100vh" }}>
+        <Grid.Row style={{ paddingTop: "0", paddingBottom: "0" }}>
+          <Grid.Column>
+            <Menu inverted>
+              <File callbacks={this.props.callbacks.file} />
+              <Edit />
+            </Menu>
+          </Grid.Column>
+        </Grid.Row>
+
+        <Grid.Row
+          style={{ height: "90%", paddingTop: "0", paddingBottom: "0" }}
+        >
           <Grid.Column
             width={3}
             style={{
-              height: "100vh",
+              height: "100%",
               overflowY: "auto",
-              marginTop: "1em",
             }}
           >
             {this.createDesktopBrush()}
             {this.createDesktopColorPalette()}
           </Grid.Column>
 
-          <Grid.Column width={11} style={{ padding: "0" }}>
+          <Grid.Column width={11} style={{ height: "100%" }}>
             {this.createDesktopViewport()}
           </Grid.Column>
 
-          <Grid.Column width={2}>
+          <Grid.Column width={2} style={{ height: "100%" }}>
             <h1>Right Panel</h1>
           </Grid.Column>
         </Grid.Row>
       </Grid>
+    );
+  }
+
+  /**
+   * Creates JSX for modals on mobile devices.
+   * @TODO Only works for the color palette. Make it more general!
+   * @returns {JSX}
+   */
+  createMobileModal() {
+    return (
+      <Modal
+        open={this.state.mobile.isColorModalOpen}
+        onClose={() =>
+          this.setState({
+            mobile: { isColorModalOpen: false },
+          })
+        }
+        onOpen={() =>
+          this.setState({
+            mobile: { isColorModalOpen: true },
+          })
+        }
+      >
+        <Modal.Header>Color Palette</Modal.Header>
+        <Modal.Content scrolling>
+          <Modal.Description>
+            <ColorPalette callbacks={this.props.callbacks.colorPalette} />
+          </Modal.Description>
+        </Modal.Content>
+
+        <Modal.Actions>
+          <Button
+            onClick={() =>
+              this.setState({
+                mobile: { isColorModalOpen: false },
+              })
+            }
+            primary
+          >
+            Close
+          </Button>
+        </Modal.Actions>
+      </Modal>
     );
   }
 
@@ -230,57 +273,27 @@ class GUIController extends React.Component {
   createMobileGUI() {
     return (
       <div style={{ height: window.innerHeight }}>
-        <Sidebar.Pushable
-          as={Segment}
-          style={{ border: "none", borderRadius: "0" }}
-        >
-          <Sidebar as={Menu} inverted direction="top" visible width="very thin">
-            <Menu.Item
-              as="a"
-              onClick={() =>
-                this.setState({ mobile: { isColorModalOpen: true } })
-              }
-            >
-              Color Palette
-            </Menu.Item>
-            <Menu.Item as="a">Edit</Menu.Item>
-            <Menu.Item as="a">Camera</Menu.Item>
-            <Menu.Item as="a">Project</Menu.Item>
-          </Sidebar>
+        <Menu fixed="top" inverted>
+          <File callbacks={this.props.callbacks.file} />
+          <Edit />
+        </Menu>
 
-          {/* Color Selection Modal */}
-          <Modal
-            open={this.state.mobile.isColorModalOpen}
-            onClose={() =>
-              this.setState({ mobile: { isColorModalOpen: false } })
+        <Viewport callbacks={this.props.callbacks.viewport} />
+
+        {this.createMobileModal()}
+
+        <Menu fixed="bottom" inverted style={{ overflowX: "auto" }}>
+          <Brush callbacks={this.props.callbacks.brush} />
+
+          <Menu.Item
+            as="a"
+            onClick={() =>
+              this.setState({ mobile: { isColorModalOpen: true } })
             }
-            onOpen={() => this.setState({ mobile: { isColorModalOpen: true } })}
           >
-            <Modal.Header>Color Palette</Modal.Header>
-            <Modal.Content scrolling>
-              <Modal.Description>
-                <ColorPalette callbacks={this.props.callbacks.colorPalette} />
-              </Modal.Description>
-            </Modal.Content>
-
-            <Modal.Actions>
-              <Button
-                onClick={() =>
-                  this.setState({ mobile: { isColorModalOpen: false } })
-                }
-                primary
-              >
-                Close
-              </Button>
-            </Modal.Actions>
-          </Modal>
-
-          <Sidebar as={Menu} inverted direction="bottom" visible width="thin">
-            <Brush callbacks={this.props.callbacks.brush} />
-          </Sidebar>
-
-          <Viewport callbacks={this.props.callbacks.viewport} />
-        </Sidebar.Pushable>
+            Color Palette
+          </Menu.Item>
+        </Menu>
       </div>
     );
   }

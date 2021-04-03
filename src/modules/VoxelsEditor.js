@@ -105,7 +105,10 @@ function createTextureAtlas(render) {
 class VoxelEditor {
   constructor(options) {
     this.canvas = options.canvas;
-    this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas });
+    this.renderer = new THREE.WebGLRenderer({
+      canvas: this.canvas,
+      antialias: true,
+    });
 
     // Length, width, and height of each cell in the VoxelWorld
     this.cellSize = 32;
@@ -443,6 +446,46 @@ class VoxelEditor {
   onNewSelectedColor = (index) => {
     // Update the currently selected color for adding/painting
     this.world.colorPalette.setSelectedColor(index);
+  };
+
+  /**
+   * Gets project data from the currently open project.
+   * @returns {Object} JavaScript object representing the relevant data from the
+   * currently open project/scene.
+   */
+  onGetProjectData = () => {
+    const projectObj = {
+      voxelWorld: {
+        cellSize: this.world.cellSize,
+        cells: this.world.cells,
+      },
+      colorPalette: {
+        colors: this.world.colorPalette.getColorsArray(),
+        selectedColor: this.world.colorPalette.getSelectedColorIndex(),
+      },
+    };
+
+    return projectObj;
+  };
+
+  /**
+   * Loads a project from the given data.
+   * @param {Object} projectData
+   */
+  onLoadProjectData = (projectData) => {
+    const { voxelWorld, colorPalette } = projectData;
+
+    // Load data for the color palette
+    this.world.colorPalette.setNewColorsArray(colorPalette.colors);
+    this.world.colorPalette.setSelectedColor(colorPalette.selectedColor);
+
+    // Load data for the VoxelWorld
+    this.world.cells = voxelWorld.cells;
+    this.world.cellSize = voxelWorld.cellSize;
+
+    // Update world geometry and rerender
+    this.world.updateWorldGeometry(this.scene);
+    this.requestRenderIfNotRequested();
   };
 }
 

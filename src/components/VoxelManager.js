@@ -103,6 +103,36 @@ class VoxelManager extends React.Component {
   };
 
   /**
+   * Gets project data from the currently open project.
+   * @returns {Object} JavaScript object representing the relevant data from the
+   * currently open project/scene.
+   */
+  onGetProjectData = () => {
+    // If voxelEditor isn't ready, return an empty object
+    if (!this.voxelEditor) return {};
+
+    // Return object representing the currently open project
+    return this.voxelEditor.onGetProjectData();
+  };
+
+  /**
+   * Handler used to load a new scene from the given project data.
+   * @param {Object} projectData
+   */
+  onLoadProjectData = (projectData) => {
+    // If voxelEditor isn't ready, do nothing
+    if (!this.voxelEditor) return;
+
+    // Load the project
+    this.voxelEditor.onLoadProjectData(projectData);
+
+    // @TODO: Generally, you should never invoke this method.
+    // Since loading a project leads to a substantial change in the application's
+    // internal state, I am making an exception.
+    this.forceUpdate();
+  };
+
+  /**
    * Returns callbacks organized by the component that they are meant for.
    * @returns {Object}
    */
@@ -119,6 +149,10 @@ class VoxelManager extends React.Component {
       },
       viewport: {
         onCanvasCreation: this.createVoxelWorld,
+      },
+      file: {
+        onGetProjectData: this.onGetProjectData,
+        onLoadProjectData: this.onLoadProjectData,
       },
     };
   };
