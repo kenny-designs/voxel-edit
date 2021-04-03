@@ -1,5 +1,5 @@
 import React from "react";
-import { Dropdown } from "semantic-ui-react";
+import { Dropdown, Modal, Input } from "semantic-ui-react";
 import FileSaver from "file-saver";
 
 /**
@@ -15,6 +15,11 @@ import FileSaver from "file-saver";
 class File extends React.Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      isSaveModalOpen: false,
+      saveInputValue: "",
+    };
 
     // Create input for allowing users to select their project to load
     this.loadFileInput = document.createElement("input");
@@ -32,6 +37,9 @@ class File extends React.Component {
    * with the contents of the 3D scene then saves locally to the user's device.
    */
   onSaveProject = () => {
+    this.setState({ isSaveModalOpen: true });
+
+    /*
     // Get JSON that represents the project
     const projectJSON = JSON.stringify(this.props.callbacks.onGetProjectData());
 
@@ -42,6 +50,7 @@ class File extends React.Component {
 
     // Download it
     FileSaver.saveAs(blob, "voxel-edit-project.json");
+    */
   };
 
   /**
@@ -71,18 +80,57 @@ class File extends React.Component {
     this.props.callbacks.onLoadProjectData(projectData);
   };
 
+  /**
+   * Handler for changes in the save input. Helps to maintain a controlled input.
+   * @param {Event} e
+   */
+  handleSaveInputChange = (e) => {
+    this.setState({ saveInputValue: e.target.value });
+  };
+
+  createSaveModal = () => {
+    // True is empty, false otherwise
+    const isSaveInputEmpty = this.state.saveInputValue.length === 0;
+
+    return (
+      <Modal
+        onClose={() => this.setState({ isSaveModalOpen: false })}
+        onOpen={() => this.setState({ isSaveModalOpen: true })}
+        open={this.state.isSaveModalOpen}
+        closeIcon
+        size="mini"
+      >
+        <Modal.Content>
+          <Input
+            action={{
+              content: "Save Project",
+              disabled: isSaveInputEmpty,
+            }}
+            value={this.state.saveInputValue}
+            onChange={this.handleSaveInputChange}
+            error={isSaveInputEmpty}
+            placeholder="Enter project name..."
+          />
+        </Modal.Content>
+      </Modal>
+    );
+  };
+
   render() {
     return (
-      <Dropdown text="File" pointing className="link item">
-        <Dropdown.Menu>
-          <Dropdown.Item onClick={this.onSaveProject}>
-            Save Project
-          </Dropdown.Item>
-          <Dropdown.Item onClick={this.onLoadProject}>
-            Load Project
-          </Dropdown.Item>
-        </Dropdown.Menu>
-      </Dropdown>
+      <React.Fragment>
+        {this.createSaveModal()}
+        <Dropdown text="File" pointing className="link item">
+          <Dropdown.Menu>
+            <Dropdown.Item onClick={this.onSaveProject}>
+              Save Project
+            </Dropdown.Item>
+            <Dropdown.Item onClick={this.onLoadProject}>
+              Load Project
+            </Dropdown.Item>
+          </Dropdown.Menu>
+        </Dropdown>
+      </React.Fragment>
     );
   }
 }
