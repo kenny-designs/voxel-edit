@@ -73,7 +73,15 @@ class File extends React.Component {
    * @param {Event} e
    */
   handleFileSelected = (e) => {
-    this.loadFileReader.readAsText(this.loadFileInput.files[0]);
+    // Get the file to load
+    const file = this.loadFileInput.files[0];
+
+    // Read the file
+    this.loadFileReader.readAsText(file);
+
+    // Make the name of the file the new saveInputValue
+    const saveInputValue = file.name.replace(/(.json)$/, "");
+    this.setState({ saveInputValue });
   };
 
   /**
