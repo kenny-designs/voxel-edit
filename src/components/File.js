@@ -10,6 +10,7 @@ import FileSaver from "file-saver";
  *
  * @property {Input} loadFileInput - Input used for selecting project file to load
  * @property {FileReader} loadFileReader - Reads data from selected project file
+ * @property {number} maxNameLength - Max chars a user can enter for their filename. Default 100
  * @extends React.Component
  */
 class File extends React.Component {
@@ -30,16 +31,21 @@ class File extends React.Component {
     // Create FileReader for loading user projects
     this.loadFileReader = new FileReader();
     this.loadFileReader.addEventListener("load", this.handleFileRead);
+
+    // Maximum number of characters the user can enter into the save input
+    this.maxNameLength = 100;
   }
 
   /**
    * Callback for when users wish to save their project. Creates a JSON file
    * with the contents of the 3D scene then saves locally to the user's device.
    */
-  onSaveProject = () => {
-    this.setState({ isSaveModalOpen: true });
+  handleSaveProject = (e) => {
+    const { saveInputValue } = this.state;
 
-    /*
+    // Prevent users from saving an empty filename
+    if (saveInputValue.length === 0) return;
+
     // Get JSON that represents the project
     const projectJSON = JSON.stringify(this.props.callbacks.onGetProjectData());
 
@@ -49,8 +55,10 @@ class File extends React.Component {
     });
 
     // Download it
-    FileSaver.saveAs(blob, "voxel-edit-project.json");
-    */
+    FileSaver.saveAs(blob, saveInputValue + ".json");
+
+    // Save complete, close modal
+    this.setState({ isSaveModalOpen: false });
   };
 
   /**
@@ -85,7 +93,11 @@ class File extends React.Component {
    * @param {Event} e
    */
   handleSaveInputChange = (e) => {
-    this.setState({ saveInputValue: e.target.value });
+    const { value } = e.target;
+
+    if (value.length <= this.maxNameLength) {
+      this.setState({ saveInputValue: e.target.value });
+    }
   };
 
   createSaveModal = () => {
@@ -100,11 +112,13 @@ class File extends React.Component {
         closeIcon
         size="mini"
       >
+        <Modal.Header>Save Project As...</Modal.Header>
         <Modal.Content>
           <Input
             action={{
               content: "Save Project",
               disabled: isSaveInputEmpty,
+              onClick: this.handleSaveProject,
             }}
             value={this.state.saveInputValue}
             onChange={this.handleSaveInputChange}
@@ -122,7 +136,9 @@ class File extends React.Component {
         {this.createSaveModal()}
         <Dropdown text="File" pointing className="link item">
           <Dropdown.Menu>
-            <Dropdown.Item onClick={this.onSaveProject}>
+            <Dropdown.Item
+              onClick={() => this.setState({ isSaveModalOpen: true })}
+            >
               Save Project
             </Dropdown.Item>
             <Dropdown.Item onClick={this.onLoadProject}>
