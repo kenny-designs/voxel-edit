@@ -104,10 +104,13 @@ class File extends React.Component {
    * @param {Event} e
    */
   handleSaveInputChange = (e) => {
-    const { value } = e.target;
+    let { value } = e.target;
+
+    // Trim any excess white-space
+    value = value.trim();
 
     if (value.length <= this.maxNameLength) {
-      this.setState({ saveInputValue: e.target.value });
+      this.setState({ saveInputValue: value });
     }
   };
 
