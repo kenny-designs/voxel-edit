@@ -76,6 +76,9 @@ class File extends React.Component {
     // Get the file to load
     const file = this.loadFileInput.files[0];
 
+    // If no file found, return
+    if (!file) return;
+
     // Read the file
     this.loadFileReader.readAsText(file);
 
