@@ -131,6 +131,7 @@ class File extends React.Component {
               disabled: isSaveInputEmpty,
               onClick: this.handleSaveProject,
             }}
+            fluid
             value={this.state.saveInputValue}
             onChange={this.handleSaveInputChange}
             error={isSaveInputEmpty}
