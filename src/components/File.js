@@ -152,7 +152,7 @@ class File extends React.Component {
         <Modal.Content>
           <Input
             action={{
-              content: `Export ${this.state.exportType.toUpperCase()}`,
+              content: `Export .${this.state.exportType}`,
               disabled: isExportInputEmpty,
               onClick: this.onExportObj,
             }}
@@ -202,13 +202,37 @@ class File extends React.Component {
     );
   };
 
+  /**
+   * Creates a sub-menu for each export option
+   * @returns {JSX}
+   */
   createExportSubMenu = () => {
     return (
       <Dropdown text="Export" pointing="left" className="link item">
         <Dropdown.Menu>
-          <Dropdown.Item>Collada (.dae)</Dropdown.Item>
-          <Dropdown.Item>Stanford (.ply)</Dropdown.Item>
-          <Dropdown.Item>Stl (.stl)</Dropdown.Item>
+          <Dropdown.Item
+            onClick={() =>
+              this.setState({ isExportModalOpen: true, exportType: "dae" })
+            }
+          >
+            Collada (.dae)
+          </Dropdown.Item>
+
+          <Dropdown.Item
+            onClick={() =>
+              this.setState({ isExportModalOpen: true, exportType: "ply" })
+            }
+          >
+            Stanford (.ply)
+          </Dropdown.Item>
+
+          <Dropdown.Item
+            onClick={() =>
+              this.setState({ isExportModalOpen: true, exportType: "stl" })
+            }
+          >
+            Stl (.stl)
+          </Dropdown.Item>
 
           <Dropdown.Item
             onClick={() =>
