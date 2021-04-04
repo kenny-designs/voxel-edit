@@ -159,6 +159,8 @@ class File extends React.Component {
             <Dropdown.Item onClick={this.onLoadProject}>
               Load Project
             </Dropdown.Item>
+
+            <Dropdown.Item>Export to OBJ</Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
       </React.Fragment>
