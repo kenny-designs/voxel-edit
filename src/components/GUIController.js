@@ -3,6 +3,7 @@ import Viewport from "./Viewport";
 import Brush from "./Brush";
 import File from "./File";
 import Edit from "./Edit";
+import Render from "./Render";
 import ColorPalette from "./ColorPalette";
 import {
   Modal,
@@ -193,6 +194,7 @@ class GUIController extends React.Component {
             <Menu inverted>
               <File callbacks={this.props.callbacks.file} />
               <Edit />
+              <Render />
             </Menu>
           </Grid.Column>
         </Grid.Row>
@@ -276,6 +278,7 @@ class GUIController extends React.Component {
         <Menu fixed="top" inverted>
           <File callbacks={this.props.callbacks.file} />
           <Edit />
+          <Render />
         </Menu>
 
         <Viewport callbacks={this.props.callbacks.viewport} />
