@@ -213,13 +213,12 @@ class GUIController extends React.Component {
             {this.createDesktopColorPalette()}
           </Grid.Column>
 
-          <Grid.Column width={11} style={{ height: "100%" }}>
+          <Grid.Column width={13} style={{ height: "100%" }}>
             {this.createDesktopViewport()}
           </Grid.Column>
 
-          <Grid.Column width={2} style={{ height: "100%" }}>
-            <h1>Right Panel</h1>
-          </Grid.Column>
+          {/* Right Panel. Empty for now.*/}
+          {/* <Grid.Column width={2} style={{ height: "100%" }}></Grid.Column> */}
         </Grid.Row>
       </Grid>
     );
