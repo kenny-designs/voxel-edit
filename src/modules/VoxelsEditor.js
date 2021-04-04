@@ -502,6 +502,13 @@ class VoxelEditor {
       FileSaver.saveAs(blob, imageName + ".png");
     }, "image/png");
   };
+
+  /**
+   * Exports the voxel model to an Obj file.
+   */
+  onExportObj = () => {
+    console.log("Now exporting from the editor...");
+  };
 }
 
 export default VoxelEditor;

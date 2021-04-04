@@ -145,6 +145,9 @@ class File extends React.Component {
     );
   };
 
+  /**
+   * Exports the voxel model to an Obj file.
+   */
   onExportObj = () => {
     this.props.callbacks.onExportObj();
   };
