@@ -134,10 +134,12 @@ class VoxelManager extends React.Component {
 
   /**
    * Handler used to export the current frame from the canvas as an image.
-   * @returns {Blob} Blob representing the image contained in the canvas
+   * @returns {Canvas} The canvas to take a screenshot from
    */
   onExportImage = () => {
-    console.log("Exporting from voxel manager.");
+    if (!this.voxelEditor) return null;
+
+    this.voxelEditor.onExportImage();
   };
 
   /**

@@ -3,6 +3,7 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import VoxelWorld from "./VoxelWorld";
 import Brush from "./Brush";
 import ColorPalette from "./ColorPalette";
+import FileSaver from "file-saver";
 //import textureAtlas from "../images/flourish-cc-by-nc-sa.png";
 
 /**
@@ -486,6 +487,16 @@ class VoxelEditor {
     // Update world geometry and rerender
     this.world.updateWorldGeometry(this.scene);
     this.requestRenderIfNotRequested();
+  };
+
+  onExportImage = () => {
+    // Render must first be invoked to get current frame
+    this.render();
+
+    // Save the current frame as an image
+    this.canvas.toBlob((blob) => {
+      FileSaver.saveAs(blob, "your-scene.png");
+    }, "image/png");
   };
 }
 
