@@ -489,13 +489,17 @@ class VoxelEditor {
     this.requestRenderIfNotRequested();
   };
 
-  onExportImage = () => {
+  /**
+   * Exports the current frame of the canvas to an image file.
+   * @param {string} imageName
+   */
+  onExportImage = (imageName) => {
     // Render must first be invoked to get current frame
     this.render();
 
     // Save the current frame as an image
     this.canvas.toBlob((blob) => {
-      FileSaver.saveAs(blob, "your-scene.png");
+      FileSaver.saveAs(blob, imageName + ".png");
     }, "image/png");
   };
 }
