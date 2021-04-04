@@ -145,6 +145,10 @@ class File extends React.Component {
     );
   };
 
+  onExportObj = () => {
+    console.log("Now exporting...");
+  };
+
   render() {
     return (
       <React.Fragment>
@@ -160,7 +164,9 @@ class File extends React.Component {
               Load Project
             </Dropdown.Item>
 
-            <Dropdown.Item>Export to OBJ</Dropdown.Item>
+            <Dropdown.Item onClick={this.onExportObj}>
+              Export to OBJ
+            </Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
       </React.Fragment>
