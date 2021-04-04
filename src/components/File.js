@@ -146,7 +146,7 @@ class File extends React.Component {
   };
 
   onExportObj = () => {
-    console.log("Now exporting...");
+    this.props.callbacks.onExportObj();
   };
 
   render() {

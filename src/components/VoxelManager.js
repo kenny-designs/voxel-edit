@@ -143,6 +143,10 @@ class VoxelManager extends React.Component {
     this.voxelEditor.onExportImage(imageName);
   };
 
+  onExportObj = () => {
+    console.log("Exporting from VoxelManager");
+  };
+
   /**
    * Returns callbacks organized by the component that they are meant for.
    * @returns {Object}
@@ -164,6 +168,7 @@ class VoxelManager extends React.Component {
       file: {
         onGetProjectData: this.onGetProjectData,
         onLoadProjectData: this.onLoadProjectData,
+        onExportObj: this.onExportObj,
       },
       render: {
         onExportImage: this.onExportImage,
