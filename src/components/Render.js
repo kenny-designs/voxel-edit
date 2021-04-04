@@ -3,7 +3,7 @@ import { Dropdown } from "semantic-ui-react";
 
 class Render extends React.Component {
   onExportImage = () => {
-    console.log("Now exporting...");
+    this.props.callbacks.onExportImage();
   };
 
   render() {

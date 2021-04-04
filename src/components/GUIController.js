@@ -194,7 +194,7 @@ class GUIController extends React.Component {
             <Menu inverted>
               <File callbacks={this.props.callbacks.file} />
               <Edit />
-              <Render />
+              <Render callbacks={this.props.callbacks.render} />
             </Menu>
           </Grid.Column>
         </Grid.Row>
@@ -278,7 +278,7 @@ class GUIController extends React.Component {
         <Menu fixed="top" inverted>
           <File callbacks={this.props.callbacks.file} />
           <Edit />
-          <Render />
+          <Render callbacks={this.props.callbacks.render} />
         </Menu>
 
         <Viewport callbacks={this.props.callbacks.viewport} />
