@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import { OBJExporter } from "three/examples/jsm/exporters/OBJExporter";
 import VoxelWorld from "./VoxelWorld";
 import Brush from "./Brush";
 import ColorPalette from "./ColorPalette";
@@ -507,7 +508,14 @@ class VoxelEditor {
    * Exports the voxel model to an Obj file.
    */
   onExportObj = () => {
-    console.log("Now exporting from the editor...");
+    const exporter = new OBJExporter();
+    const result = exporter.parse(this.scene);
+
+    const blob = new Blob([result], {
+      type: "model/obj",
+    });
+
+    FileSaver.saveAs(blob, "your-model.obj");
   };
 }
 
