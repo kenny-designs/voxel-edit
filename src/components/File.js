@@ -264,11 +264,14 @@ class File extends React.Component {
         {this.createExportModal()}
         <Dropdown text="File" pointing className="link item">
           <Dropdown.Menu>
+            <Dropdown.Item>New Project</Dropdown.Item>
+
             <Dropdown.Item
               onClick={() => this.setState({ isSaveModalOpen: true })}
             >
               Save Project
             </Dropdown.Item>
+
             <Dropdown.Item onClick={this.onLoadProject}>
               Load Project
             </Dropdown.Item>
