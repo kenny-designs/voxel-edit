@@ -2,7 +2,7 @@ import React from "react";
 import Viewport from "./Viewport";
 import Brush from "./Brush";
 import File from "./File";
-import Edit from "./Edit";
+//import Edit from "./Edit";
 import Render from "./Render";
 import ColorPalette from "./ColorPalette";
 import {
@@ -193,7 +193,7 @@ class GUIController extends React.Component {
           <Grid.Column>
             <Menu inverted>
               <File callbacks={this.props.callbacks.file} />
-              <Edit />
+              {/*<Edit />*/}
               <Render callbacks={this.props.callbacks.render} />
             </Menu>
           </Grid.Column>
@@ -276,7 +276,7 @@ class GUIController extends React.Component {
       <div style={{ height: window.innerHeight }}>
         <Menu fixed="top" inverted>
           <File callbacks={this.props.callbacks.file} />
-          <Edit />
+          {/*<Edit />*/}
           <Render callbacks={this.props.callbacks.render} />
         </Menu>
 
