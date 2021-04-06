@@ -1,24 +1,24 @@
 {
   "files": {
     "main.css": "/voxel-edit/static/css/main.5719d60d.chunk.css",
-    "main.js": "/voxel-edit/static/js/main.84a0f53a.chunk.js",
-    "main.js.map": "/voxel-edit/static/js/main.84a0f53a.chunk.js.map",
+    "main.js": "/voxel-edit/static/js/main.27b2a2e9.chunk.js",
+    "main.js.map": "/voxel-edit/static/js/main.27b2a2e9.chunk.js.map",
     "runtime-main.js": "/voxel-edit/static/js/runtime-main.6a32b0c9.js",
     "runtime-main.js.map": "/voxel-edit/static/js/runtime-main.6a32b0c9.js.map",
     "static/css/2.e53602a3.chunk.css": "/voxel-edit/static/css/2.e53602a3.chunk.css",
-    "static/js/2.68d16408.chunk.js": "/voxel-edit/static/js/2.68d16408.chunk.js",
-    "static/js/2.68d16408.chunk.js.map": "/voxel-edit/static/js/2.68d16408.chunk.js.map",
+    "static/js/2.aac6165b.chunk.js": "/voxel-edit/static/js/2.aac6165b.chunk.js",
+    "static/js/2.aac6165b.chunk.js.map": "/voxel-edit/static/js/2.aac6165b.chunk.js.map",
     "index.html": "/voxel-edit/index.html",
     "static/css/2.e53602a3.chunk.css.map": "/voxel-edit/static/css/2.e53602a3.chunk.css.map",
     "static/css/main.5719d60d.chunk.css.map": "/voxel-edit/static/css/main.5719d60d.chunk.css.map",
-    "static/js/2.68d16408.chunk.js.LICENSE.txt": "/voxel-edit/static/js/2.68d16408.chunk.js.LICENSE.txt",
+    "static/js/2.aac6165b.chunk.js.LICENSE.txt": "/voxel-edit/static/js/2.aac6165b.chunk.js.LICENSE.txt",
     "static/media/semantic.min.css": "/voxel-edit/static/media/outline-icons.ddae9b1b.woff"
   },
   "entrypoints": [
     "static/js/runtime-main.6a32b0c9.js",
     "static/css/2.e53602a3.chunk.css",
-    "static/js/2.68d16408.chunk.js",
+    "static/js/2.aac6165b.chunk.js",
     "static/css/main.5719d60d.chunk.css",
-    "static/js/main.84a0f53a.chunk.js"
+    "static/js/main.27b2a2e9.chunk.js"
   ]
 }
