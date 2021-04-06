@@ -27,7 +27,7 @@ import FileSaver from "file-saver";
  * TODO: This can be removed soon
  * @param {number} min
  * @param {number} max
- * @returns
+ * @returns {number}
  */
 function randInt(min, max) {
   return Math.floor(Math.random() * (max - min) + min);
