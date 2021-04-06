@@ -27,7 +27,7 @@ import FileSaver from "file-saver";
  * TODO: This can be removed soon
  * @param {number} min
  * @param {number} max
- * @returns
+ * @returns {number}
  */
 function randInt(min, max) {
   return Math.floor(Math.random() * (max - min) + min);
@@ -307,6 +307,7 @@ class VoxelEditor {
 
   /**
    * Main render loop.
+   * @function
    */
   render = () => {
     this.renderRequested = undefined;
@@ -322,6 +323,7 @@ class VoxelEditor {
 
   /**
    * Used to make a render update request only if one hasn't been made already.
+   * @function
    */
   requestRenderIfNotRequested = () => {
     if (!this.renderRequested) {
@@ -399,6 +401,7 @@ class VoxelEditor {
 
   /**
    * Reset mouse movement and begin recording.
+   * @function
    * @param {Event} event
    */
   recordStartPosition = (event) => {
@@ -411,6 +414,7 @@ class VoxelEditor {
 
   /**
    * Callback function used to record how far the mouse has moved since started recording.
+   * @function
    * @param {Event} event
    */
   recordMovement = (event) => {
@@ -422,6 +426,7 @@ class VoxelEditor {
   /**
    * Callback function used to check if the user meant to set a voxel instead
    * of orbiting the camera.
+   * @function
    * @param {Event} event
    */
   placeVoxelIfNoMovement = (event) => {
@@ -439,6 +444,7 @@ class VoxelEditor {
 
   /**
    * Called whenever a new color is selected.
+   * @function
    * @param {number} index - Index of the changed color
    * @param {r} r - Red color from 0-1
    * @param {g} g - Green color from 0-1
@@ -457,6 +463,7 @@ class VoxelEditor {
 
   /**
    * Updates which voxel the user is placing/painting now from the palette.
+   * @function
    * @param {number} index
    */
   onNewSelectedColor = (index) => {
@@ -466,6 +473,7 @@ class VoxelEditor {
 
   /**
    * Gets project data from the currently open project.
+   * @function
    * @returns {Object} JavaScript object representing the relevant data from the
    * currently open project/scene.
    */
@@ -486,6 +494,7 @@ class VoxelEditor {
 
   /**
    * Loads a project from the given data.
+   * @function
    * @param {Object} projectData
    */
   onLoadProjectData = (projectData) => {
@@ -506,6 +515,7 @@ class VoxelEditor {
 
   /**
    * Exports the current frame of the canvas to an image file.
+   * @function
    * @param {string} imageName
    */
   onExportImage = (imageName) => {
@@ -520,6 +530,7 @@ class VoxelEditor {
 
   /**
    * Exports the voxel model to an Obj file.
+   * @function
    * @param {string} name - What the exported file should be called
    * @param {string} type - The type of file to export
    */
