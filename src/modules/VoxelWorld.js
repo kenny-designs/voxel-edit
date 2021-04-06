@@ -281,7 +281,7 @@ class VoxelWorld {
    * @param {*} end
    * @returns {Object} HitResults or null if nothing was hit
    * @returns {Array.<number>} HitResults.position Coordinates of the hit
-   * @returns {Array.<number} HitResults.normal Normal of the hit
+   * @returns {Array.<number>} HitResults.normal Normal of the hit
    * @returns {number} HitResults.voxel The type of voxel hit
    */
   intersectRay(start, end) {
