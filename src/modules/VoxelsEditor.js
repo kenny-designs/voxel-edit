@@ -1,9 +1,24 @@
+// Import Three.js
 import * as THREE from "three";
+
+// Import orbit controls
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+
+// Import Exporters
+import { OBJExporter } from "three/examples/jsm/exporters/OBJExporter";
+import { PLYExporter } from "three/examples/jsm/exporters/PLYExporter";
+import { ColladaExporter } from "three/examples/jsm/exporters/ColladaExporter";
+import { STLExporter } from "three/examples/jsm/exporters/STLExporter";
+
+// Import modules
 import VoxelWorld from "./VoxelWorld";
 import Brush from "./Brush";
 import ColorPalette from "./ColorPalette";
+
+// Import FileSaver
 import FileSaver from "file-saver";
+
+// Import image assets
 //import textureAtlas from "../images/flourish-cc-by-nc-sa.png";
 
 /**
@@ -501,6 +516,56 @@ class VoxelEditor {
     this.canvas.toBlob((blob) => {
       FileSaver.saveAs(blob, imageName + ".png");
     }, "image/png");
+  };
+
+  /**
+   * Exports the voxel model to an Obj file.
+   * @param {string} name - What the exported file should be called
+   * @param {string} type - The type of file to export
+   */
+  onExportObj = (name, type) => {
+    // Create an exporter that matches the given type
+    let exporter, blobType;
+    switch (type) {
+      case "obj":
+        exporter = new OBJExporter();
+        blobType = "model/obj";
+        break;
+
+      case "ply":
+        exporter = new PLYExporter();
+        // ply doesn't appear to have an official internet media type
+        blobType = "text/plain";
+        break;
+
+      case "stl":
+        exporter = new STLExporter();
+        blobType = "model/stl";
+        break;
+
+      case "dae":
+        exporter = new ColladaExporter();
+        blobType = "model/vnd.collada+xml";
+        break;
+
+      default:
+        exporter = null;
+        break;
+    }
+
+    // If type is invalid, return
+    if (!exporter) return;
+
+    // Parse the scene for object data
+    const result = exporter.parse(this.scene);
+
+    // Create a blob to download with object data
+    const blob = new Blob([result], {
+      type: blobType,
+    });
+
+    // Save object file to user's device
+    FileSaver.saveAs(blob, name + "." + type);
   };
 }
 

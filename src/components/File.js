@@ -20,6 +20,9 @@ class File extends React.Component {
     this.state = {
       isSaveModalOpen: false,
       saveInputValue: "",
+      isExportModalOpen: false,
+      exportInputValue: "",
+      exportType: "",
     };
 
     // Create input for allowing users to select their project to load
@@ -114,6 +117,60 @@ class File extends React.Component {
     }
   };
 
+  /**
+   * Handler for changes in the export input. Helps to maintain a controlled input.
+   * @param {Event} e
+   */
+  handleExportInputChange = (e) => {
+    let { value } = e.target;
+
+    // Trim any excess white-space
+    value = value.trim();
+
+    if (value.length <= this.maxNameLength) {
+      this.setState({ exportInputValue: value });
+    }
+  };
+
+  /**
+   * Creates the modal for when the user is exporting to a some 3D object file
+   * @returns {JSX}
+   */
+  createExportModal = () => {
+    // True is empty, false otherwise
+    const isExportInputEmpty = this.state.exportInputValue.length === 0;
+
+    return (
+      <Modal
+        onClose={() => this.setState({ isExportModalOpen: false })}
+        onOpen={() => this.setState({ isExportModalOpen: true })}
+        open={this.state.isExportModalOpen}
+        closeIcon
+        size="mini"
+      >
+        <Modal.Header>Export Model As...</Modal.Header>
+        <Modal.Content>
+          <Input
+            action={{
+              content: `Export .${this.state.exportType}`,
+              disabled: isExportInputEmpty,
+              onClick: this.onExportObj,
+            }}
+            fluid
+            value={this.state.exportInputValue}
+            onChange={this.handleExportInputChange}
+            error={isExportInputEmpty}
+            placeholder="Enter export name..."
+          />
+        </Modal.Content>
+      </Modal>
+    );
+  };
+
+  /**
+   * Creates the modal for when the user is saving their project.
+   * @returns {JSX}
+   */
   createSaveModal = () => {
     // True is empty, false otherwise
     const isSaveInputEmpty = this.state.saveInputValue.length === 0;
@@ -145,10 +202,66 @@ class File extends React.Component {
     );
   };
 
+  /**
+   * Creates a sub-menu for each export option
+   * @returns {JSX}
+   */
+  createExportSubMenu = () => {
+    return (
+      <Dropdown text="Export" pointing="left" className="link item">
+        <Dropdown.Menu>
+          <Dropdown.Item
+            onClick={() =>
+              this.setState({ isExportModalOpen: true, exportType: "dae" })
+            }
+          >
+            Collada (.dae)
+          </Dropdown.Item>
+
+          <Dropdown.Item
+            onClick={() =>
+              this.setState({ isExportModalOpen: true, exportType: "ply" })
+            }
+          >
+            Stanford (.ply)
+          </Dropdown.Item>
+
+          <Dropdown.Item
+            onClick={() =>
+              this.setState({ isExportModalOpen: true, exportType: "stl" })
+            }
+          >
+            Stl (.stl)
+          </Dropdown.Item>
+
+          <Dropdown.Item
+            onClick={() =>
+              this.setState({ isExportModalOpen: true, exportType: "obj" })
+            }
+          >
+            Wavefront (.obj)
+          </Dropdown.Item>
+        </Dropdown.Menu>
+      </Dropdown>
+    );
+  };
+
+  /**
+   * Exports the voxel model to an Obj file.
+   */
+  onExportObj = () => {
+    // Get the export type and what to name it
+    const { exportType, exportInputValue } = this.state;
+
+    // Export the model
+    this.props.callbacks.onExportObj(exportInputValue, exportType);
+  };
+
   render() {
     return (
       <React.Fragment>
         {this.createSaveModal()}
+        {this.createExportModal()}
         <Dropdown text="File" pointing className="link item">
           <Dropdown.Menu>
             <Dropdown.Item
@@ -159,6 +272,8 @@ class File extends React.Component {
             <Dropdown.Item onClick={this.onLoadProject}>
               Load Project
             </Dropdown.Item>
+
+            {this.createExportSubMenu()}
           </Dropdown.Menu>
         </Dropdown>
       </React.Fragment>
