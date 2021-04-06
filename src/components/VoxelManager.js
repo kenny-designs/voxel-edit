@@ -144,6 +144,17 @@ class VoxelManager extends React.Component {
   };
 
   /**
+   * Exports the voxel model to an Obj file.
+   * @param {string} name - What the exported file should be called
+   * @param {string} type - The type of file to export
+   */
+  onExportObj = (name, type) => {
+    if (!this.voxelEditor) return;
+
+    this.voxelEditor.onExportObj(name, type);
+  };
+
+  /**
    * Returns callbacks organized by the component that they are meant for.
    * @returns {Object}
    */
@@ -164,6 +175,7 @@ class VoxelManager extends React.Component {
       file: {
         onGetProjectData: this.onGetProjectData,
         onLoadProjectData: this.onLoadProjectData,
+        onExportObj: this.onExportObj,
       },
       render: {
         onExportImage: this.onExportImage,
