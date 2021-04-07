@@ -43,7 +43,7 @@ function createFlatGround(world, cellX, cellY, cellZ, cellSize, v = 1) {
   }
 }
 
-/**
+/*
  * TODO: Temporary function for creating the texture atlas. Will be removed
  * during the creation of the ColorPalette code.
  * @param {*} render
