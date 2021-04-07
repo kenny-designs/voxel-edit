@@ -1,4 +1,5 @@
 import React from "react";
+import SubmitTextModal from "./SubmitTextModal";
 import { Dropdown, Modal, Input } from "semantic-ui-react";
 import FileSaver from "file-saver";
 
@@ -19,7 +20,6 @@ class File extends React.Component {
 
     this.state = {
       isSaveModalOpen: false,
-      saveInputValue: "",
       isExportModalOpen: false,
       exportInputValue: "",
       exportType: "",
@@ -43,13 +43,11 @@ class File extends React.Component {
    * Callback for when users wish to save their project. Creates a JSON file
    * with the contents of the 3D scene then saves locally to the user's device.
    * @function
-   * @param {Event} e
+   * @param {string} filename What to name the saved project file
    */
-  handleSaveProject = (e) => {
-    const { saveInputValue } = this.state;
-
+  handleSaveProject = (filename) => {
     // Prevent users from saving an empty filename
-    if (saveInputValue.length === 0) return;
+    if (filename.length === 0) return;
 
     // Get JSON that represents the project
     const projectJSON = JSON.stringify(this.props.callbacks.onGetProjectData());
@@ -60,7 +58,7 @@ class File extends React.Component {
     });
 
     // Download it
-    FileSaver.saveAs(blob, saveInputValue + ".json");
+    FileSaver.saveAs(blob, filename + ".json");
 
     // Save complete, close modal
     this.setState({ isSaveModalOpen: false });
@@ -108,22 +106,6 @@ class File extends React.Component {
 
     // Load project into the scene
     this.props.callbacks.onLoadProjectData(projectData);
-  };
-
-  /**
-   * Handler for changes in the save input. Helps to maintain a controlled input.
-   * @function
-   * @param {Event} e
-   */
-  handleSaveInputChange = (e) => {
-    let { value } = e.target;
-
-    // Trim any excess white-space
-    value = value.trim();
-
-    if (value.length <= this.maxNameLength) {
-      this.setState({ saveInputValue: value });
-    }
   };
 
   /**
@@ -184,33 +166,16 @@ class File extends React.Component {
    * @returns {JSX}
    */
   createSaveModal = () => {
-    // True is empty, false otherwise
-    const isSaveInputEmpty = this.state.saveInputValue.length === 0;
-
     return (
-      <Modal
+      <SubmitTextModal
         onClose={() => this.setState({ isSaveModalOpen: false })}
         onOpen={() => this.setState({ isSaveModalOpen: true })}
         open={this.state.isSaveModalOpen}
-        closeIcon
-        size="mini"
-      >
-        <Modal.Header>Save Project As...</Modal.Header>
-        <Modal.Content>
-          <Input
-            action={{
-              content: "Save Project",
-              disabled: isSaveInputEmpty,
-              onClick: this.handleSaveProject,
-            }}
-            fluid
-            value={this.state.saveInputValue}
-            onChange={this.handleSaveInputChange}
-            error={isSaveInputEmpty}
-            placeholder="Enter project name..."
-          />
-        </Modal.Content>
-      </Modal>
+        onSubmit={this.handleSaveProject}
+        header="Save Project As..."
+        submit="Save Project"
+        placeholder="Enter project name..."
+      />
     );
   };
 

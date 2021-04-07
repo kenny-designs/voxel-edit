@@ -24,6 +24,9 @@ class Render extends React.Component {
    * @param {string} filename What to name the saved image
    */
   onExportImage = (filename) => {
+    // Prevent empty filenames
+    if (filename.length === 0) return;
+
     // Export the image
     this.props.callbacks.onExportImage(filename);
 
