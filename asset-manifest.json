@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/voxel-edit/static/css/main.5719d60d.chunk.css",
-    "main.js": "/voxel-edit/static/js/main.27b2a2e9.chunk.js",
-    "main.js.map": "/voxel-edit/static/js/main.27b2a2e9.chunk.js.map",
+    "main.js": "/voxel-edit/static/js/main.086893d1.chunk.js",
+    "main.js.map": "/voxel-edit/static/js/main.086893d1.chunk.js.map",
     "runtime-main.js": "/voxel-edit/static/js/runtime-main.6a32b0c9.js",
     "runtime-main.js.map": "/voxel-edit/static/js/runtime-main.6a32b0c9.js.map",
     "static/css/2.e53602a3.chunk.css": "/voxel-edit/static/css/2.e53602a3.chunk.css",
@@ -19,6 +19,6 @@
     "static/css/2.e53602a3.chunk.css",
     "static/js/2.aac6165b.chunk.js",
     "static/css/main.5719d60d.chunk.css",
-    "static/js/main.27b2a2e9.chunk.js"
+    "static/js/main.086893d1.chunk.js"
   ]
 }
