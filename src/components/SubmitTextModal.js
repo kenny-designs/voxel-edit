@@ -54,7 +54,7 @@ class SubmitTextModal extends React.Component {
         <Modal.Content>
           <Input
             action={{
-              content: this.props.button,
+              content: this.props.submit,
               disabled: isInputEmpty,
               onClick: this.onSubmit,
             }}
