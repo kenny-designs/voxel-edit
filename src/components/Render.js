@@ -1,4 +1,5 @@
 import React from "react";
+import SubmitTextModal from "./SubmitTextModal";
 import { Dropdown, Modal, Input } from "semantic-ui-react";
 
 /**
@@ -24,9 +25,9 @@ class Render extends React.Component {
   /**
    * Exports current frame of canvas to an image and closes the export modal.
    */
-  onExportImage = () => {
+  onExportImage = (filename) => {
     // Export the image
-    this.props.callbacks.onExportImage(this.state.exportInputValue);
+    this.props.callbacks.onExportImage(filename);
 
     // Close the modal
     this.setState({ isExportModalOpen: false });
@@ -81,7 +82,18 @@ class Render extends React.Component {
   render() {
     return (
       <React.Fragment>
-        {this.createExportModal()}
+        {/*this.createExportModal()*/}
+
+        <SubmitTextModal
+          onClose={() => this.setState({ isExportModalOpen: false })}
+          onOpen={() => this.setState({ isExportModalOpen: true })}
+          open={this.state.isExportModalOpen}
+          onSubmit={this.onExportImage}
+          header="Export Image As..."
+          button="Export Image"
+          placeholder="Enter image name..."
+        />
+
         <Dropdown text="Render" pointing className="link item">
           <Dropdown.Menu>
             <Dropdown.Item
