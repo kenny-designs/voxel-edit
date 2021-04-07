@@ -264,7 +264,9 @@ class File extends React.Component {
         {this.createExportModal()}
         <Dropdown text="File" pointing className="link item">
           <Dropdown.Menu>
-            <Dropdown.Item>New Project</Dropdown.Item>
+            <Dropdown.Item onClick={this.props.callbacks.onNewProject}>
+              New Project
+            </Dropdown.Item>
 
             <Dropdown.Item
               onClick={() => this.setState({ isSaveModalOpen: true })}

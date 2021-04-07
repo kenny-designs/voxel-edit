@@ -500,6 +500,9 @@ class VoxelEditor {
   onLoadProjectData = (projectData) => {
     const { voxelWorld, colorPalette } = projectData;
 
+    // Remove the old cells from the world
+    this.world.removeAllCells(this.scene);
+
     // Load data for the color palette
     this.world.colorPalette.setNewColorsArray(colorPalette.colors);
     this.world.colorPalette.setSelectedColor(colorPalette.selectedColor);
@@ -577,6 +580,21 @@ class VoxelEditor {
 
     // Save object file to user's device
     FileSaver.saveAs(blob, name + "." + type);
+  };
+
+  /**
+   * Creates a new, empty voxel world
+   * @function
+   */
+  onNewProject = () => {
+    this.world.removeAllCells(this.scene);
+    this.world.colorPalette.restoreDefaults();
+    createFlatGround(this.world, 0, 0, 0, this.cellSize, 1); // Center
+
+    // Update geometry of the entire world
+    this.world.updateWorldGeometry(this.scene);
+
+    this.requestRenderIfNotRequested();
   };
 }
 

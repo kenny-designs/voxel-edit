@@ -20,6 +20,14 @@ class ColorPalette {
   }
 
   /**
+   * Sets the color palette to its default settings.
+   */
+  restoreDefaults() {
+    this.selectedColor = 0;
+    this.colors = [new Color(0.5176, 0.7843, 0.0902)];
+  }
+
+  /**
    * Creates a new color array from the new one.
    * @param {Array} newColors
    */
