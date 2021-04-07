@@ -115,7 +115,7 @@ class File extends React.Component {
         onClose={() => this.setState({ isExportModalOpen: false })}
         onOpen={() => this.setState({ isExportModalOpen: true })}
         open={this.state.isExportModalOpen}
-        onSubmit={this.onExportObj}
+        onSubmit={this.onExportModel}
         header="Export Model As..."
         submit={`Export .${this.state.exportType}`}
         placeholder="Enter export name..."
@@ -188,13 +188,13 @@ class File extends React.Component {
   };
 
   /**
-   * Exports the voxel model to an Obj file.
+   * Hanlder for exporting the voxel model to some 3D file format.
    * @function
    * @param {string} filename Name of the exported 3D file
    */
-  onExportObj = (filename) => {
+  onExportModel = (filename) => {
     // Export the model with the given filename and export type
-    this.props.callbacks.onExportObj(filename, this.state.exportType);
+    this.props.callbacks.onExportModel(filename, this.state.exportType);
 
     // Export complete, close modal
     this.setState({ isExportModalOpen: false });
