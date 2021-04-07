@@ -7,16 +7,34 @@
  * @property {number} maxColors - The maximum number of colors that the colors array can hold
  */
 class ColorPalette {
+  /**
+   * Creates a new ColorPalette.
+   * @param {Array} [colors=null] Array of colors to create the color palette with
+   * @param {number} [selectedColor=0] The initial selected color
+   */
   constructor(colors = null, selectedColor = 0) {
-    // Initialize the color array
-    // @TODO: This doesn't necessarily work for passed in colors! Rework it
-    this.colors = colors ? colors : [new Color(0.5176, 0.7843, 0.0902)];
+    // Set the default values for member variables
+    this.colors = null;
+    this.selectedColor = 0;
 
-    // The currently selected color
-    this.selectedColor = selectedColor;
+    // Initialize the color array
+    this.setNewColorsArray(
+      colors ? colors : [new Color(0.5176, 0.7843, 0.0902)]
+    );
+
+    // Set the currently selected color
+    this.setSelectedColor(selectedColor);
 
     // The VoxelWorld can only hold up to 255 colors
     this.maxColors = 128;
+  }
+
+  /**
+   * Sets the color palette to its default settings.
+   */
+  restoreDefaults() {
+    this.selectedColor = 0;
+    this.colors = [new Color(0.5176, 0.7843, 0.0902)];
   }
 
   /**

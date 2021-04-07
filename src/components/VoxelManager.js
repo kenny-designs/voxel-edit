@@ -154,6 +154,13 @@ class VoxelManager extends React.Component {
     this.voxelEditor.onExportObj(name, type);
   };
 
+  onNewProject = () => {
+    if (!this.voxelEditor) return;
+
+    this.voxelEditor.onNewProject();
+    this.forceUpdate();
+  };
+
   /**
    * Returns callbacks organized by the component that they are meant for.
    * @returns {Object}
@@ -176,6 +183,7 @@ class VoxelManager extends React.Component {
         onGetProjectData: this.onGetProjectData,
         onLoadProjectData: this.onLoadProjectData,
         onExportObj: this.onExportObj,
+        onNewProject: this.onNewProject,
       },
       render: {
         onExportImage: this.onExportImage,
