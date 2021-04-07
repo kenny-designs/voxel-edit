@@ -88,6 +88,9 @@ class File extends React.Component {
     // Make the name of the file the new saveInputValue
     const saveInputValue = file.name.replace(/(.json)$/, "");
     this.setState({ saveInputValue });
+
+    // Reset value to empty string so that user can reload same file
+    this.loadFileInput.value = "";
   };
 
   /**
