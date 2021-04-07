@@ -477,12 +477,12 @@ class VoxelEditor {
   };
 
   /**
-   * Exports the voxel model to an Obj file.
+   * Exports the voxel model to some 3D file format
    * @function
    * @param {string} name - What the exported file should be called
    * @param {string} type - The type of file to export
    */
-  onExportObj = (name, type) => {
+  onExportModel = (name, type) => {
     // Create an exporter that matches the given type
     let exporter, blobType;
     switch (type) {

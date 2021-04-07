@@ -144,14 +144,14 @@ class VoxelManager extends React.Component {
   };
 
   /**
-   * Exports the voxel model to an Obj file.
+   * Exports the voxel model to some 3D file format.
    * @param {string} name - What the exported file should be called
    * @param {string} type - The type of file to export
    */
-  onExportObj = (name, type) => {
+  onExportModel = (name, type) => {
     if (!this.voxelEditor) return;
 
-    this.voxelEditor.onExportObj(name, type);
+    this.voxelEditor.onExportModel(name, type);
   };
 
   onNewProject = () => {
@@ -182,7 +182,7 @@ class VoxelManager extends React.Component {
       file: {
         onGetProjectData: this.onGetProjectData,
         onLoadProjectData: this.onLoadProjectData,
-        onExportObj: this.onExportObj,
+        onExportModel: this.onExportModel,
         onNewProject: this.onNewProject,
       },
       render: {
