@@ -22,69 +22,15 @@ import FileSaver from "file-saver";
 //import textureAtlas from "../images/flourish-cc-by-nc-sa.png";
 
 /**
- * Helper function to return a random integer between the min and max value
- * in a range of [min, max).
- * TODO: This can be removed soon
- * @param {number} min
- * @param {number} max
- * @returns {number}
- */
-function randInt(min, max) {
-  return Math.floor(Math.random() * (max - min) + min);
-}
-
-/**
- * Has the cell at the given coordinates form a sine wave out of its voxels.
- * @param {VoxelWorld} world - The world to spawn the sine wave in
- * @param {number} cellX
- * @param {number} cellY
- * @param {number} cellZ
- * @param {number} cellSize - Dimensions of the cell
- * @param {number} [v=0] - The type of voxel to spawn. 0 for random
- */
-/*
-function createSineWave(world, cellX, cellY, cellZ, cellSize, v = 0) {
-  const startX = cellX * cellSize;
-  const startY = cellY * cellSize;
-  const startZ = cellZ * cellSize;
-
-  // Create a sine wave with our voxels
-  for (let y = 0; y < cellSize; ++y) {
-    for (let z = 0; z < cellSize; ++z) {
-      for (let x = 0; x < cellSize; ++x) {
-        // Calculate the maximum height at the x and z position for a voxel to be placed
-        const height =
-          (Math.sin((x / cellSize) * Math.PI * 2) +
-            Math.sin((z / cellSize) * Math.PI * 3)) *
-            (cellSize / 6) +
-          cellSize / 2;
-
-        // Set voxel if y is below the height
-        if (y < height) {
-          // Set voxel to random texture
-          world.setVoxel(
-            startX + x,
-            startY + y,
-            startZ + z,
-            v ? v : randInt(1, 17)
-          );
-        }
-      }
-    }
-  }
-}
-*/
-
-/**
  * Has the cell at the given coordinates form a flat ground out of its voxels.
  * @param {VoxelWorld} world - The world to spawn flat ground in
  * @param {number} cellX
  * @param {number} cellY
  * @param {number} cellZ
  * @param {number} cellSize - Dimensions of the cell
- * @param {number} [v=0] - The type of voxel to spawn. 0 for random
+ * @param {number} [v=1] - The type of voxel to spawn.
  */
-function createFlatGround(world, cellX, cellY, cellZ, cellSize, v = 0) {
+function createFlatGround(world, cellX, cellY, cellZ, cellSize, v = 1) {
   const startX = cellX * cellSize;
   const startY = cellY * cellSize;
   const startZ = cellZ * cellSize;
@@ -92,8 +38,7 @@ function createFlatGround(world, cellX, cellY, cellZ, cellSize, v = 0) {
   // Create flat ground with our voxels
   for (let z = 0; z < cellSize; ++z) {
     for (let x = 0; x < cellSize; ++x) {
-      // Set voxel to random texture or v if given
-      world.setVoxel(startX + x, startY, startZ + z, v ? v : randInt(1, 17));
+      world.setVoxel(startX + x, startY, startZ + z, v);
     }
   }
 }
