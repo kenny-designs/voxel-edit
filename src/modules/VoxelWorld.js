@@ -11,7 +11,7 @@ import * as THREE from "three";
  *
  * @property {number} cellSize      - The length, width, and height of a single cell (or chunk) within the world
  * @property {number} cellSliceSize - The area of a single slice of each cell (cellSize^2)
- * @property {Object} cell          - Object consisting of an array for each cell
+ * @property {Object} cells         - Object consisting of an array for each cell
  */
 class VoxelWorld {
   /**
@@ -517,6 +517,23 @@ class VoxelWorld {
         z * this.cellSize
       );
     });
+  }
+
+  /**
+   * Removes every cell from the world along with associated meshes.
+   * @param {Scene} scene The scene object to remove the cells from
+   */
+  removeAllCells(scene) {
+    // Free resources from each mesh
+    Object.keys(this.cellIdToMesh).forEach((cellId) => {
+      // TODO: check if material needs to be released as well
+      const mesh = this.cellIdToMesh[cellId];
+      mesh.geometry.dispose();
+      scene.remove(mesh);
+    });
+
+    this.cellIdToMesh = {};
+    this.cells = {};
   }
 }
 
