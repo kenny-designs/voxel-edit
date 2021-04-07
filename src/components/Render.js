@@ -1,6 +1,6 @@
 import React from "react";
-import SubmitTextModal from "./SubmitTextModal";
 import { Dropdown } from "semantic-ui-react";
+import SubmitTextModal from "./SubmitTextModal";
 
 /**
  * Allows the user to perform rendering related actions. Mostly, saving

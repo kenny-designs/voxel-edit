@@ -1,6 +1,6 @@
 import React from "react";
+import { Dropdown } from "semantic-ui-react";
 import SubmitTextModal from "./SubmitTextModal";
-import { Dropdown, Modal, Input } from "semantic-ui-react";
 import FileSaver from "file-saver";
 
 /**
@@ -21,7 +21,6 @@ class File extends React.Component {
     this.state = {
       isSaveModalOpen: false,
       isExportModalOpen: false,
-      exportInputValue: "",
       exportType: "",
     };
 
@@ -34,9 +33,6 @@ class File extends React.Component {
     // Create FileReader for loading user projects
     this.loadFileReader = new FileReader();
     this.loadFileReader.addEventListener("load", this.handleFileRead);
-
-    // Maximum number of characters the user can enter into the save input
-    this.maxNameLength = 100;
   }
 
   /**
@@ -109,54 +105,21 @@ class File extends React.Component {
   };
 
   /**
-   * Handler for changes in the export input. Helps to maintain a controlled input.
-   * @function
-   * @param {Event} e
-   */
-  handleExportInputChange = (e) => {
-    let { value } = e.target;
-
-    // Trim any excess white-space
-    value = value.trim();
-
-    if (value.length <= this.maxNameLength) {
-      this.setState({ exportInputValue: value });
-    }
-  };
-
-  /**
-   * Creates the modal for when the user is exporting to a some 3D object file
+   * Creates the modal for when the user is exporting to some 3D object file.
    * @function
    * @returns {JSX}
    */
   createExportModal = () => {
-    // True is empty, false otherwise
-    const isExportInputEmpty = this.state.exportInputValue.length === 0;
-
     return (
-      <Modal
+      <SubmitTextModal
         onClose={() => this.setState({ isExportModalOpen: false })}
         onOpen={() => this.setState({ isExportModalOpen: true })}
         open={this.state.isExportModalOpen}
-        closeIcon
-        size="mini"
-      >
-        <Modal.Header>Export Model As...</Modal.Header>
-        <Modal.Content>
-          <Input
-            action={{
-              content: `Export .${this.state.exportType}`,
-              disabled: isExportInputEmpty,
-              onClick: this.onExportObj,
-            }}
-            fluid
-            value={this.state.exportInputValue}
-            onChange={this.handleExportInputChange}
-            error={isExportInputEmpty}
-            placeholder="Enter export name..."
-          />
-        </Modal.Content>
-      </Modal>
+        onSubmit={this.onExportObj}
+        header="Export Model As..."
+        submit={`Export .${this.state.exportType}`}
+        placeholder="Enter export name..."
+      />
     );
   };
 
@@ -227,13 +190,14 @@ class File extends React.Component {
   /**
    * Exports the voxel model to an Obj file.
    * @function
+   * @param {string} filename Name of the exported 3D file
    */
-  onExportObj = () => {
-    // Get the export type and what to name it
-    const { exportType, exportInputValue } = this.state;
+  onExportObj = (filename) => {
+    // Export the model with the given filename and export type
+    this.props.callbacks.onExportObj(filename, this.state.exportType);
 
-    // Export the model
-    this.props.callbacks.onExportObj(exportInputValue, exportType);
+    // Export complete, close modal
+    this.setState({ isExportModalOpen: false });
   };
 
   render() {
