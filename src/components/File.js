@@ -42,6 +42,8 @@ class File extends React.Component {
   /**
    * Callback for when users wish to save their project. Creates a JSON file
    * with the contents of the 3D scene then saves locally to the user's device.
+   * @function
+   * @param {Event} e
    */
   handleSaveProject = (e) => {
     const { saveInputValue } = this.state;
@@ -66,6 +68,7 @@ class File extends React.Component {
 
   /**
    * Callback for when users wish to load a pre-existing project.
+   * @function
    */
   onLoadProject = () => {
     this.loadFileInput.click();
@@ -73,6 +76,7 @@ class File extends React.Component {
 
   /**
    * Handler for when the users selects the file they wish to load.
+   * @function
    * @param {Event} e
    */
   handleFileSelected = (e) => {
@@ -95,6 +99,7 @@ class File extends React.Component {
 
   /**
    * Handler for reading the data from the user's selected project file.
+   * @function
    * @param {Event} e
    */
   handleFileRead = (e) => {
@@ -107,6 +112,7 @@ class File extends React.Component {
 
   /**
    * Handler for changes in the save input. Helps to maintain a controlled input.
+   * @function
    * @param {Event} e
    */
   handleSaveInputChange = (e) => {
@@ -122,6 +128,7 @@ class File extends React.Component {
 
   /**
    * Handler for changes in the export input. Helps to maintain a controlled input.
+   * @function
    * @param {Event} e
    */
   handleExportInputChange = (e) => {
@@ -137,6 +144,7 @@ class File extends React.Component {
 
   /**
    * Creates the modal for when the user is exporting to a some 3D object file
+   * @function
    * @returns {JSX}
    */
   createExportModal = () => {
@@ -172,6 +180,7 @@ class File extends React.Component {
 
   /**
    * Creates the modal for when the user is saving their project.
+   * @function
    * @returns {JSX}
    */
   createSaveModal = () => {
@@ -207,6 +216,7 @@ class File extends React.Component {
 
   /**
    * Creates a sub-menu for each export option
+   * @function
    * @returns {JSX}
    */
   createExportSubMenu = () => {
@@ -251,6 +261,7 @@ class File extends React.Component {
 
   /**
    * Exports the voxel model to an Obj file.
+   * @function
    */
   onExportObj = () => {
     // Get the export type and what to name it
