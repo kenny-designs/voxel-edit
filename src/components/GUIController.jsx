@@ -4,6 +4,7 @@ import Brush from "./Brush";
 import File from "./File";
 //import Edit from "./Edit";
 import Render from "./Render";
+import GitHubLink from "./GitHubLink";
 import ColorPalette from "./ColorPalette";
 import {
   Modal,
@@ -195,6 +196,7 @@ class GUIController extends React.Component {
               <File callbacks={this.props.callbacks.file} />
               {/*<Edit />*/}
               <Render callbacks={this.props.callbacks.render} />
+              <GitHubLink />
             </Menu>
           </Grid.Column>
         </Grid.Row>
@@ -278,6 +280,7 @@ class GUIController extends React.Component {
           <File callbacks={this.props.callbacks.file} />
           {/*<Edit />*/}
           <Render callbacks={this.props.callbacks.render} />
+          <GitHubLink />
         </Menu>
 
         <Viewport callbacks={this.props.callbacks.viewport} />
