@@ -1,4 +1,4 @@
-import { Menu } from "semantic-ui-react";
+import { Menu, Icon } from "semantic-ui-react";
 
 /**
  * Returns JSX with a link to the project's GitHub repo.
@@ -12,6 +12,7 @@ const GitHubLink = () => {
       href="https://github.com/kenny-designs/voxel-edit"
       target="_blank"
     >
+      <Icon name="github" />
       GitHub
     </Menu.Item>
   );
