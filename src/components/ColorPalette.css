@@ -37,6 +37,7 @@
   border-radius: 50%;
   border-color: white;
   border-width: 2px;
+  color: white;
 }
 
 .add-cell-btn > i {
@@ -44,7 +45,10 @@
   height: auto;
 }
 
-.add-cell-btn:hover {
-  color: var(--hover-color);
-  border-color: var(--hover-color);
+/* Only hover for non-touch devices */
+@media (hover: hover) {
+  .add-cell-btn:hover {
+    color: var(--hover-color);
+    border-color: var(--hover-color);
+  }
 }

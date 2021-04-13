@@ -249,7 +249,7 @@ class GUIController extends React.Component {
         {/* Populate the modal with relevant content */}
         {this.createMobileModalContent()}
 
-        <Modal.Actions>
+        <Modal.Actions style={{ backgroundColor: "var(--main-bg-color)" }}>
           <Button
             onClick={() =>
               this.setState((prevState) => ({
@@ -294,8 +294,15 @@ class GUIController extends React.Component {
     // Return JSX for the modal contents based on our header and description
     return (
       <React.Fragment>
-        <Modal.Header>{header}</Modal.Header>
-        <Modal.Content scrolling>
+        <Modal.Header
+          style={{ color: "white", backgroundColor: "var(--main-bg-color)" }}
+        >
+          {header}
+        </Modal.Header>
+        <Modal.Content
+          scrolling
+          style={{ backgroundColor: "var(--main-bg-color)" }}
+        >
           <Modal.Description>{description}</Modal.Description>
         </Modal.Content>
       </React.Fragment>
