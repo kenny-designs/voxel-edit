@@ -282,7 +282,15 @@ class GUIController extends React.Component {
     // Generate JSX based on the current modal type
     switch (this.state.mobile.modalContentType) {
       case "ColorPalette":
-        header = "Color Palette";
+        header = (
+          <Header as="h4">
+            <Icon name="tint" />
+            <Header.Content>
+              Color Palette
+              <Header.Subheader>Select a color to paint with</Header.Subheader>
+            </Header.Content>
+          </Header>
+        );
         description = (
           <ColorPalette callbacks={this.props.callbacks.colorPalette} />
         );

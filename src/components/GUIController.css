@@ -1,11 +1,11 @@
 .mobileModal {
-  background: none;
+  background: none !important;
 }
 
 .mobileModal .header,
 .mobileModal .content,
 .mobileModal .actions {
-  background-color: var(--main-bg-color) !important;
+  background-color: var(--main-panel-color) !important;
 }
 
 .mobileModal .header {
