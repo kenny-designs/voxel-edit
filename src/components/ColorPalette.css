@@ -17,17 +17,16 @@
 .color-cell {
   width: 2em;
   height: 2em;
-  margin: 2px;
+  margin: 3px;
   border-radius: 2px;
+  border-width: 3px;
   border-color: black;
   border-style: solid;
   cursor: pointer;
 }
 
 .color-cell.active {
-  outline-color: white;
-  outline-width: 3px;
-  outline-style: auto;
+  box-shadow: 0 0 0 3px white;
 }
 
 .add-cell-btn {
@@ -36,7 +35,7 @@
   align-items: center;
   border-radius: 50%;
   border-color: white;
-  border-width: 2px;
+  border-width: 3px;
   color: white;
 }
 
