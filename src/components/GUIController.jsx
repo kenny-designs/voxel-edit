@@ -1,3 +1,4 @@
+import "./GUIController.css";
 import React from "react";
 import Viewport from "./Viewport";
 import Brush from "./Brush";
@@ -234,6 +235,7 @@ class GUIController extends React.Component {
   createMobileModal() {
     return (
       <Modal
+        className="mobileModal"
         open={this.state.mobile.isModalOpen}
         onClose={() =>
           this.setState((prevState) => ({
@@ -249,7 +251,7 @@ class GUIController extends React.Component {
         {/* Populate the modal with relevant content */}
         {this.createMobileModalContent()}
 
-        <Modal.Actions style={{ backgroundColor: "var(--main-bg-color)" }}>
+        <Modal.Actions>
           <Button
             onClick={() =>
               this.setState((prevState) => ({
@@ -294,15 +296,8 @@ class GUIController extends React.Component {
     // Return JSX for the modal contents based on our header and description
     return (
       <React.Fragment>
-        <Modal.Header
-          style={{ color: "white", backgroundColor: "var(--main-bg-color)" }}
-        >
-          {header}
-        </Modal.Header>
-        <Modal.Content
-          scrolling
-          style={{ backgroundColor: "var(--main-bg-color)" }}
-        >
+        <Modal.Header>{header}</Modal.Header>
+        <Modal.Content scrolling>
           <Modal.Description>{description}</Modal.Description>
         </Modal.Content>
       </React.Fragment>

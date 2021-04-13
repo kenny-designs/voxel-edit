@@ -1,0 +1,13 @@
+.mobileModal {
+  background: none;
+}
+
+.mobileModal .header,
+.mobileModal .content,
+.mobileModal .actions {
+  background-color: var(--main-bg-color) !important;
+}
+
+.mobileModal .header {
+  color: white !important;
+}
