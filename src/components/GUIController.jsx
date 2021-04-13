@@ -29,7 +29,7 @@ class GUIController extends React.Component {
     this.state = {
       isMobile: false,
       mobile: {
-        isColorModalOpen: false,
+        isModalOpen: false,
       },
       desktop: {
         brushSettings: {
@@ -234,6 +234,41 @@ class GUIController extends React.Component {
   createMobileModal() {
     return (
       <Modal
+        open={this.state.mobile.isModalOpen}
+        onClose={() =>
+          this.setState({
+            mobile: { isModalOpen: false },
+          })
+        }
+        onOpen={() =>
+          this.setState({
+            mobile: { isModalOpen: true },
+          })
+        }
+      >
+        <Modal.Header>Mobile Modal</Modal.Header>
+        <Modal.Content scrolling>
+          <Modal.Description>My Modal</Modal.Description>
+        </Modal.Content>
+
+        <Modal.Actions>
+          <Button
+            onClick={() =>
+              this.setState({
+                mobile: { isModalOpen: false },
+              })
+            }
+            primary
+          >
+            Close
+          </Button>
+        </Modal.Actions>
+      </Modal>
+    );
+
+    /*
+    return (
+      <Modal
         open={this.state.mobile.isColorModalOpen}
         onClose={() =>
           this.setState({
@@ -267,6 +302,7 @@ class GUIController extends React.Component {
         </Modal.Actions>
       </Modal>
     );
+    */
   }
 
   /**
@@ -275,31 +311,33 @@ class GUIController extends React.Component {
    */
   createMobileGUI() {
     return (
-      <div style={{ height: window.innerHeight }}>
-        <Menu fixed="top" inverted>
-          <File callbacks={this.props.callbacks.file} />
-          {/*<Edit />*/}
-          <Render callbacks={this.props.callbacks.render} />
-          <GitHubLink />
-        </Menu>
-
-        <Viewport callbacks={this.props.callbacks.viewport} />
-
+      <React.Fragment>
         {this.createMobileModal()}
 
-        <Menu fixed="bottom" inverted style={{ overflowX: "auto" }}>
-          <Brush callbacks={this.props.callbacks.brush} />
+        <div style={{ height: window.innerHeight }}>
+          {/* Create top menu */}
+          <Menu fixed="top" inverted>
+            <File callbacks={this.props.callbacks.file} />
+            {/*<Edit />*/}
+            <Render callbacks={this.props.callbacks.render} />
+            <GitHubLink />
+          </Menu>
 
-          <Menu.Item
-            as="a"
-            onClick={() =>
-              this.setState({ mobile: { isColorModalOpen: true } })
-            }
-          >
-            Color Palette
-          </Menu.Item>
-        </Menu>
-      </div>
+          <Viewport callbacks={this.props.callbacks.viewport} />
+
+          {/* Create bottom menu */}
+          <Menu fixed="bottom" inverted style={{ overflowX: "auto" }}>
+            <Brush callbacks={this.props.callbacks.brush} />
+
+            <Menu.Item
+              as="a"
+              onClick={() => this.setState({ mobile: { isModalOpen: true } })}
+            >
+              Color Palette
+            </Menu.Item>
+          </Menu>
+        </div>
+      </React.Fragment>
     );
   }
 
