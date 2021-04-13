@@ -1,3 +1,4 @@
+import "./GUIController.css";
 import React from "react";
 import Viewport from "./Viewport";
 import Brush from "./Brush";
@@ -29,7 +30,8 @@ class GUIController extends React.Component {
     this.state = {
       isMobile: false,
       mobile: {
-        isColorModalOpen: false,
+        isModalOpen: false,
+        modalContentType: "",
       },
       desktop: {
         brushSettings: {
@@ -228,37 +230,33 @@ class GUIController extends React.Component {
 
   /**
    * Creates JSX for modals on mobile devices.
-   * @TODO Only works for the color palette. Make it more general!
    * @returns {JSX}
    */
   createMobileModal() {
     return (
       <Modal
-        open={this.state.mobile.isColorModalOpen}
+        className="mobileModal"
+        open={this.state.mobile.isModalOpen}
         onClose={() =>
-          this.setState({
-            mobile: { isColorModalOpen: false },
-          })
+          this.setState((prevState) => ({
+            mobile: { ...prevState.mobile, isModalOpen: false },
+          }))
         }
         onOpen={() =>
-          this.setState({
-            mobile: { isColorModalOpen: true },
-          })
+          this.setState((prevState) => ({
+            mobile: { ...prevState.mobile, isModalOpen: true },
+          }))
         }
       >
-        <Modal.Header>Color Palette</Modal.Header>
-        <Modal.Content scrolling>
-          <Modal.Description>
-            <ColorPalette callbacks={this.props.callbacks.colorPalette} />
-          </Modal.Description>
-        </Modal.Content>
+        {/* Populate the modal with relevant content */}
+        {this.createMobileModalContent()}
 
         <Modal.Actions>
           <Button
             onClick={() =>
-              this.setState({
-                mobile: { isColorModalOpen: false },
-              })
+              this.setState((prevState) => ({
+                mobile: { ...prevState.mobile, isModalOpen: false },
+              }))
             }
             primary
           >
@@ -270,36 +268,90 @@ class GUIController extends React.Component {
   }
 
   /**
+   * Populates the mobile modal with content relevant to what the user selected.
+   * For example, opening the ColorPalette will fill the modal with ColorPalette
+   * related JSX.
+   * @returns {JSX}
+   */
+  createMobileModalContent() {
+    const { modalContentType } = this.state.mobile;
+
+    // Header and description of our modal
+    let header, description;
+
+    // Generate JSX based on the current modal type
+    switch (this.state.mobile.modalContentType) {
+      case "ColorPalette":
+        header = (
+          <Header as="h4">
+            <Icon name="tint" />
+            <Header.Content>
+              Color Palette
+              <Header.Subheader>Select a color to paint with</Header.Subheader>
+            </Header.Content>
+          </Header>
+        );
+        description = (
+          <ColorPalette callbacks={this.props.callbacks.colorPalette} />
+        );
+        break;
+
+      default:
+        header = "Empty Modal";
+        description = `Nothing in here. Thr current modal type is '${modalContentType}'`;
+    }
+
+    // Return JSX for the modal contents based on our header and description
+    return (
+      <React.Fragment>
+        <Modal.Header>{header}</Modal.Header>
+        <Modal.Content scrolling>
+          <Modal.Description>{description}</Modal.Description>
+        </Modal.Content>
+      </React.Fragment>
+    );
+  }
+
+  /**
    * Create the mobile version of the UI.
    * @returns {JSX}
    */
   createMobileGUI() {
     return (
-      <div style={{ height: window.innerHeight }}>
-        <Menu fixed="top" inverted>
-          <File callbacks={this.props.callbacks.file} />
-          {/*<Edit />*/}
-          <Render callbacks={this.props.callbacks.render} />
-          <GitHubLink />
-        </Menu>
-
-        <Viewport callbacks={this.props.callbacks.viewport} />
-
+      <React.Fragment>
         {this.createMobileModal()}
 
-        <Menu fixed="bottom" inverted style={{ overflowX: "auto" }}>
-          <Brush callbacks={this.props.callbacks.brush} />
+        <div style={{ height: window.innerHeight }}>
+          {/* Create top menu */}
+          <Menu fixed="top" inverted>
+            <File callbacks={this.props.callbacks.file} />
+            {/*<Edit />*/}
+            <Render callbacks={this.props.callbacks.render} />
+            <GitHubLink />
+          </Menu>
 
-          <Menu.Item
-            as="a"
-            onClick={() =>
-              this.setState({ mobile: { isColorModalOpen: true } })
-            }
-          >
-            Color Palette
-          </Menu.Item>
-        </Menu>
-      </div>
+          <Viewport callbacks={this.props.callbacks.viewport} />
+
+          {/* Create bottom menu */}
+          <Menu fixed="bottom" inverted style={{ overflowX: "auto" }}>
+            <Brush callbacks={this.props.callbacks.brush} />
+
+            <Menu.Item
+              as="a"
+              onClick={() =>
+                this.setState({
+                  mobile: {
+                    isModalOpen: true,
+                    modalContentType: "ColorPalette",
+                  },
+                })
+              }
+            >
+              Color Palette
+            </Menu.Item>
+          </Menu>
+        </div>
+      </React.Fragment>
     );
   }
 
