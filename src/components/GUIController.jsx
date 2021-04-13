@@ -272,13 +272,31 @@ class GUIController extends React.Component {
    * @returns {JSX}
    */
   createMobileModalContent() {
+    const { modalContentType } = this.state.mobile;
+
+    // Header and description of our modal
+    let header, description;
+
+    // Generate JSX based on the current modal type
+    switch (this.state.mobile.modalContentType) {
+      case "ColorPalette":
+        header = "Color Palette";
+        description = (
+          <ColorPalette callbacks={this.props.callbacks.colorPalette} />
+        );
+        break;
+
+      default:
+        header = "Empty Modal";
+        description = `Nothing in here. Thr current modal type is '${modalContentType}'`;
+    }
+
+    // Return JSX for the modal contents based on our header and description
     return (
       <React.Fragment>
-        <Modal.Header>Color Palette</Modal.Header>
+        <Modal.Header>{header}</Modal.Header>
         <Modal.Content scrolling>
-          <Modal.Description>
-            <ColorPalette callbacks={this.props.callbacks.colorPalette} />
-          </Modal.Description>
+          <Modal.Description>{description}</Modal.Description>
         </Modal.Content>
       </React.Fragment>
     );
@@ -311,9 +329,12 @@ class GUIController extends React.Component {
             <Menu.Item
               as="a"
               onClick={() =>
-                this.setState((prevState) => ({
-                  mobile: { ...prevState.mobile, isModalOpen: true },
-                }))
+                this.setState({
+                  mobile: {
+                    isModalOpen: true,
+                    modalContentType: "ColorPalette",
+                  },
+                })
               }
             >
               Color Palette
