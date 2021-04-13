@@ -30,6 +30,7 @@ class GUIController extends React.Component {
       isMobile: false,
       mobile: {
         isModalOpen: false,
+        modalContentType: "",
       },
       desktop: {
         brushSettings: {
@@ -228,7 +229,6 @@ class GUIController extends React.Component {
 
   /**
    * Creates JSX for modals on mobile devices.
-   * @TODO Only works for the color palette. Make it more general!
    * @returns {JSX}
    */
   createMobileModal() {
@@ -236,27 +236,25 @@ class GUIController extends React.Component {
       <Modal
         open={this.state.mobile.isModalOpen}
         onClose={() =>
-          this.setState({
-            mobile: { isModalOpen: false },
-          })
+          this.setState((prevState) => ({
+            mobile: { ...prevState.mobile, isModalOpen: false },
+          }))
         }
         onOpen={() =>
-          this.setState({
-            mobile: { isModalOpen: true },
-          })
+          this.setState((prevState) => ({
+            mobile: { ...prevState.mobile, isModalOpen: true },
+          }))
         }
       >
-        <Modal.Header>Mobile Modal</Modal.Header>
-        <Modal.Content scrolling>
-          <Modal.Description>My Modal</Modal.Description>
-        </Modal.Content>
+        {/* Populate the modal with relevant content */}
+        {this.createMobileModalContent()}
 
         <Modal.Actions>
           <Button
             onClick={() =>
-              this.setState({
-                mobile: { isModalOpen: false },
-              })
+              this.setState((prevState) => ({
+                mobile: { ...prevState.mobile, isModalOpen: false },
+              }))
             }
             primary
           >
@@ -265,44 +263,25 @@ class GUIController extends React.Component {
         </Modal.Actions>
       </Modal>
     );
+  }
 
-    /*
+  /**
+   * Populates the mobile modal with content relevant to what the user selected.
+   * For example, opening the ColorPalette will fill the modal with ColorPalette
+   * related JSX.
+   * @returns {JSX}
+   */
+  createMobileModalContent() {
     return (
-      <Modal
-        open={this.state.mobile.isColorModalOpen}
-        onClose={() =>
-          this.setState({
-            mobile: { isColorModalOpen: false },
-          })
-        }
-        onOpen={() =>
-          this.setState({
-            mobile: { isColorModalOpen: true },
-          })
-        }
-      >
+      <React.Fragment>
         <Modal.Header>Color Palette</Modal.Header>
         <Modal.Content scrolling>
           <Modal.Description>
             <ColorPalette callbacks={this.props.callbacks.colorPalette} />
           </Modal.Description>
         </Modal.Content>
-
-        <Modal.Actions>
-          <Button
-            onClick={() =>
-              this.setState({
-                mobile: { isColorModalOpen: false },
-              })
-            }
-            primary
-          >
-            Close
-          </Button>
-        </Modal.Actions>
-      </Modal>
+      </React.Fragment>
     );
-    */
   }
 
   /**
@@ -331,7 +310,11 @@ class GUIController extends React.Component {
 
             <Menu.Item
               as="a"
-              onClick={() => this.setState({ mobile: { isModalOpen: true } })}
+              onClick={() =>
+                this.setState((prevState) => ({
+                  mobile: { ...prevState.mobile, isModalOpen: true },
+                }))
+              }
             >
               Color Palette
             </Menu.Item>
