@@ -188,6 +188,9 @@ class VoxelManager extends React.Component {
       render: {
         onExportImage: this.onExportImage,
       },
+      examples: {
+        onLoadProjectData: this.onLoadProjectData,
+      },
     };
   };
 
