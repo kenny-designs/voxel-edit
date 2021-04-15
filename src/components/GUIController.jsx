@@ -5,6 +5,7 @@ import Brush from "./Brush";
 import File from "./File";
 //import Edit from "./Edit";
 import Render from "./Render";
+import Examples from "./Examples";
 import GitHubLink from "./GitHubLink";
 import ColorPalette from "./ColorPalette";
 import {
@@ -198,6 +199,7 @@ class GUIController extends React.Component {
               <File callbacks={this.props.callbacks.file} />
               {/*<Edit />*/}
               <Render callbacks={this.props.callbacks.render} />
+              <Examples callbacks={this.props.callbacks.examples} />
               <GitHubLink />
             </Menu>
           </Grid.Column>
@@ -327,6 +329,7 @@ class GUIController extends React.Component {
             <File callbacks={this.props.callbacks.file} />
             {/*<Edit />*/}
             <Render callbacks={this.props.callbacks.render} />
+            <Examples callbacks={this.props.callbacks.examples} />
             <GitHubLink />
           </Menu>
 
