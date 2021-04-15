@@ -199,7 +199,7 @@ class GUIController extends React.Component {
               <File callbacks={this.props.callbacks.file} />
               {/*<Edit />*/}
               <Render callbacks={this.props.callbacks.render} />
-              <Examples />
+              <Examples callbacks={this.props.callbacks.examples} />
               <GitHubLink />
             </Menu>
           </Grid.Column>
@@ -329,7 +329,7 @@ class GUIController extends React.Component {
             <File callbacks={this.props.callbacks.file} />
             {/*<Edit />*/}
             <Render callbacks={this.props.callbacks.render} />
-            <Examples />
+            <Examples callbacks={this.props.callbacks.examples} />
             <GitHubLink />
           </Menu>
 
