@@ -26,7 +26,17 @@ class Examples extends React.Component {
    * Handler for when user wants to load an example project
    * @function
    */
-  handleLoadExample = (filename) => {};
+  handleLoadExample = (filename) => {
+    // Get the actual location of the file
+    const fileLocation =
+      process.env.PUBLIC_URL + "/models/" + filename + ".json";
+
+    fetch(fileLocation)
+      .then((res) => {
+        return res.json();
+      })
+      .then(this.props.callbacks.onLoadProjectData);
+  };
 
   /**
    * Generates each example project for the dropdown menu.
