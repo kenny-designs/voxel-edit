@@ -22,16 +22,22 @@ class Examples extends React.Component {
     ];
   }
 
+  /**
+   * Generates each example project for the dropdown menu.
+   * @function
+   */
+  createExampleProjectMenu = () => {
+    const items = this.exampleProjects.map((project) => {
+      return <Dropdown.Item>{project.name}</Dropdown.Item>;
+    });
+
+    return items;
+  };
+
   render() {
     return (
       <Dropdown text="Examples" pointing className="link item">
-        <Dropdown.Menu>
-          <Dropdown.Item>Earthbound</Dropdown.Item>
-          <Dropdown.Item>Red Mage</Dropdown.Item>
-          <Dropdown.Item>Samus</Dropdown.Item>
-          <Dropdown.Item>Super Meat Boy</Dropdown.Item>
-          <Dropdown.Item>Zombie</Dropdown.Item>
-        </Dropdown.Menu>
+        <Dropdown.Menu>{this.createExampleProjectMenu()}</Dropdown.Menu>
       </Dropdown>
     );
   }
