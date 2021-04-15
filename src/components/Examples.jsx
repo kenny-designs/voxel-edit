@@ -23,14 +23,30 @@ class Examples extends React.Component {
   }
 
   /**
+   * Handler for when user wants to load an example project
+   * @function
+   */
+  handleLoadExample = (filename) => {};
+
+  /**
    * Generates each example project for the dropdown menu.
    * @function
    */
   createExampleProjectMenu = () => {
+    // Return an array of JSX dropdown items
     const items = this.exampleProjects.map((project) => {
-      return <Dropdown.Item>{project.name}</Dropdown.Item>;
+      // Get the name and filename of the current project
+      const { name, filename } = project;
+
+      // Generate a dropdown item based on the given name and filename
+      return (
+        <Dropdown.Item onClick={() => this.handleLoadExample(filename)}>
+          {name}
+        </Dropdown.Item>
+      );
     });
 
+    // Return final array of JSX dropdown items
     return items;
   };
 
