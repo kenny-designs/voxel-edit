@@ -378,8 +378,32 @@ class VoxelEditor {
    * @param {Object} intersection
    */
   extrudeBrushAction = (intersection) => {
-    console.log("Extruding.");
-    console.log(intersection);
+    // Set voxelId depending on brush option. 0 removes voxels
+    const voxelId =
+      this.brush.currentAction === Brush.brushActions.remove
+        ? 0
+        : this.world.colorPalette.getSelectedColorIndex() + 1;
+
+    // Get position of voxel that was intersected
+    const pos = intersection.position.map((v, ndx) => {
+      return (
+        v +
+        intersection.normal[ndx] *
+          //(this.brush.currentAction === Brush.brushActions.add ? 0.5 : -0.5)
+          -0.5
+      );
+    });
+
+    // The type of the voxel that was clicked
+    //const { voxel } = intersection;
+
+    this.world.setVoxelLayer(...pos, ...intersection.normal, voxelId);
+
+    // Update the cell associated with the position of the new voxel
+    this.world.updateVoxelGeometry(this.scene, ...pos);
+
+    // Update render frame
+    this.requestRenderIfNotRequested();
   };
 
   /**
