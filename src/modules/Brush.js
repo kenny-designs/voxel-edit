@@ -3,11 +3,13 @@
  */
 class Brush {
   /**
-   * Creates a new brush object
-   * @param {string} [brush="add"] Type of brush to use
+   * Creates a new brush object.
+   * @param {string} [action="add"] Adding, removing, or painting voxels
+   * @param {string} [type="single"] How to go about the actions
    */
-  constructor(brush = "add") {
-    this.setCurrentAction(brush);
+  constructor(action = "add", type = "single") {
+    this.setCurrentAction(action);
+    this.setCurrentType(type);
   }
 
   // Options for each brush
@@ -49,8 +51,6 @@ class Brush {
     if (type) {
       this.currentType = type;
     }
-
-    console.log(type);
   }
 }
 
