@@ -12,8 +12,8 @@ class Brush {
     this.setCurrentType(type);
   }
 
-  // Options for each brush
-  static brushOptions = {
+  // Options for each brush action
+  static brushActions = {
     add: "add",
     remove: "remove",
     paint: "paint",
@@ -31,11 +31,11 @@ class Brush {
    */
   setCurrentAction(brushAction) {
     // Get the brush to set
-    const brush = Brush.brushOptions[brushAction];
+    const action = Brush.brushActions[brushAction];
 
     // If that brush exists, set it as current
-    if (brush) {
-      this.currentBrush = brush;
+    if (action) {
+      this.currentAction = action;
     }
   }
 

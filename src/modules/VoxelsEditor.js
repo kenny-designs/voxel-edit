@@ -317,7 +317,7 @@ class VoxelEditor {
     if (intersection) {
       // Set voxelId depending on brush option. 0 removes voxels
       const voxelId =
-        this.brush.currentBrush === Brush.brushOptions.remove
+        this.brush.currentAction === Brush.brushActions.remove
           ? 0
           : this.world.colorPalette.getSelectedColorIndex() + 1;
 
@@ -329,7 +329,7 @@ class VoxelEditor {
         return (
           v +
           intersection.normal[ndx] *
-            (this.brush.currentBrush === Brush.brushOptions.add ? 0.5 : -0.5)
+            (this.brush.currentAction === Brush.brushActions.add ? 0.5 : -0.5)
         );
       });
 
