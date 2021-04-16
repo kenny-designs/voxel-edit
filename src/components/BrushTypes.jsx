@@ -1,51 +1,56 @@
 import React from "react";
 import { Menu } from "semantic-ui-react";
 
+/**
+ * Allows user to switch between brush types single and extrude.
+ * @extends React.Component
+ */
 class BrushTypes extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      activeBrush: "add",
+      activeBrushType: "single",
     };
   }
 
-  /*
   componentDidMount() {
-    // Send the initial brush name to parent component
-    this.props.callbacks.onBrushChange(this.state.activeBrush);
+    // Send the initial brush type to parent component
+    this.props.callbacks.onBrushTypeChange(this.state.activeBrushType);
   }
-  */
 
   /**
-   * Handler for each brush option. Upon click, updates the currently
-   * selected brush.
+   * Handler for each brush type option. Upon click, updates the current
+   * brush type.
    * @param {Event} e - React's original SyntheticEvent
    * @param {data} props - Prop data from the Menu.Item
    */
-  /*
   handleBrushClick = (e, { name }) => {
-    // Update state with current brush.
-    this.setState({ activeBrush: name });
+    // Update state with new brush type
+    this.setState({ activeBrushType: name });
 
-    // Send active brush name to parent component
-    this.props.callbacks.onBrushChange(name);
+    // Send active brush type to parent component
+    this.props.callbacks.onBrushTypeChange(name);
   };
-  */
 
   render() {
-    const { activeBrush } = this.state;
+    const { activeBrushType } = this.state;
 
     return (
       <React.Fragment>
-        <Menu.Item name="add" active={activeBrush === "add"}>
+        <Menu.Item
+          name="single"
+          active={activeBrushType === "single"}
+          onClick={this.handleBrushClick}
+        >
           Single Voxel
         </Menu.Item>
-        <Menu.Item name="remove" active={activeBrush === "remove"}>
+        <Menu.Item
+          name="extrude"
+          active={activeBrushType === "extrude"}
+          onClick={this.handleBrushClick}
+        >
           Extrude Voxel
-        </Menu.Item>
-        <Menu.Item name="paint" active={activeBrush === "paint"}>
-          Box Voxel
         </Menu.Item>
       </React.Fragment>
     );

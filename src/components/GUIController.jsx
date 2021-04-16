@@ -160,7 +160,7 @@ class GUIController extends React.Component {
               active={brushSettings.activeAccordionIndices.includes(1)}
             >
               <Menu inverted vertical fluid>
-                <BrushTypes />
+                <BrushTypes callbacks={this.props.callbacks.brush.brushTypes} />
               </Menu>
             </Accordion.Content>
           </Accordion>
@@ -361,7 +361,7 @@ class GUIController extends React.Component {
           {/* Create bottom menu */}
           <Menu fixed="bottom" inverted style={{ overflowX: "auto" }}>
             <BrushActions callbacks={this.props.callbacks.brush.brushActions} />
-            <BrushTypes />
+            <BrushTypes callbacks={this.props.callbacks.brush.brushTypes} />
 
             <Menu.Item
               as="a"

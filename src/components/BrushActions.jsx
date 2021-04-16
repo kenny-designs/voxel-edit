@@ -10,51 +10,51 @@ class BrushActions extends React.Component {
     super(props);
 
     this.state = {
-      activeBrush: "add",
+      activeBrushAction: "add",
     };
   }
 
   componentDidMount() {
-    // Send the initial brush name to parent component
-    this.props.callbacks.onBrushChange(this.state.activeBrush);
+    // Send the initial brush action to parent component
+    this.props.callbacks.onBrushActionChange(this.state.activeBrushAction);
   }
 
   /**
-   * Handler for each brush option. Upon click, updates the currently
-   * selected brush.
+   * Handler for each brush action option. Upon click, updates the current
+   * brush action.
    * @param {Event} e - React's original SyntheticEvent
    * @param {data} props - Prop data from the Menu.Item
    */
   handleBrushClick = (e, { name }) => {
-    // Update state with current brush.
-    this.setState({ activeBrush: name });
+    // Update state with new brush action
+    this.setState({ activeBrushAction: name });
 
-    // Send active brush name to parent component
-    this.props.callbacks.onBrushChange(name);
+    // Send active brush action to parent component
+    this.props.callbacks.onBrushActionChange(name);
   };
 
   render() {
-    const { activeBrush } = this.state;
+    const { activeBrushAction } = this.state;
 
     return (
       <React.Fragment>
         <Menu.Item
           name="add"
-          active={activeBrush === "add"}
+          active={activeBrushAction === "add"}
           onClick={this.handleBrushClick}
         >
           Add Voxel
         </Menu.Item>
         <Menu.Item
           name="remove"
-          active={activeBrush === "remove"}
+          active={activeBrushAction === "remove"}
           onClick={this.handleBrushClick}
         >
           Remove Voxel
         </Menu.Item>
         <Menu.Item
           name="paint"
-          active={activeBrush === "paint"}
+          active={activeBrushAction === "paint"}
           onClick={this.handleBrushClick}
         >
           Paint Voxel
