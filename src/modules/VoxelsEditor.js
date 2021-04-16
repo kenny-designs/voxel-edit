@@ -313,36 +313,74 @@ class VoxelEditor {
     // Cast a ray into the scene
     const intersection = this.world.intersectRay(start, end);
 
-    // If raycast was successful, place a voxel with the information returned
-    if (intersection) {
-      // Set voxelId depending on brush option. 0 removes voxels
-      const voxelId =
-        this.brush.currentAction === Brush.brushActions.remove
-          ? 0
-          : this.world.colorPalette.getSelectedColorIndex() + 1;
+    // If raycast wasn't successful, return
+    if (!intersection) return;
 
-      // the intersection point is on the face. That means
-      // the math imprecision could put us on either side of the face.
-      // so go half a normal into the voxel if removing/painting
-      // or half a normal out if adding
-      const pos = intersection.position.map((v, ndx) => {
-        return (
-          v +
-          intersection.normal[ndx] *
-            (this.brush.currentAction === Brush.brushActions.add ? 0.5 : -0.5)
-        );
-      });
+    // Add voxels depending on the current brush type
+    switch (this.brush.currentType) {
+      // Single type brush
+      case Brush.brushTypes.single:
+        this.singleBrushAction(intersection);
+        break;
 
-      // Set voxel at the pos position with new voxelID
-      this.world.setVoxel(...pos, voxelId);
+      // Extrude type brush
+      case Brush.brushTypes.extrude:
+        this.extrudeBrushAction(intersection);
+        break;
 
-      // Update the cell associated with the position of the new voxel
-      this.world.updateVoxelGeometry(this.scene, ...pos);
-
-      // Update render frame
-      this.requestRenderIfNotRequested();
+      default:
+      // No default case
     }
   }
+
+  /**
+   * Perform the current brush action for the single brush type.
+   * For add, add a single voxel.
+   * For remove, remove a single voxel.
+   * For paint, paint a single voxel.
+   * @param {Object} intersection
+   */
+  singleBrushAction = (intersection) => {
+    // Set voxelId depending on brush option. 0 removes voxels
+    const voxelId =
+      this.brush.currentAction === Brush.brushActions.remove
+        ? 0
+        : this.world.colorPalette.getSelectedColorIndex() + 1;
+
+    // the intersection point is on the face. That means
+    // the math imprecision could put us on either side of the face.
+    // so go half a normal into the voxel if removing/painting
+    // or half a normal out if adding
+    const pos = intersection.position.map((v, ndx) => {
+      return (
+        v +
+        intersection.normal[ndx] *
+          (this.brush.currentAction === Brush.brushActions.add ? 0.5 : -0.5)
+      );
+    });
+
+    // Set voxel at the pos position with new voxelID
+    this.world.setVoxel(...pos, voxelId);
+
+    // Update the cell associated with the position of the new voxel
+    this.world.updateVoxelGeometry(this.scene, ...pos);
+
+    // Update render frame
+    this.requestRenderIfNotRequested();
+  };
+
+  /**
+   * Perform the current brush action for the extrude brush type.
+   * For add, place a layer of voxels on all adjacent voxels of the same color along
+   * the clicked side.
+   * For remove, remove a layer of adjacent voxels of the same color along the clicked side.
+   * For paint, paint a layer of adjacent voxels of the same color along the clicked side.
+   * @param {Object} intersection
+   */
+  extrudeBrushAction = (intersection) => {
+    console.log("Extruding.");
+    console.log(intersection);
+  };
 
   /**
    * Reset mouse movement and begin recording.
@@ -378,7 +416,6 @@ class VoxelEditor {
     const { mouse } = this;
     // Mouse hardly moved, user likely intended to place a voxel
     if (mouse.moveX < 5 && mouse.moveY < 5) {
-      // TODO: Remove global variable currentBrush
       this.placeVoxel(event);
     }
 
