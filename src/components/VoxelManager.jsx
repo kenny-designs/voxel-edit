@@ -35,18 +35,18 @@ class VoxelManager extends React.Component {
   };
 
   /**
-   * Changes the brush currently being used.
+   * Changes the brush action currently being used.
    * @function
-   * @param {string} brushName - name of the brush to set
+   * @param {string} brushAction - brush action to set
    */
-  setBrushAction = (brushName) => {
+  setBrushAction = (brushAction) => {
     if (this.voxelEditor) {
-      this.voxelEditor.brush.setCurrentBrush(brushName);
+      this.voxelEditor.brush.setCurrentAction(brushAction);
     }
   };
 
   /**
-   * Changes the current brush type.
+   * Changes the brush type currently being used..
    * @function
    * @param {string} brushName
    */

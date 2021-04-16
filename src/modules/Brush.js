@@ -7,7 +7,7 @@ class Brush {
    * @param {string} [brush="add"] Type of brush to use
    */
   constructor(brush = "add") {
-    this.setCurrentBrush(brush);
+    this.setCurrentAction(brush);
   }
 
   // Options for each brush
@@ -18,12 +18,12 @@ class Brush {
   };
 
   /**
-   * Sets the current brush to one of the available brush options.
-   * @param {string} brushName
+   * Sets the current brush action to one of the available brush options.
+   * @param {string} brushAction
    */
-  setCurrentBrush(brushName) {
+  setCurrentAction(brushAction) {
     // Get the brush to set
-    const brush = Brush.brushOptions[brushName];
+    const brush = Brush.brushOptions[brushAction];
 
     // If that brush exists, set it as current
     if (brush) {
