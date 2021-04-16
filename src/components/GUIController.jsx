@@ -1,9 +1,9 @@
 import "./GUIController.css";
 import React from "react";
 import Viewport from "./Viewport";
-import Brush from "./Brush";
+import BrushActions from "./BrushActions";
+import BrushTypes from "./BrushTypes";
 import File from "./File";
-//import Edit from "./Edit";
 import Render from "./Render";
 import Examples from "./Examples";
 import GitHubLink from "./GitHubLink";
@@ -36,7 +36,7 @@ class GUIController extends React.Component {
       },
       desktop: {
         brushSettings: {
-          activeAccordionIndices: [0],
+          activeAccordionIndices: [0, 1],
         },
         colorPalette: {
           activeAccordionIndices: [0],
@@ -124,7 +124,7 @@ class GUIController extends React.Component {
           <Accordion inverted fluid exclusive={false}>
             <Accordion.Title
               active={brushSettings.activeAccordionIndices.includes(0)}
-              content="Brush Action"
+              content="Brush Actions"
               index={0}
               onClick={(e, titleProps) => {
                 this.handleAccordionIndicesChange(
@@ -137,7 +137,30 @@ class GUIController extends React.Component {
               active={brushSettings.activeAccordionIndices.includes(0)}
             >
               <Menu inverted vertical fluid>
-                <Brush callbacks={this.props.callbacks.brush} />
+                <BrushActions
+                  callbacks={this.props.callbacks.brush.brushActions}
+                />
+              </Menu>
+            </Accordion.Content>
+          </Accordion>
+
+          <Accordion inverted fluid exclusive={false}>
+            <Accordion.Title
+              active={brushSettings.activeAccordionIndices.includes(1)}
+              content="Brush Types"
+              index={1}
+              onClick={(e, titleProps) => {
+                this.handleAccordionIndicesChange(
+                  titleProps.index,
+                  "brushSettings"
+                );
+              }}
+            />
+            <Accordion.Content
+              active={brushSettings.activeAccordionIndices.includes(1)}
+            >
+              <Menu inverted vertical fluid>
+                <BrushTypes />
               </Menu>
             </Accordion.Content>
           </Accordion>
@@ -337,7 +360,8 @@ class GUIController extends React.Component {
 
           {/* Create bottom menu */}
           <Menu fixed="bottom" inverted style={{ overflowX: "auto" }}>
-            <Brush callbacks={this.props.callbacks.brush} />
+            <BrushActions callbacks={this.props.callbacks.brush.brushActions} />
+            <BrushTypes />
 
             <Menu.Item
               as="a"

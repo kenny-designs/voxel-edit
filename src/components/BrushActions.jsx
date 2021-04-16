@@ -2,10 +2,10 @@ import React from "react";
 import { Menu } from "semantic-ui-react";
 
 /**
- * Allows user to switch between basic brush options such as add, remove, and paint.
+ * Allows user to switch between brush actions add, remove, and paint.
  * @extends React.Component
  */
-class Brush extends React.Component {
+class BrushActions extends React.Component {
   constructor(props) {
     super(props);
 
@@ -64,4 +64,4 @@ class Brush extends React.Component {
   }
 }
 
-export default Brush;
+export default BrushActions;

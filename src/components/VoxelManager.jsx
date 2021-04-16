@@ -168,7 +168,9 @@ class VoxelManager extends React.Component {
   getCallbacksObject = () => {
     return {
       brush: {
-        onBrushChange: this.setCurrentBrush,
+        brushActions: {
+          onBrushChange: this.setCurrentBrush,
+        },
       },
       colorPalette: {
         onGetColorData: this.onGetColorData,
