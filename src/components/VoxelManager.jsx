@@ -20,6 +20,7 @@ class VoxelManager extends React.Component {
 
   /**
    * Takes the given canvas Ref and renders the voxel world.
+   * @function
    * @param {Ref} canvasRef
    */
   createVoxelWorld = (canvasRef) => {
@@ -57,6 +58,7 @@ class VoxelManager extends React.Component {
 
   /**
    * Returns color palette data from the VoxelWorld.
+   * @function
    * @returns {Array.Color}
    */
   onGetColorData = () => {
@@ -82,6 +84,7 @@ class VoxelManager extends React.Component {
 
   /**
    * Called whenever a new color is selected.
+   * @function
    * @param {number} index - Index of the changed color
    * @param {Object} color
    */
@@ -96,6 +99,7 @@ class VoxelManager extends React.Component {
 
   /**
    * Tells the VoxelEditor what color of voxel the user is placing/painting now.
+   * @function
    * @param {number} index
    */
   onNewSelectedColor = (index) => {
@@ -106,6 +110,7 @@ class VoxelManager extends React.Component {
 
   /**
    * Tell the VoxelEditor that the user added a new color to their color palette
+   * @function
    */
   onAddColor = () => {
     if (!this.voxelEditor) return;
@@ -116,6 +121,7 @@ class VoxelManager extends React.Component {
 
   /**
    * Gets project data from the currently open project.
+   * @function
    * @returns {Object} JavaScript object representing the relevant data from the
    * currently open project/scene.
    */
@@ -129,6 +135,7 @@ class VoxelManager extends React.Component {
 
   /**
    * Handler used to load a new scene from the given project data.
+   * @function
    * @param {Object} projectData
    */
   onLoadProjectData = (projectData) => {
@@ -146,6 +153,7 @@ class VoxelManager extends React.Component {
 
   /**
    * Handler used to export the current frame from the canvas as an image.
+   * @function
    * @param {string} imageName - What to name the exported image
    * @returns {Canvas} The canvas to take a screenshot from
    */
@@ -157,6 +165,7 @@ class VoxelManager extends React.Component {
 
   /**
    * Exports the voxel model to some 3D file format.
+   * @function
    * @param {string} name - What the exported file should be called
    * @param {string} type - The type of file to export
    */
@@ -166,6 +175,10 @@ class VoxelManager extends React.Component {
     this.voxelEditor.onExportModel(name, type);
   };
 
+  /**
+   * Loads a fresh, blank project.
+   * @function
+   */
   onNewProject = () => {
     if (!this.voxelEditor) return;
 
@@ -175,6 +188,7 @@ class VoxelManager extends React.Component {
 
   /**
    * Returns callbacks organized by the component that they are meant for.
+   * @function
    * @returns {Object}
    */
   getCallbacksObject = () => {
