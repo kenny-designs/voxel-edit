@@ -26,6 +26,14 @@ class Brush {
   };
 
   /**
+   * Gets the current brush action.
+   * @returns {string} The current action
+   */
+  getCurrentAction() {
+    return this.currentAction;
+  }
+
+  /**
    * Sets the current brush action to one of the available brush options.
    * @param {string} brushAction
    */
@@ -37,6 +45,14 @@ class Brush {
     if (action) {
       this.currentAction = action;
     }
+  }
+
+  /**
+   * Gets the current brush type.
+   * @returns {string} The current type
+   */
+  getCurrentType() {
+    return this.currentType;
   }
 
   /**

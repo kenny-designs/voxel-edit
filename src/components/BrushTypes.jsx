@@ -9,14 +9,19 @@ class BrushTypes extends React.Component {
   constructor(props) {
     super(props);
 
+    const activeBrushType = this.props.callbacks.onGetBrushType();
+
     this.state = {
-      activeBrushType: "single",
+      activeBrushType,
     };
   }
 
   componentDidMount() {
     // Send the initial brush type to parent component
-    this.props.callbacks.onBrushTypeChange(this.state.activeBrushType);
+    // this.props.callbacks.onBrushTypeChange(this.state.activeBrushType);
+
+    const activeBrushType = this.props.callbacks.onGetBrushType();
+    this.setState({ activeBrushType });
   }
 
   /**

@@ -9,14 +9,19 @@ class BrushActions extends React.Component {
   constructor(props) {
     super(props);
 
+    const activeBrushAction = this.props.callbacks.onGetBrushAction();
+
     this.state = {
-      activeBrushAction: "add",
+      activeBrushAction,
     };
   }
 
   componentDidMount() {
     // Send the initial brush action to parent component
-    this.props.callbacks.onBrushActionChange(this.state.activeBrushAction);
+    //this.props.callbacks.onBrushActionChange(this.state.activeBrushAction);
+
+    const activeBrushAction = this.props.callbacks.onGetBrushAction();
+    this.setState({ activeBrushAction });
   }
 
   /**
