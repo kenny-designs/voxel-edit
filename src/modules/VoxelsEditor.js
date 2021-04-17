@@ -397,7 +397,16 @@ class VoxelEditor {
     // The type of the voxel that was clicked
     //const { voxel } = intersection;
 
-    this.world.setVoxelLayer(...pos, ...intersection.normal, voxelId);
+    // @TODO: This is only temporary whilst figuring out the algorithm
+    // Refactor into something that makes more sense later
+    const isPosLayer = this.brush.currentAction !== Brush.brushActions.add;
+
+    this.world.setVoxelLayer(
+      ...pos,
+      ...intersection.normal,
+      voxelId,
+      isPosLayer
+    );
 
     // Update the cell associated with the position of the new voxel
     //this.world.updateVoxelGeometry(this.scene, ...pos);

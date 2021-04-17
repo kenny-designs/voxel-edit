@@ -177,7 +177,7 @@ class VoxelWorld {
     return cell[voxelOffset];
   }
 
-  setVoxelLayer(x, y, z, normX, normY, normZ, v) {
+  setVoxelLayer(x, y, z, normX, normY, normZ, v, isPosLayer) {
     // The plane to scan
     let plane = "xy";
     if (normX) {
@@ -192,6 +192,9 @@ class VoxelWorld {
 
     // The starting voxel
     const startVoxel = this.getVoxel(x, y, z);
+
+    // @TODO: Rethink this. For now, don't replace voxels if we already are said voxels
+    if (isPosLayer && startVoxel === v) return;
 
     // Temp to prevent crashing
     let count = 0;
@@ -210,7 +213,11 @@ class VoxelWorld {
         this.getVoxel(pos.x, pos.y, pos.z) === startVoxel &&
         this.getVoxel(pos.x + normX, pos.y + normY, pos.z + normZ) === 0
       ) {
-        this.setVoxel(pos.x + normX, pos.y + normY, pos.z + normZ, v);
+        if (isPosLayer) {
+          this.setVoxel(pos.x, pos.y, pos.z, v);
+        } else {
+          this.setVoxel(pos.x + normX, pos.y + normY, pos.z + normZ, v);
+        }
         switch (plane) {
           case "xy":
             stack.push({ x: pos.x + 1, y: pos.y, z: pos.z });
