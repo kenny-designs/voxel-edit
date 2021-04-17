@@ -177,73 +177,70 @@ class VoxelWorld {
     return cell[voxelOffset];
   }
 
-  setVoxelLayer(x, y, z, normX, normY, normZ, v, isPosLayer) {
-    // The plane to scan
-    let plane = "xy";
-    if (normX) {
-      plane = "yz";
-    } else if (normY) {
-      plane = "xz";
-    }
+  /**
+   * Performs a flood fill starting at a given voxel position and sets that voxel and all voxels
+   * of the same type to the given v voxel type. If the voxel is obstructed by another voxel along
+   * the given normal, it is left untouched. Otherwise, it will be changed to the given v voxel type.
+   * If extruding, then adjacent empty voxels along the given normal will be changed to the given v
+   * voxel type instead.
+   * @param {number} startX - The x coordinate of the starting voxel
+   * @param {number} startY - The y coordinate of the starting voxel
+   * @param {number} startZ - The z coordinate of the starting voxel
+   * @param {number} normX - The x normal to check along
+   * @param {number} normY - The y normal to check along
+   * @param {number} normZ - The z normal to check along
+   * @param {number} v - The new voxel to flood fill with
+   * @param {boolean} isExtruding - If true, sets adjacent empty voxels along the normal to v.
+   * Otherwise, just changes adjacent voxels that share the same color of the starting voxel
+   */
+  floodFillVoxels(startX, startY, startZ, normX, normY, normZ, v, isExtruding) {
+    // Get the starting voxel
+    const startVoxel = this.getVoxel(startX, startY, startZ);
 
-    x = Math.floor(x);
-    y = Math.floor(y);
-    z = Math.floor(z);
+    // No point in replacing voxel with itself, return
+    if (!isExtruding && startVoxel === v) return;
 
-    // The starting voxel
-    const startVoxel = this.getVoxel(x, y, z);
+    // Stack used to track which voxels needs to be set next. Start with given voxel
+    const stack = [{ x: startX, y: startY, z: startZ }];
 
-    // @TODO: Rethink this. For now, don't replace voxels if we already are said voxels
-    if (isPosLayer && startVoxel === v) return;
-
-    // Temp to prevent crashing
-    let count = 0;
-
-    const stack = [{ x, y, z }];
+    // Continue to flood fill until stack is empty
     while (stack.length) {
-      // Prevent crashing
-      ++count;
-      //if (count > 1000) return;
+      // Get the last voxel off the stack
+      const { x, y, z } = stack.pop();
 
-      // Get the last element from the stack
-      let pos = stack.pop();
-
-      // If it matches the starting voxel's color, continue filling
+      // If it doesn't match the starting voxel or there's another voxel obstructing it, continue
       if (
-        this.getVoxel(pos.x, pos.y, pos.z) === startVoxel &&
-        this.getVoxel(pos.x + normX, pos.y + normY, pos.z + normZ) === 0
+        this.getVoxel(x, y, z) !== startVoxel ||
+        this.getVoxel(x + normX, y + normY, z + normZ) !== 0
       ) {
-        if (isPosLayer) {
-          this.setVoxel(pos.x, pos.y, pos.z, v);
-        } else {
-          this.setVoxel(pos.x + normX, pos.y + normY, pos.z + normZ, v);
-        }
-        switch (plane) {
-          case "xy":
-            stack.push({ x: pos.x + 1, y: pos.y, z: pos.z });
-            stack.push({ x: pos.x - 1, y: pos.y, z: pos.z });
-            stack.push({ x: pos.x, y: pos.y + 1, z: pos.z });
-            stack.push({ x: pos.x, y: pos.y - 1, z: pos.z });
-            break;
-          case "yz":
-            stack.push({ x: pos.x, y: pos.y + 1, z: pos.z });
-            stack.push({ x: pos.x, y: pos.y - 1, z: pos.z });
-            stack.push({ x: pos.x, y: pos.y, z: pos.z + 1 });
-            stack.push({ x: pos.x, y: pos.y, z: pos.z - 1 });
-            break;
-          case "xz":
-            stack.push({ x: pos.x + 1, y: pos.y, z: pos.z });
-            stack.push({ x: pos.x - 1, y: pos.y, z: pos.z });
-            stack.push({ x: pos.x, y: pos.y, z: pos.z + 1 });
-            stack.push({ x: pos.x, y: pos.y, z: pos.z - 1 });
-            break;
-          default:
-            break;
-        }
+        continue;
+      }
+
+      // If extruding, set voxel in front along normal. Otherwise, replace current voxel
+      if (isExtruding) {
+        this.setVoxel(x + normX, y + normY, z + normZ, v);
+      } else {
+        this.setVoxel(x, y, z, v);
+      }
+
+      // Flood fill along x-axis
+      if (!normX) {
+        stack.push({ x: x + 1, y, z });
+        stack.push({ x: x - 1, y, z });
+      }
+
+      // Flood fill along y-axis
+      if (!normY) {
+        stack.push({ x, y: y + 1, z });
+        stack.push({ x, y: y - 1, z });
+      }
+
+      // Flood fill along z-axis
+      if (!normZ) {
+        stack.push({ x, y, z: z + 1 });
+        stack.push({ x, y, z: z - 1 });
       }
     }
-
-    console.log(count);
   }
 
   /**

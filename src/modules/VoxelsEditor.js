@@ -386,30 +386,24 @@ class VoxelEditor {
 
     // Get position of voxel that was intersected
     const pos = intersection.position.map((v, ndx) => {
-      return (
-        v +
-        intersection.normal[ndx] *
-          //(this.brush.currentAction === Brush.brushActions.add ? 0.5 : -0.5)
-          -0.5
-      );
+      // Return the position of the voxel that was clicked
+      return v + intersection.normal[ndx] * -0.5;
     });
 
-    // The type of the voxel that was clicked
-    //const { voxel } = intersection;
+    // True if adding more geometry
+    const isExtruding = this.brush.currentAction === Brush.brushActions.add;
 
-    // @TODO: This is only temporary whilst figuring out the algorithm
-    // Refactor into something that makes more sense later
-    const isPosLayer = this.brush.currentAction !== Brush.brushActions.add;
-
-    this.world.setVoxelLayer(
+    // Extrude the voxels or just re-paint voxels of the same type if not extruding
+    this.world.floodFillVoxels(
       ...pos,
       ...intersection.normal,
       voxelId,
-      isPosLayer
+      isExtruding
     );
 
-    // Update the cell associated with the position of the new voxel
-    //this.world.updateVoxelGeometry(this.scene, ...pos);
+    // Update world geometry
+    // @TODO: Find a way to only update cells that need an update instead of everything
+    // As an idea, maybe world should have an "out of date" variable for cells?
     this.world.updateWorldGeometry(this.scene);
 
     // Update render frame
