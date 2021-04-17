@@ -178,6 +178,72 @@ class VoxelWorld {
   }
 
   /**
+   * Performs a flood fill starting at a given voxel position and sets that voxel and all voxels
+   * of the same type to the given v voxel type. If the voxel is obstructed by another voxel along
+   * the given normal, it is left untouched. Otherwise, it will be changed to the given v voxel type.
+   * If extruding, then adjacent empty voxels along the given normal will be changed to the given v
+   * voxel type instead.
+   * @param {number} startX - The x coordinate of the starting voxel
+   * @param {number} startY - The y coordinate of the starting voxel
+   * @param {number} startZ - The z coordinate of the starting voxel
+   * @param {number} normX - The x normal to check along
+   * @param {number} normY - The y normal to check along
+   * @param {number} normZ - The z normal to check along
+   * @param {number} v - The new voxel to flood fill with
+   * @param {boolean} isExtruding - If true, sets adjacent empty voxels along the normal to v.
+   * Otherwise, just changes adjacent voxels that share the same color of the starting voxel
+   */
+  floodFillVoxels(startX, startY, startZ, normX, normY, normZ, v, isExtruding) {
+    // Get the starting voxel
+    const startVoxel = this.getVoxel(startX, startY, startZ);
+
+    // No point in replacing voxel with itself, return
+    if (!isExtruding && startVoxel === v) return;
+
+    // Stack used to track which voxels needs to be set next. Start with given voxel
+    const stack = [{ x: startX, y: startY, z: startZ }];
+
+    // Continue to flood fill until stack is empty
+    while (stack.length) {
+      // Get the last voxel off the stack
+      const { x, y, z } = stack.pop();
+
+      // If it doesn't match the starting voxel or there's another voxel obstructing it, continue
+      if (
+        this.getVoxel(x, y, z) !== startVoxel ||
+        this.getVoxel(x + normX, y + normY, z + normZ) !== 0
+      ) {
+        continue;
+      }
+
+      // If extruding, set voxel in front along normal. Otherwise, replace current voxel
+      if (isExtruding) {
+        this.setVoxel(x + normX, y + normY, z + normZ, v);
+      } else {
+        this.setVoxel(x, y, z, v);
+      }
+
+      // Flood fill along x-axis
+      if (!normX) {
+        stack.push({ x: x + 1, y, z });
+        stack.push({ x: x - 1, y, z });
+      }
+
+      // Flood fill along y-axis
+      if (!normY) {
+        stack.push({ x, y: y + 1, z });
+        stack.push({ x, y: y - 1, z });
+      }
+
+      // Flood fill along z-axis
+      if (!normZ) {
+        stack.push({ x, y, z: z + 1 });
+        stack.push({ x, y, z: z - 1 });
+      }
+    }
+  }
+
+  /**
    * Generates geometry data for a cell at the given coordinate. Similar to voxels, each cell
    * is a part of a 3D grid as well.
    * @example
