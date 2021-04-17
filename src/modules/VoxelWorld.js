@@ -186,50 +186,57 @@ class VoxelWorld {
       plane = "xz";
     }
 
+    x = Math.floor(x);
+    y = Math.floor(y);
+    z = Math.floor(z);
+
     // The starting voxel
     const startVoxel = this.getVoxel(x, y, z);
 
+    // Temp to prevent crashing
     let count = 0;
 
     const stack = [{ x, y, z }];
     while (stack.length) {
+      // Prevent crashing
       ++count;
-      if (count > 1000) return;
+      //if (count > 1000) return;
+
       // Get the last element from the stack
       let pos = stack.pop();
 
-      console.log(stack);
-
       // If it matches the starting voxel's color, continue filling
       if (
-        this.getVoxel(pos.x, pos.y, pos.z) === startVoxel //&&
-        //this.getVoxel(pos.x + normX, pos.y + normY, pos.z + normZ) === 0
+        this.getVoxel(pos.x, pos.y, pos.z) === startVoxel &&
+        this.getVoxel(pos.x + normX, pos.y + normY, pos.z + normZ) === 0
       ) {
         this.setVoxel(pos.x + normX, pos.y + normY, pos.z + normZ, v);
         switch (plane) {
           case "xy":
-            stack.push({ x: pos.x + 1, y: pos.y + 1, z: pos.z });
-            stack.push({ x: pos.x + 1, y: pos.y - 1, z: pos.z });
-            stack.push({ x: pos.x - 1, y: pos.y + 1, z: pos.z });
-            stack.push({ x: pos.x - 1, y: pos.y - 1, z: pos.z });
+            stack.push({ x: pos.x + 1, y: pos.y, z: pos.z });
+            stack.push({ x: pos.x - 1, y: pos.y, z: pos.z });
+            stack.push({ x: pos.x, y: pos.y + 1, z: pos.z });
+            stack.push({ x: pos.x, y: pos.y - 1, z: pos.z });
             break;
           case "yz":
-            stack.push({ x: pos.x, y: pos.y + 1, z: pos.z + 1 });
-            stack.push({ x: pos.x, y: pos.y + 1, z: pos.z - 1 });
-            stack.push({ x: pos.x, y: pos.y - 1, z: pos.z + 1 });
-            stack.push({ x: pos.x, y: pos.y - 1, z: pos.z - 1 });
+            stack.push({ x: pos.x, y: pos.y + 1, z: pos.z });
+            stack.push({ x: pos.x, y: pos.y - 1, z: pos.z });
+            stack.push({ x: pos.x, y: pos.y, z: pos.z + 1 });
+            stack.push({ x: pos.x, y: pos.y, z: pos.z - 1 });
             break;
           case "xz":
-            stack.push({ x: pos.x + 1, y: pos.y, z: pos.z + 1 });
-            stack.push({ x: pos.x + 1, y: pos.y, z: pos.z - 1 });
-            stack.push({ x: pos.x - 1, y: pos.y, z: pos.z + 1 });
-            stack.push({ x: pos.x - 1, y: pos.y, z: pos.z - 1 });
+            stack.push({ x: pos.x + 1, y: pos.y, z: pos.z });
+            stack.push({ x: pos.x - 1, y: pos.y, z: pos.z });
+            stack.push({ x: pos.x, y: pos.y, z: pos.z + 1 });
+            stack.push({ x: pos.x, y: pos.y, z: pos.z - 1 });
             break;
           default:
             break;
         }
       }
     }
+
+    console.log(count);
   }
 
   /**

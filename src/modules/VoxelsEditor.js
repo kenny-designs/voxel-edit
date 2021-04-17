@@ -400,7 +400,8 @@ class VoxelEditor {
     this.world.setVoxelLayer(...pos, ...intersection.normal, voxelId);
 
     // Update the cell associated with the position of the new voxel
-    this.world.updateVoxelGeometry(this.scene, ...pos);
+    //this.world.updateVoxelGeometry(this.scene, ...pos);
+    this.world.updateWorldGeometry(this.scene);
 
     // Update render frame
     this.requestRenderIfNotRequested();
