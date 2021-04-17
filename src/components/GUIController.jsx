@@ -321,6 +321,26 @@ class GUIController extends React.Component {
         );
         break;
 
+      case "BrushSettings":
+        header = (
+          <Header as="h4">
+            <Icon name="paint brush" />
+            <Header.Content>
+              Brush Settings
+              <Header.Subheader>Add, remove, or paint voxels</Header.Subheader>
+            </Header.Content>
+          </Header>
+        );
+        description = (
+          <Menu inverted vertical fluid>
+            <Menu.Item header>Brush Actions</Menu.Item>
+            <BrushActions callbacks={this.props.callbacks.brush.brushActions} />
+            <Menu.Item header>Brush Types</Menu.Item>
+            <BrushTypes callbacks={this.props.callbacks.brush.brushTypes} />
+          </Menu>
+        );
+        break;
+
       default:
         header = "Empty Modal";
         description = `Nothing in here. Thr current modal type is '${modalContentType}'`;
@@ -360,8 +380,19 @@ class GUIController extends React.Component {
 
           {/* Create bottom menu */}
           <Menu fixed="bottom" inverted style={{ overflowX: "auto" }}>
-            <BrushActions callbacks={this.props.callbacks.brush.brushActions} />
-            <BrushTypes callbacks={this.props.callbacks.brush.brushTypes} />
+            <Menu.Item
+              as="a"
+              onClick={() =>
+                this.setState({
+                  mobile: {
+                    isModalOpen: true,
+                    modalContentType: "BrushSettings",
+                  },
+                })
+              }
+            >
+              Brush Settings
+            </Menu.Item>
 
             <Menu.Item
               as="a"
